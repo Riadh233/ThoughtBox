@@ -28,7 +28,9 @@ class UpdateFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
         binding.button.setOnClickListener {
-            updateData()
+            viewModel.updateData(requireContext(), findNavController(),
+                binding.etTitleUpdate,binding.etDescriptionUpdate,
+                binding.priorityUpdate,args)
         }
         setHasOptionsMenu(true)
 
@@ -56,19 +58,5 @@ class UpdateFragment : Fragment() {
         builder.setTitle("Delete ${args.currTask.title} ?")
         builder.setMessage("are you sure you want to delete ${args.currTask.title} ?")
         builder.create().show()
-    }
-
-    private fun updateData(){
-        val title = binding.etTitleUpdate.text.toString()
-        val description = binding.etDescriptionUpdate.text.toString()
-        val priority = binding.priorityUpdate.value
-        if(inputCheck(title,description)){
-            viewModel.updateNote(Note(args.currTask.id,title,description,priority))
-            findNavController().navigate(UpdateFragmentDirections.actionUpdateFragmentToListFragment())
-        }else
-            Toast.makeText(requireContext(), "please fill out all fields", Toast.LENGTH_SHORT).show()
-    }
-    private fun inputCheck(title : String,description : String) : Boolean{
-        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
     }
 }

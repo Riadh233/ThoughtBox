@@ -25,26 +25,9 @@ class AddFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
         binding.button.setOnClickListener {
-            insertDataToDatabase()
+            viewModel.insertDataToDatabase(requireContext(),findNavController(), binding.etTitle,binding.etDescription,binding.priority)
         }
 
         return binding.root
-    }
-
-    private fun insertDataToDatabase() {
-        val title = binding.etTitle.text.toString()
-        val description = binding.etDescription.text.toString()
-        val priority  = binding.priority.value
-        if(inputCheck(title,description)){
-            viewModel.insertNote(Note(0,title,description,priority))
-            Toast.makeText(requireContext(), "Task Added", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(AddFragmentDirections.actionAddFragmentToListFragment())
-        }else{
-            Toast.makeText(requireContext(), "please fill all the fields", Toast.LENGTH_SHORT).show()
-            return
-        }
-    }
-    private fun inputCheck(title : String,description : String) : Boolean{
-        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
     }
 }
