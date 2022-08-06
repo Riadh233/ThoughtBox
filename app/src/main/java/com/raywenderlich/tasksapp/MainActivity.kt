@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this,navController)
 
         setContentView(binding.root)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
