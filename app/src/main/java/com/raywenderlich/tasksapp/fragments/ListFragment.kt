@@ -31,13 +31,13 @@ class ListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         binding.floatingActionButton.setOnClickListener {
             it?.let {
-                this.findNavController().navigate(ListFragmentDirections.actionListFragmentToAddFragment())
+                this.findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
             }
         }
         viewModel.navigateToAddFragment.observe(viewLifecycleOwner, Observer {
              if(it != null) {
                  findNavController().navigate(
-                     ListFragmentDirections.actionListFragmentToUpdateFragment(it)
+                     ViewPagerFragmentDirections.actionViewPagerFragment2ToUpdateFragment(it)
                  )
                  viewModel.navigateToUpdateScreenFinished()
              }

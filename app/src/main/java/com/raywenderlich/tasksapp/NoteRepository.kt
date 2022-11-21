@@ -57,7 +57,7 @@ class NoteRepository(private val dao: NoteDao) {
             dao.insert(Note(0,title,description,priority))
             }
             Toast.makeText(context, "Task Added", Toast.LENGTH_SHORT).show()
-            navController.navigate(AddFragmentDirections.actionAddFragmentToListFragment())
+            navController.navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }else{
             Toast.makeText(context, "please fill all the fields", Toast.LENGTH_SHORT).show()
             return
@@ -73,7 +73,7 @@ class NoteRepository(private val dao: NoteDao) {
             withContext(IO){
                 dao.update(Note(args.currTask.id,title,description,priority))
             }
-            navController.navigate(UpdateFragmentDirections.actionUpdateFragmentToListFragment())
+            navController.navigate(UpdateFragmentDirections.actionUpdateFragmentToViewPagerFragment2())
         }else
             Toast.makeText(context, "please fill out all fields", Toast.LENGTH_SHORT).show()
     }

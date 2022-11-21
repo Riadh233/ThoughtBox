@@ -3,40 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/listFragment">
+    app:startDestination="@id/viewPagerFragment2">
 
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.raywenderlich.tasksapp.fragments.ListFragment"
-        android:label="List"
-        tools:layout="@layout/fragment_list" >
-        <action
-            android:id="@+id/action_listFragment_to_addFragment"
-            app:destination="@id/addFragment" />
-        <action
-            android:id="@+id/action_listFragment_to_updateFragment"
-            app:destination="@id/updateFragment" />
-    </fragment>
     <fragment
         android:id="@+id/addFragment"
         android:name="com.raywenderlich.tasksapp.fragments.AddFragment"
         android:label="Add"
         tools:layout="@layout/fragment_add" >
         <action
-            android:id="@+id/action_addFragment_to_listFragment"
-            app:destination="@id/listFragment"
-            app:popUpTo="@id/listFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_addFragment_to_viewPagerFragment2"
+            app:destination="@id/viewPagerFragment2" />
     </fragment>
     <fragment
         android:id="@+id/updateFragment"
         android:name="com.raywenderlich.tasksapp.fragments.UpdateFragment"
         android:label="UpdateFragment" >
-        <action
-            android:id="@+id/action_updateFragment_to_listFragment"
-            app:destination="@id/listFragment" />
         <argument
             android:name="currTask"
             app:argType="com.raywenderlich.tasksapp.data.Note" />
+        <action
+            android:id="@+id/action_updateFragment_to_viewPagerFragment2"
+            app:destination="@id/viewPagerFragment2" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment2"
+        android:name="com.raywenderlich.tasksapp.fragments.ViewPagerFragment"
+        android:label="ViewPagerFragment" >
+        <action
+            android:id="@+id/action_viewPagerFragment2_to_addFragment"
+            app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment2_to_updateFragment"
+            app:destination="@id/updateFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment2_to_updateTaskFragment"
+            app:destination="@id/updateTaskFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment2_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateTaskFragment"
+        android:name="com.raywenderlich.tasksapp.fragments.UpdateTaskFragment"
+        android:label="fragment_update_task"
+        tools:layout="@layout/fragment_update_task" >
+        <action
+            android:id="@+id/action_updateTaskFragment_to_viewPagerFragment2"
+            app:destination="@id/viewPagerFragment2" />
+        <argument
+            android:name="currTask"
+            app:argType="com.raywenderlich.tasksapp.data.Task" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.raywenderlich.tasksapp.fragments.AddTaskFragment"
+        android:label="fragment_add_task"
+        tools:layout="@layout/fragment_add_task" >
+        <action
+            android:id="@+id/action_addTaskFragment_to_viewPagerFragment2"
+            app:destination="@id/viewPagerFragment2" />
     </fragment>
 </navigation>

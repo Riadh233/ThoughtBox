@@ -52,7 +52,7 @@ class UpdateFragment : Fragment() {
         builder.setPositiveButton("Yes"){_,_->
             viewModel.deleteNote(args.currTask)
             Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(UpdateFragmentDirections.actionUpdateFragmentToListFragment())
+            findNavController().navigate(UpdateFragmentDirections.actionUpdateFragmentToViewPagerFragment2())
         }
         builder.setNegativeButton("No"){_,_-> }
         builder.setTitle("Delete ${args.currTask.title} ?")

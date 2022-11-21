@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface NoteDao {
+interface TasksDao {
     @Insert
-    fun insert(note : Note)
+    fun insert(task : Task)
 
     @Update
-    fun update(note : Note)
+    fun update(task : Task)
 
     @Delete
-    fun delete(note : Note)
+    fun delete(task : Task)
 
-    @Query("DELETE FROM note_table")
+    @Query("DELETE FROM tasks_table")
     fun clear()
 
-    @Query("SELECT * FROM note_table")
-    fun getAllNotes() : LiveData<List<Note>>
+    @Query("SELECT * FROM tasks_table")
+    fun getAllTasks() : LiveData<List<Task>>
 
     @Query("SELECT * FROM note_table WHERE title LIKE :searchQuery OR description LIKE :searchQuery ")
     fun searchDatabase(searchQuery : String) : LiveData<List<Note>>
