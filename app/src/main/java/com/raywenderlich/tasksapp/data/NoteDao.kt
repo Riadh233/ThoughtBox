@@ -17,7 +17,7 @@ interface NoteDao {
     @Query("DELETE FROM note_table")
     fun clear()
 
-    @Query("SELECT * FROM note_table")
+    @Query("SELECT * FROM note_table ORDER BY id ASC")
     fun getAllNotes() : LiveData<List<Note>>
 
     @Query("SELECT * FROM note_table WHERE title LIKE :searchQuery OR description LIKE :searchQuery ")

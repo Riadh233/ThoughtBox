@@ -25,6 +25,7 @@ class NotesAdapter(val clickListener : NotesListener) : ListAdapter<Note, NotesA
         fun bind(item : Note){
             binding.title.text = item.title
             binding.description.text = item.description
+            binding.number.text = item.date
             binding.executePendingBindings()
         }
 

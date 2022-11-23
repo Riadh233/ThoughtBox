@@ -3,7 +3,6 @@ package com.raywenderlich.tasksapp.viewmodels
 import android.app.Application
 import android.content.Context
 import android.widget.EditText
-import android.widget.NumberPicker
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,17 +33,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         allNotes = repository.getAllNotes()
     }
 
-    fun insertNote(note: Note) {
-        viewModelScope.launch {
-            repository.insert(note)
-        }
-    }
 
-    fun updateNote(note: Note) {
-        viewModelScope.launch {
-            repository.update(note)
-        }
-    }
 
     fun deleteNote(note: Note) {
         viewModelScope.launch {
@@ -69,17 +58,17 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     fun searchDatabase(query : String) : LiveData<List<Note>>{
         return repository.searchDatabase(query)
     }
-    fun insertDataToDatabase(context : Context, navController: NavController, etTitle : EditText, etDescription : EditText, picker : NumberPicker){
+    fun insertDataToDatabase(context : Context, navController: NavController, etTitle : EditText, etDescription : EditText, date : String){
         viewModelScope.launch {
-            repository.insertDataToDatabase(context,navController,etTitle,etDescription,picker)
+            repository.insertDataToDatabase(context,navController,etTitle,etDescription,date)
         }
     }
     fun updateData(context : Context, navController : NavController,
                    etTitle : EditText, etDescription : EditText,
-                   picker : NumberPicker , args : UpdateFragmentArgs
+                   date: String , args : UpdateFragmentArgs
     ){
         viewModelScope.launch {
-            repository.updateData(context,navController,etTitle,etDescription,picker,args)
+            repository.updateData(context,navController,etTitle,etDescription,date,args)
         }
     }
 }

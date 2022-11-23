@@ -12,6 +12,8 @@ import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.databinding.FragmentUpdateBinding
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class UpdateFragment : Fragment() {
     private lateinit var binding : FragmentUpdateBinding
@@ -30,7 +32,7 @@ class UpdateFragment : Fragment() {
         binding.button.setOnClickListener {
             viewModel.updateData(requireContext(), findNavController(),
                 binding.etTitleUpdate,binding.etDescriptionUpdate,
-                binding.priorityUpdate,args)
+                DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()),args)
         }
         setHasOptionsMenu(true)
 

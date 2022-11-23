@@ -8,6 +8,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
@@ -27,6 +29,9 @@ class ListFragment : Fragment(),SearchView.OnQueryTextListener {
         adapter = NotesAdapter(NotesAdapter.NotesListener {
                 viewModel.displayUpdateScreen(it)
         })
+
+        val manager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.recyclerView.layoutManager = manager
         binding.recyclerView.adapter = adapter
 
         binding.floatingActionButton.setOnClickListener {
