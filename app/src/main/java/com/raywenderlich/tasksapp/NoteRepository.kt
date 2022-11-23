@@ -19,17 +19,7 @@ import kotlinx.coroutines.withContext
 
 class NoteRepository(private val dao: NoteDao) {
 
-    suspend fun insert(note: Note) {
-        withContext(IO) {
-            dao.insert(note)
-        }
-    }
 
-    suspend fun update(note: Note) {
-        withContext(IO) {
-            dao.update(note)
-        }
-    }
 
     suspend fun delete(note: Note) {
         withContext(IO) {
@@ -48,13 +38,12 @@ class NoteRepository(private val dao: NoteDao) {
     }
     suspend fun insertDataToDatabase(context : Context, navController : NavController,
                                      etTitle : EditText, etDescription :
-                                     EditText, picker : NumberPicker) {
+                                     EditText, date : String) {
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
-        val priority  = picker.value
         if(inputCheck(title,description)){
             withContext(IO){
-            dao.insert(Note(0,title,description,priority))
+            dao.insert(Note(0,title,description,date))
             }
             Toast.makeText(context, "Task Added", Toast.LENGTH_SHORT).show()
             navController.navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
@@ -65,13 +54,12 @@ class NoteRepository(private val dao: NoteDao) {
     }
     suspend fun updateData(context : Context, navController : NavController,
                            etTitle : EditText, etDescription : EditText,
-                           picker : NumberPicker , args : UpdateFragmentArgs ){
+                           date: String , args : UpdateFragmentArgs ){
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
-        val priority = picker.value
         if(inputCheck(title,description)){
             withContext(IO){
-                dao.update(Note(args.currTask.id,title,description,priority))
+                dao.update(Note(args.currTask.id,title,description,date))
             }
             navController.navigate(UpdateFragmentDirections.actionUpdateFragmentToViewPagerFragment2())
         }else

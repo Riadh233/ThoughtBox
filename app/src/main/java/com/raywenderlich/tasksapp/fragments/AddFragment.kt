@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.databinding.FragmentAddBinding
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
@@ -25,7 +27,8 @@ class AddFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
         binding.button.setOnClickListener {
-            viewModel.insertDataToDatabase(requireContext(),findNavController(), binding.etTitle,binding.etDescription,binding.priority)
+            viewModel.insertDataToDatabase(requireContext(),findNavController(), binding.etTitle,binding.etDescription,
+                DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()))
         }
 
         return binding.root
