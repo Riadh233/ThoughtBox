@@ -21,6 +21,8 @@ class AddTaskFragment : Fragment() {
         binding = FragmentAddTaskBinding.inflate(inflater)
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
+        binding.button
+
         return binding.root
     }
 }

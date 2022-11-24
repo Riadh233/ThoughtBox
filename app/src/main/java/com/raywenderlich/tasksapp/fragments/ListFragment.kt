@@ -34,7 +34,7 @@ class ListFragment : Fragment(),SearchView.OnQueryTextListener {
         binding.recyclerView.layoutManager = manager
         binding.recyclerView.adapter = adapter
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.addListButton.setOnClickListener {
             it?.let {
                 this.findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
             }
@@ -53,7 +53,9 @@ class ListFragment : Fragment(),SearchView.OnQueryTextListener {
                 adapter.submitList(it)
             }
         })
-        setHasOptionsMenu(true)
+
+        val searchView = binding.search
+        searchView.setOnQueryTextListener(this)
 
         return binding.root
     }

@@ -1,12 +1,16 @@
 package com.raywenderlich.tasksapp.ui
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.databinding.ListTasksBinding
+
 
 class TasksAdapter(val clickListener : TasksClickListener ) : ListAdapter<Task, TasksAdapter.ViewHolder>(DiffCallback) {
     class ViewHolder(val binding : ListTasksBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -14,6 +18,10 @@ class TasksAdapter(val clickListener : TasksClickListener ) : ListAdapter<Task, 
             binding.title.text = item.title
             binding.description.text = item.description
             binding.executePendingBindings()
+            val unwrappedDrawable = AppCompatResources.getDrawable(binding.root.context, com.raywenderlich.tasksapp.R.drawable.rounded_shape)
+            val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
+            DrawableCompat.setTint(wrappedDrawable, Color.GREEN)
+
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

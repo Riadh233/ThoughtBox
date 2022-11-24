@@ -30,7 +30,7 @@ class TasksFragment : Fragment() {
             viewModel.displayUpdateScreen(it)
         })
         binding.recyclerView.adapter = adapter
-        binding.floatingActionButton.setOnClickListener {
+        binding.addTaskButton.setOnClickListener {
             it?.let {
                 this.findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddTaskFragment())
             }
