@@ -5,16 +5,23 @@
     <data>
 
     </data>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:padding="3dp"
+        android:background="@drawable/rounded_shape"
+        android:elevation="8dp"
+        android:clipToPadding="false"
+        >
+    <androidx.cardview.widget.CardView
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:cardCornerRadius="12dp"
-        app:cardElevation="10dp"
+        app:cardElevation="5dp"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -54,4 +61,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+    </FrameLayout>
 </layout>

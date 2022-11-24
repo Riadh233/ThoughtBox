@@ -48,18 +48,21 @@
                     android:paddingStart="18dp"
                     android:paddingEnd="18dp"
                     android:clipToPadding="false">
-                    <EditText
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_collapseMode="pin"
-                        android:hint="Search"
-                        android:drawablePadding="4dp"
-                        android:elevation="8dp"
-                        android:paddingStart="8dp"
-                        android:drawableStart="@drawable/ic_search"
                         android:background="@drawable/edit_text_style"
+                        app:iconifiedByDefault="false"
+                        android:elevation="8dp"
+                        app:queryHint="search"
+                        app:queryBackground="@null"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
                         android:inputType="text"
                         android:layout_marginBottom="6dp"
+                        android:layout_marginTop="5dp"
                         />
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -78,7 +81,7 @@
                 tools:listitem="@layout/list_item" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton"
+                android:id="@+id/addListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"

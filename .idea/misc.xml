@@ -3,14 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/drawable-v24/rounded_shape.xml" value="0.154" />
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/drawable/edit_text_style.xml" value="0.154" />
         <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/drawable/ic_add.xml" value="0.154" />
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/layout/fragment_add_task.xml" value="0.2164855072463768" />
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/layout/fragment_list.xml" value="0.2164855072463768" />
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/layout/fragment_tasks.xml" value="0.2164855072463768" />
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/layout/fragment_update.xml" value="0.2164855072463768" />
         <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/layout/list_item.xml" value="0.2164855072463768" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/edit_text_style.xml" value="0.112" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ic_search.xml" value="0.112" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_add.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_list.xml" value="0.22" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_update.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/list_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/LENOVO Z50/AndroidStudioProjects/Tasksap/app/src/main/res/layout/list_tasks.xml" value="0.264" />
         <entry key="..\:/Users/RIADHa/Tasksapp/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.122" />
         <entry key="..\:/Users/RIADHa/Tasksapp/app/src/main/res/drawable/ic_check.xml" value="0.122" />
         <entry key="..\:/Users/RIADHa/Tasksapp/app/src/main/res/drawable/ic_close.xml" value="0.122" />
