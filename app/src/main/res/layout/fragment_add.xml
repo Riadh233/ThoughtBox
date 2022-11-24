@@ -12,22 +12,6 @@
         android:layout_height="match_parent"
         tools:context=".AddFragment">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:elevation="12dp"
-            android:src="@android:color/transparent"
-            android:text="set priority"
-            android:textSize="16sp"
-            app:elevation="12dp"
-            android:textStyle="bold"
-            app:cornerRadius="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/et_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton2" />
-
         <FrameLayout
             android:id="@+id/cardView"
             android:layout_width="match_parent"
@@ -35,7 +19,7 @@
             android:layout_marginTop="160dp"
             android:layout_marginBottom="-20dp"
             android:elevation="12dp"
-            android:background="@drawable/rounded_shape"
+            android:background="@drawable/rounded_shape1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +33,7 @@
                 android:gravity="top"
                 android:background="@color/white"
                 android:inputType="textMultiLine"
-                android:text="Description" />
+                android:hint="Description" />
 
 
             <com.google.android.material.button.MaterialButton
@@ -70,18 +54,19 @@
 
         <EditText
             android:id="@+id/et_title"
-            android:ems="10"
-            android:cursorVisible="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
             android:layout_marginBottom="20dp"
             android:background="@color/white"
+            android:cursorVisible="true"
+            android:ems="10"
+            android:gravity="center"
             android:inputType="textPersonName"
-            android:text="Note title"
+            android:hint="Note title"
             android:textSize="30dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
@@ -95,21 +80,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:elevation="12dp"
-            android:src="@android:color/transparent"
-            android:text="add reminder"
-            android:textSize="16sp"
-            app:elevation="12dp"
-            android:textStyle="bold"
-            app:cornerRadius="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
