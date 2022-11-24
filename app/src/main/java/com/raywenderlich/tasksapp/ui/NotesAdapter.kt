@@ -28,7 +28,6 @@ class NotesAdapter(val clickListener : NotesListener) : ListAdapter<Note, NotesA
             binding.number.text = item.date
             binding.executePendingBindings()
         }
-
     }
     companion object DiffCallback : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
