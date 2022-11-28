@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.databinding.ListItemBinding
 
-class NotesAdapter(val clickListener : NotesListener) : ListAdapter<Note, NotesAdapter.viewHolder>(DiffCallback) {
+class NotesAdapter(val clickListener : ClickListener, val longClickListener: LongClickListener) : ListAdapter<Note, NotesAdapter.viewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         return viewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
@@ -18,6 +18,12 @@ class NotesAdapter(val clickListener : NotesListener) : ListAdapter<Note, NotesA
         holder.itemView.setOnClickListener {
             clickListener.onClick(item)
         }
+
+        holder.itemView.setOnLongClickListener {
+            longClickListener.onLongClick()
+            true
+        }
+
         holder.bind(item)
     }
 
@@ -37,7 +43,11 @@ class NotesAdapter(val clickListener : NotesListener) : ListAdapter<Note, NotesA
             return oldItem.id == newItem.id
         }
     }
-    class NotesListener(val clickListener: (note: Note) -> Unit) {
+    class ClickListener(val clickListener: (note: Note) -> Unit) {
         fun onClick(note: Note) = clickListener(note)
+    }
+
+    class LongClickListener(val longClickListener: () -> Unit) {
+        fun onLongClick() = longClickListener()
     }
 }

@@ -2,12 +2,12 @@ package com.raywenderlich.tasksapp.ui
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.raywenderlich.tasksapp.fragments.ListFragment
-import com.raywenderlich.tasksapp.fragments.TasksFragment
+import com.raywenderlich.tasksapp.fragments.NotesListFragment
+import com.raywenderlich.tasksapp.fragments.TasksListFragment
 
 class ViewPagerAdapter(fragment : Fragment) : FragmentStateAdapter(fragment) {
     private val fragmentsList = listOf(
-        ListFragment(), TasksFragment()
+        NotesListFragment(), TasksListFragment()
     )
     override fun getItemCount(): Int {
         return fragmentsList.size

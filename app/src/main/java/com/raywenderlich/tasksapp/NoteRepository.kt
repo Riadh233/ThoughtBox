@@ -41,6 +41,7 @@ class NoteRepository(private val dao: NoteDao) {
                                      EditText, date : String) {
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
+
         if(inputCheck(title,description)){
             withContext(IO){
             dao.insert(Note(0,title,description,date))

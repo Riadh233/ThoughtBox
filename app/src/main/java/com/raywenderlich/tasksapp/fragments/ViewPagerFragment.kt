@@ -1,39 +1,67 @@
 package com.raywenderlich.tasksapp.fragments
 
+import android.app.ActionBar
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
+import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.databinding.FragmentViewPagerBinding
 import com.raywenderlich.tasksapp.ui.ViewPagerAdapter
+import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 
 class ViewPagerFragment : Fragment() {
-    private lateinit var binding: FragmentViewPagerBinding
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentViewPagerBinding.inflate(layoutInflater)
-        binding.actionBar.inflateMenu(R.menu.delete_menu)
 
+    private lateinit var binding: FragmentViewPagerBinding
+    private val sharedViewModel: SharedViewModel by lazy {
+        (requireActivity() as MainActivity).viewModel
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentViewPagerBinding.inflate(inflater,container,false)
-        val viewPager = binding.viewPager
-        val tabLayout = binding.tabLayout
-        binding.actionBar.inflateMenu(R.menu.delete_menu)
+        binding = FragmentViewPagerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewPager.adapter = ViewPagerAdapter(this)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when(position){
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        inflateMenu()
+        setupViewPager()
+        setupObservers()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.delete_item_update -> {
+            sharedViewModel.onDelete()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun inflateMenu() {
+        binding.actionBar.inflateMenu(R.menu.delete_menu)
+    }
+
+    private fun setupViewPager() {
+        binding.viewPager.adapter = ViewPagerAdapter(this)
+
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
                 0 -> tab.setIcon(R.drawable.ic_notes)
                 1 -> tab.setIcon(R.drawable.ic_check)
             }
         }.attach()
-
-
-        return binding.root
     }
+
+    private fun setupObservers() {
+        sharedViewModel.deleteIconVisibility.observe(viewLifecycleOwner) {
+            binding.actionBar.menu.findItem(R.id.delete_item_update).isVisible = it        }
+    }
+
 }

@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.raywenderlich.tasksapp.NoteRepository
 import com.raywenderlich.tasksapp.data.Note
@@ -18,8 +19,6 @@ import kotlinx.coroutines.launch
 
 
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
-    private val viewModelJob = Job()
-    private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     private val repository: NoteRepository
     private val noteDB = NoteDatabase.getInstance(application)
     private var allNotes: LiveData<List<Note>>
@@ -27,6 +26,9 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val _navigateToAddFragment = MutableLiveData<Note>()
     val navigateToAddFragment : LiveData<Note>
     get() = _navigateToAddFragment
+    val deleteMenuState: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
     init {
         repository = NoteRepository(noteDB.dao())

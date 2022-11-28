@@ -5,25 +5,25 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.raywenderlich.tasksapp.databinding.ActivityMainBinding
+import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
+import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    val viewModel : SharedViewModel by lazy {
+        ViewModelProvider(this)[SharedViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-//        val navController = navHostFragment.navController
-//        NavigationUI.setupActionBarWithNavController(this,navController)
 
         setContentView(binding.root)
     }
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = this.findNavController(R.id.fragmentContainerView)
-//        return navController.navigateUp()
-//    }
 
 }

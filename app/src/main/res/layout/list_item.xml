@@ -6,7 +6,7 @@
     <data>
         <variable
             name="clickListener"
-            type="com.raywenderlich.tasksapp.ui.NotesAdapter.NotesListener" />
+            type="com.raywenderlich.tasksapp.ui.NotesAdapter.ClickListener" />
         <variable
             name="note"
             type="com.raywenderlich.tasksapp.data.Note" />
