@@ -8,13 +8,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.raywenderlich.tasksapp.NoteRepository
+import com.raywenderlich.tasksapp.repos.NoteRepository
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDatabase
 import com.raywenderlich.tasksapp.fragments.UpdateFragmentArgs
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 

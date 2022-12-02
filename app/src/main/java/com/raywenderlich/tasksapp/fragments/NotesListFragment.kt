@@ -105,15 +105,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private fun showDeleteMenu(show : Boolean){
     }
 
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.delete_item_update)
-            deleteSelectedItems()
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun deleteSelectedItems() {
         Toast.makeText(requireContext(), "Delete clicked", Toast.LENGTH_SHORT).show()
     }

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.raywenderlich.tasksapp.TasksRepository
+import com.raywenderlich.tasksapp.repos.TasksRepository
 import com.raywenderlich.tasksapp.data.NoteDatabase
 import com.raywenderlich.tasksapp.data.Task
 import kotlinx.coroutines.CoroutineScope

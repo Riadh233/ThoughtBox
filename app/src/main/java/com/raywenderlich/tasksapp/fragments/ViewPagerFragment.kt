@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
@@ -25,13 +26,15 @@ class ViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false)
+        binding.deleteBtn.setOnClickListener {
+            sharedViewModel.onDelete()
+        }
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        inflateMenu()
         setupViewPager()
         setupObservers()
     }
@@ -42,10 +45,6 @@ class ViewPagerFragment : Fragment() {
             true
         }
         else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun inflateMenu() {
-        binding.actionBar.inflateMenu(R.menu.delete_menu)
     }
 
     private fun setupViewPager() {
@@ -61,7 +60,7 @@ class ViewPagerFragment : Fragment() {
 
     private fun setupObservers() {
         sharedViewModel.deleteIconVisibility.observe(viewLifecycleOwner) {
-            binding.actionBar.menu.findItem(R.id.delete_item_update).isVisible = it        }
+            binding.deleteBtn.isVisible = it
+        }
     }
-
 }
