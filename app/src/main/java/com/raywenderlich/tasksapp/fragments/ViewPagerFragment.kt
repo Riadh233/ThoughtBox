@@ -39,14 +39,6 @@ class ViewPagerFragment : Fragment() {
         setupObservers()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.delete_item_update -> {
-            sharedViewModel.onDelete()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
     private fun setupViewPager() {
         binding.viewPager.adapter = ViewPagerAdapter(this)
 

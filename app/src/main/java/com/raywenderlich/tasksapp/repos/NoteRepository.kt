@@ -2,6 +2,7 @@ package com.raywenderlich.tasksapp.repos
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.Toast
@@ -19,18 +20,21 @@ import kotlinx.coroutines.withContext
 
 class NoteRepository(private val dao: NoteDao) {
 
-
-
     suspend fun delete(note: Note) {
         withContext(IO) {
             dao.delete(note)
         }
     }
 
-
     suspend fun deleteAllNotes() {
         withContext(IO) {
             dao.clear()
+        }
+    }
+    suspend fun selectionItemState(note: Note){
+       val selection  = note.selected
+        withContext(IO){
+            dao.update(Note(note.id,note.title,note.description,note.date,!selection))
         }
     }
     fun searchDatabase(query : String) : LiveData<List<Note>>{
@@ -72,4 +76,5 @@ class NoteRepository(private val dao: NoteDao) {
     }
 
     fun getAllNotes() = dao.getAllNotes()
+    fun getSelectedItemsCount() :LiveData<Int> = dao.getAllSelectedNotes()
 }

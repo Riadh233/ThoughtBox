@@ -2,6 +2,7 @@ package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -19,20 +20,17 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: NoteRepository
     private val noteDB = NoteDatabase.getInstance(application)
     private var allNotes: LiveData<List<Note>>
-
     private val _navigateToAddFragment = MutableLiveData<Note>()
     val navigateToAddFragment : LiveData<Note>
     get() = _navigateToAddFragment
-    val deleteMenuState: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
+
+    private var selectedItemsCount: LiveData<Int>
 
     init {
         repository = NoteRepository(noteDB.dao())
         allNotes = repository.getAllNotes()
+        selectedItemsCount = repository.getSelectedItemsCount()
     }
-
-
 
     fun deleteNote(note: Note) {
         viewModelScope.launch {
@@ -47,6 +45,14 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun getAllNotes() : LiveData<List<Note>>{
          return allNotes
+    }
+    fun getSelectedItemsCount() : LiveData<Int>{
+        return selectedItemsCount
+    }
+    fun selectItem(note: Note) {
+        viewModelScope.launch {
+            repository.selectionItemState(note)
+        }
     }
     fun displayUpdateScreen(note : Note){
         _navigateToAddFragment.value = note

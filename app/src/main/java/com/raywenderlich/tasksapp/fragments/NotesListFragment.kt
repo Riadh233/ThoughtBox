@@ -22,58 +22,74 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private val sharedViewModel: SharedViewModel by lazy {
         (requireActivity() as MainActivity).viewModel
     }
-    private lateinit var viewModel: NoteViewModel
+    private val viewModel: NoteViewModel by lazy {
+        ViewModelProvider(this)[NoteViewModel::class.java]
+    }
     private lateinit var adapter: NotesAdapter
-    private var mainMenu : Menu? = null
+    private lateinit var binding : FragmentListBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentListBinding.inflate(inflater)
-        binding.lifecycleOwner = this
-        viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        binding = FragmentListBinding.inflate(inflater)
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpRecyclerView(binding)
+        setUpAddButton(binding)
+        setupObservers()
+        setUpSearchView(binding)
 
+    }
+
+    private fun setUpAddButton(binding: FragmentListBinding) {
+        binding.addListButton.setOnClickListener {
+            it?.let {
+                this.findNavController()
+                    .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+            }
+        }
+    }
+
+    private fun setUpSearchView(binding: FragmentListBinding) {
+        val searchView = binding.search
+        searchView.setOnQueryTextListener(this)
+    }
+
+    private fun setUpRecyclerView(binding: FragmentListBinding) {
         adapter = NotesAdapter(NotesAdapter.ClickListener {
-                viewModel.displayUpdateScreen(it)
-        }, NotesAdapter.LongClickListener{
+            viewModel.displayUpdateScreen(it)
+        }, NotesAdapter.LongClickListener {
             sharedViewModel.showDeleteIcon()
+        }, NotesAdapter.OnSelectItem{
+            viewModel.selectItem(it)
         })
 
         val manager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding.recyclerView.layoutManager = manager
         binding.recyclerView.adapter = adapter
+    }
+    private fun setupObservers() {
 
-
-        binding.addListButton.setOnClickListener {
+        viewModel.getAllNotes().observe(viewLifecycleOwner) {
             it?.let {
-                this.findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+                adapter.submitList(it)
             }
         }
-
-        setupObservers()
-
-        val searchView = binding.search
-        searchView.setOnQueryTextListener(this)
-
-        return binding.root
-    }
-
-    private fun setupObservers() {
-        viewModel.navigateToAddFragment.observe(viewLifecycleOwner, Observer {
+        viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
+            if(it == 0){
+                sharedViewModel.hideDeleteIcon()
+            }
+        }
+        viewModel.navigateToAddFragment.observe(viewLifecycleOwner) {
             if (it != null) {
                 findNavController().navigate(
                     ViewPagerFragmentDirections.actionViewPagerFragment2ToUpdateFragment(it)
                 )
                 viewModel.navigateToUpdateScreenFinished()
             }
-
-        })
-        viewModel.getAllNotes().observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.submitList(it)
-            }
-        })
-
+        }
         sharedViewModel.onDeleteEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
             if(shouldConsumeEvent){
                 deleteSelectedItems()
@@ -102,9 +118,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             }
         })
     }
-    private fun showDeleteMenu(show : Boolean){
-    }
-
     private fun deleteSelectedItems() {
         Toast.makeText(requireContext(), "Delete clicked", Toast.LENGTH_SHORT).show()
     }
@@ -120,6 +133,4 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         builder.setMessage("are you sure you want to delete All Tasks ?")
         builder.create().show()
     }
-
-
 }
