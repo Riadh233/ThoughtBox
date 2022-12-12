@@ -65,6 +65,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_btn"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="80sp"
+            android:layout_height="30sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/rounded_shape1"
+            android:padding="4dp"
+            android:text="Cancel"
+            android:textSize="8sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:backgroundTint="@color/red"
+            app:icon="@drawable/cancel_btn"
+            app:layout_constraintEnd_toStartOf="@+id/delete_btn"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

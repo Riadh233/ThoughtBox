@@ -1,29 +1,20 @@
 package com.raywenderlich.tasksapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raywenderlich.tasksapp.MainActivity
-import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
-import kotlinx.coroutines.delay
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private val sharedViewModel: SharedViewModel by lazy {
@@ -81,7 +72,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         adapter = NotesAdapter(NotesAdapter.ClickListener {
             viewModel.displayUpdateScreen(it)
         }, NotesAdapter.LongClickListener {
-            sharedViewModel.showDeleteIcon()
+            sharedViewModel.showDeleteAndCancelIcon()
         }, NotesAdapter.OnSelectItem{
             viewModel.selectItem(it)
         })
@@ -99,7 +90,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
             if(it == 0){
-                sharedViewModel.hideDeleteIcon()
+                sharedViewModel.hideDeleteAndCancelIcon()
             }
         }
         viewModel.navigateToAddFragment.observe(viewLifecycleOwner) {
@@ -114,6 +105,13 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             if(shouldConsumeEvent){
                 deleteSelectedItems()
                 sharedViewModel.consumeDeletionEvent()
+            }
+        }
+
+        sharedViewModel.onCancelEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+            if(shouldConsumeEvent){
+                unselectNotes()
+                sharedViewModel.consumeCancelEvent()
             }
         }
     }

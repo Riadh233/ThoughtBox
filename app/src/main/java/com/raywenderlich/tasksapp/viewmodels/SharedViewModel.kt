@@ -6,33 +6,48 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModel(): ViewModel() {
 
-    private val _deleteIconVisibility = MutableLiveData<Boolean>(false)
-    val deleteIconVisibility: LiveData<Boolean>
-    get() = _deleteIconVisibility
+    private val _deleteAndCancelIconVisibility = MutableLiveData<Boolean>(false)
+    val deleteAndCancelIconVisibility: LiveData<Boolean>
+    get() = _deleteAndCancelIconVisibility
+
+   
 
     private val _onDeleteEvent = MutableLiveData(false)
     val onDeleteEvent: LiveData<Boolean>
     get() = _onDeleteEvent
 
+    private val _onCancelEvent = MutableLiveData(false)
+    val onCancelEvent: LiveData<Boolean>
+        get() = _onCancelEvent
 
 
 
 
-    fun showDeleteIcon(){
-        _deleteIconVisibility.value = true
+
+    fun showDeleteAndCancelIcon(){
+        _deleteAndCancelIconVisibility.value = true
     }
 
-    fun hideDeleteIcon(){
-        _deleteIconVisibility.value = false
+
+    fun hideDeleteAndCancelIcon(){
+        _deleteAndCancelIconVisibility.value = false
     }
 
     fun onDelete(){
         _onDeleteEvent.value = true
     }
 
+    fun onCancel(){
+        _onCancelEvent.value = true
+    }
+
 
     fun consumeDeletionEvent() {
         _onDeleteEvent.value = false
+    }
+
+    fun consumeCancelEvent() {
+        _onCancelEvent.value = false
     }
 
 
