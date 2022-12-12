@@ -6,8 +6,14 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -17,6 +23,7 @@ import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
+import kotlinx.coroutines.delay
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private val sharedViewModel: SharedViewModel by lazy {
@@ -36,6 +43,8 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         setUpRecyclerView(binding)
         setUpAddButton(binding)
         setupObservers()
@@ -43,14 +52,25 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
     }
 
+    private fun unselectNotes() {
+        viewModel.unselectNotes()
+    }
+
     private fun setUpAddButton(binding: FragmentListBinding) {
+
         binding.addListButton.setOnClickListener {
             it?.let {
-                this.findNavController()
-                    .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+                unselectNotes()
+                Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
+
+                        findNavController()
+                            .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+
             }
         }
     }
+
+
 
     private fun setUpSearchView(binding: FragmentListBinding) {
         val searchView = binding.search
@@ -119,7 +139,8 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         })
     }
     private fun deleteSelectedItems() {
-        Toast.makeText(requireContext(), "Delete clicked", Toast.LENGTH_SHORT).show()
+        viewModel.deleteSelectedNotes()
+        adapter.notifyDataSetChanged()
     }
 
     private fun deleteAllUser() {
@@ -132,5 +153,11 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         builder.setTitle("Delete All Tasks ?")
         builder.setMessage("are you sure you want to delete All Tasks ?")
         builder.create().show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unselectNotes()
+      //  Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT).show()
     }
 }

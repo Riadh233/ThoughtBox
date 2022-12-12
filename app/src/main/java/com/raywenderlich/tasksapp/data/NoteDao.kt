@@ -26,4 +26,9 @@ interface NoteDao {
     @Query("SELECT COUNT(*) FROM note_table WHERE selected=1")
     fun getAllSelectedNotes() : LiveData<Int>
 
+    @Query("UPDATE note_table SET selected = 0")
+    fun unselectAllNotes(): Int
+
+    @Query("DELETE FROM note_table WHERE selected=1")
+    fun deleteSelectedNotes(): Int
 }

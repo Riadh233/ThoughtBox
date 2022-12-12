@@ -16,6 +16,8 @@ class SharedViewModel(): ViewModel() {
 
 
 
+
+
     fun showDeleteIcon(){
         _deleteIconVisibility.value = true
     }
@@ -32,5 +34,7 @@ class SharedViewModel(): ViewModel() {
     fun consumeDeletionEvent() {
         _onDeleteEvent.value = false
     }
+
+
 
 }
