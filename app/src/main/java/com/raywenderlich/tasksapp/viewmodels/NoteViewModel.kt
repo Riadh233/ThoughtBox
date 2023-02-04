@@ -2,7 +2,6 @@ package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -27,7 +26,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private var selectedItemsCount: LiveData<Int>
 
     init {
-        repository = NoteRepository(noteDB.dao())
+        repository = NoteRepository(noteDB.noteDao())
         allNotes = repository.getAllNotes()
         selectedItemsCount = repository.getSelectedItemsCount()
     }

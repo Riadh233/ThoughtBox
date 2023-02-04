@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModel(): ViewModel() {
 
-    private val _deleteIconVisibility = MutableLiveData<Boolean>(false)
+    private val _deleteIconVisibility = MutableLiveData(false)
     val deleteIconVisibility: LiveData<Boolean>
     get() = _deleteIconVisibility
 
