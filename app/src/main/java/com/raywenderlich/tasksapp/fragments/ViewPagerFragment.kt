@@ -1,10 +1,7 @@
 package com.raywenderlich.tasksapp.fragments
 
-import android.app.ActionBar
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -51,7 +48,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        sharedViewModel.deleteIconVisibility.observe(viewLifecycleOwner) {
+        sharedViewModel.deleteAndCancelIconVisibility.observe(viewLifecycleOwner) {
             binding.deleteBtn.isVisible = it
         }
     }
