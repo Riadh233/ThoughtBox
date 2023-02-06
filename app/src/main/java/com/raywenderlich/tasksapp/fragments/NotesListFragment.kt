@@ -1,7 +1,6 @@
 package com.raywenderlich.tasksapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -12,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raywenderlich.tasksapp.MainActivity
-import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListBinding
@@ -61,7 +59,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         adapter = NotesAdapter(NotesAdapter.ClickListener {
             viewModel.displayUpdateScreen(it)
         }, NotesAdapter.LongClickListener {
-            sharedViewModel.showDeleteIcon()
+            sharedViewModel.showDeleteAndCancelIcon()
         }, NotesAdapter.OnSelectItem{
             viewModel.selectItem(it)
         })
@@ -79,7 +77,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
             if(it == 0){
-                sharedViewModel.hideDeleteIcon()
+                sharedViewModel.hideDeleteAndCancelIcon()
             }
         }
         viewModel.navigateToAddFragment.observe(viewLifecycleOwner) {

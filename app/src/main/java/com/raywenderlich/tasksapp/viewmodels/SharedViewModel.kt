@@ -16,11 +16,11 @@ class SharedViewModel(): ViewModel() {
 
 
 
-    fun showDeleteIcon(){
+    fun showDeleteAndCancelIcon(){
         _deleteAndCancelIconVisibility.value = true
     }
 
-    fun hideDeleteIcon(){
+    fun hideDeleteAndCancelIcon(){
         _deleteAndCancelIconVisibility.value = false
     }
 
