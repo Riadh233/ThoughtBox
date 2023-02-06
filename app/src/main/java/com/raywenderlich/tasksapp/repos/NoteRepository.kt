@@ -32,9 +32,11 @@ class NoteRepository(private val dao: NoteDao) {
         }
     }
     suspend fun selectionItemState(note: Note){
-       val selection  = note.selected
         withContext(IO){
-            dao.update(Note(note.id,note.title,note.description,note.date,!selection))
+            if(note.selected)
+                dao.unselectNote(note.id)
+            else
+                dao.selectNote(note.id)
         }
     }
     fun searchDatabase(query : String) : LiveData<List<Note>>{

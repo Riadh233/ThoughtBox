@@ -10,8 +10,6 @@ class SharedViewModel(): ViewModel() {
     val deleteAndCancelIconVisibility: LiveData<Boolean>
     get() = _deleteAndCancelIconVisibility
 
-   
-
     private val _onDeleteEvent = MutableLiveData(false)
     val onDeleteEvent: LiveData<Boolean>
     get() = _onDeleteEvent
@@ -22,12 +20,9 @@ class SharedViewModel(): ViewModel() {
 
 
 
-
-
     fun showDeleteAndCancelIcon(){
         _deleteAndCancelIconVisibility.value = true
     }
-
 
     fun hideDeleteAndCancelIcon(){
         _deleteAndCancelIconVisibility.value = false
