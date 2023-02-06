@@ -14,6 +14,10 @@ class SharedViewModel(): ViewModel() {
     val onDeleteEvent: LiveData<Boolean>
     get() = _onDeleteEvent
 
+    private val _onCancelEvent = MutableLiveData(false)
+    val onCancelEvent: LiveData<Boolean>
+        get() = _onCancelEvent
+
 
 
     fun showDeleteAndCancelIcon(){
@@ -28,9 +32,19 @@ class SharedViewModel(): ViewModel() {
         _onDeleteEvent.value = true
     }
 
+    fun onCancel(){
+        _onCancelEvent.value = true
+    }
+
 
     fun consumeDeletionEvent() {
         _onDeleteEvent.value = false
     }
+
+    fun consumeCancelEvent() {
+        _onCancelEvent.value = false
+    }
+
+
 
 }

@@ -79,4 +79,15 @@ class NoteRepository(private val dao: NoteDao) {
 
     fun getAllNotes() = dao.getAllNotes()
     fun getSelectedItemsCount() :LiveData<Int> = dao.getAllSelectedNotes()
+    suspend fun unselectNotes() {
+        withContext(IO){
+            dao.unselectAllNotes()
+        }
+    }
+
+    suspend fun deleteSelectedNotes() {
+        withContext(IO){
+            dao.deleteSelectedNotes()
+        }
+    }
 }

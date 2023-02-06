@@ -26,6 +26,10 @@ class ViewPagerFragment : Fragment() {
         binding.deleteBtn.setOnClickListener {
             sharedViewModel.onDelete()
         }
+
+        binding.cancelBtn.setOnClickListener{
+            sharedViewModel.onCancel()
+        }
         return binding.root
     }
 
@@ -50,6 +54,9 @@ class ViewPagerFragment : Fragment() {
     private fun setupObservers() {
         sharedViewModel.deleteAndCancelIconVisibility.observe(viewLifecycleOwner) {
             binding.deleteBtn.isVisible = it
+            binding.cancelBtn.isVisible = it
         }
     }
+
+
 }

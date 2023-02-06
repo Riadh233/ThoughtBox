@@ -34,6 +34,8 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         setUpRecyclerView(binding)
         setUpAddButton(binding)
         setupObservers()
@@ -41,14 +43,25 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
     }
 
+    private fun unselectNotes() {
+        viewModel.unselectNotes()
+    }
+
     private fun setUpAddButton(binding: FragmentListBinding) {
+
         binding.addListButton.setOnClickListener {
             it?.let {
-                this.findNavController()
-                    .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+                unselectNotes()
+                Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
+
+                        findNavController()
+                            .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+
             }
         }
     }
+
+
 
     private fun setUpSearchView(binding: FragmentListBinding) {
         val searchView = binding.search
@@ -94,6 +107,13 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
                 sharedViewModel.consumeDeletionEvent()
             }
         }
+
+        sharedViewModel.onCancelEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+            if(shouldConsumeEvent){
+                unselectNotes()
+                sharedViewModel.consumeCancelEvent()
+            }
+        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -117,7 +137,8 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         })
     }
     private fun deleteSelectedItems() {
-        Toast.makeText(requireContext(), "Delete clicked", Toast.LENGTH_SHORT).show()
+        viewModel.deleteSelectedNotes()
+        adapter.notifyDataSetChanged()
     }
 
     private fun deleteAllUser() {
@@ -130,5 +151,11 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         builder.setTitle("Delete All Tasks ?")
         builder.setMessage("are you sure you want to delete All Tasks ?")
         builder.create().show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unselectNotes()
+      //  Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT).show()
     }
 }

@@ -19,9 +19,12 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: NoteRepository
     private val noteDB = NoteDatabase.getInstance(application)
     private var allNotes: LiveData<List<Note>>
+
     private val _navigateToAddFragment = MutableLiveData<Note>()
     val navigateToAddFragment : LiveData<Note>
     get() = _navigateToAddFragment
+
+
 
     private var selectedItemsCount: LiveData<Int>
 
@@ -75,4 +78,21 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
             repository.updateData(context,navController,etTitle,etDescription,date,args)
         }
     }
+
+    fun unselectNotes() {
+        viewModelScope.launch {
+            repository.unselectNotes()
+        }
+
+    }
+
+
+
+    fun deleteSelectedNotes() {
+        viewModelScope.launch {
+            repository.deleteSelectedNotes()
+        }
+    }
+
+
 }
