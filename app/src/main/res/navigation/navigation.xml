@@ -13,6 +13,7 @@
         <action
             android:id="@+id/action_addFragment_to_viewPagerFragment2"
             app:destination="@id/viewPagerFragment2" />
+
     </fragment>
     <fragment
         android:id="@+id/updateFragment"

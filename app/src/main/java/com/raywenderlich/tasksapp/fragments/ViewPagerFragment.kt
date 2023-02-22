@@ -1,8 +1,8 @@
 package com.raywenderlich.tasksapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
@@ -12,6 +12,7 @@ import com.raywenderlich.tasksapp.ui.ViewPagerAdapter
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 
 class ViewPagerFragment : Fragment() {
+    private var mActionMode: ActionMode? = null
 
     private lateinit var binding: FragmentViewPagerBinding
     private val sharedViewModel: SharedViewModel by lazy {
@@ -23,13 +24,8 @@ class ViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false)
-        binding.deleteBtn.setOnClickListener {
-            sharedViewModel.onDelete()
-        }
 
-        binding.cancelBtn.setOnClickListener{
-            sharedViewModel.onCancel()
-        }
+
         return binding.root
     }
 
@@ -52,11 +48,63 @@ class ViewPagerFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        sharedViewModel.deleteAndCancelIconVisibility.observe(viewLifecycleOwner) {
-            binding.deleteBtn.isVisible = it
-            binding.cancelBtn.isVisible = it
+        sharedViewModel.cabVisibility.observe(viewLifecycleOwner) { showCAB ->
+            if (showCAB)
+                startActionMode()
+            else
+                finishActionMode()
+        }
+        sharedViewModel.selectedItemsCount.observe(viewLifecycleOwner) {
+            Log.d("selected items count12", "$it")
+            if (it == 1)
+                mActionMode?.title = "$it item selected"
+            else
+                mActionMode?.title = "$it items selected"
         }
     }
 
+    private val mActionModeCallback = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            val inflater = mode?.menuInflater
+            inflater?.inflate(R.menu.delete_menu, menu)
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            return true
+        }
+
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            return when (item?.itemId) {
+                R.id.delete_item -> {
+                    // delete selected items
+                    sharedViewModel.onDelete()
+                    mode?.finish() // Action picked, so close the CAB
+                    true
+                }
+                R.id.select_all -> {
+                    sharedViewModel.selectAllEvent()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            mActionMode = null
+            sharedViewModel.onCancel()
+        }
+    }
+
+    private fun startActionMode() {
+        if (mActionMode != null) {
+            return
+        }
+        mActionMode = (activity as MainActivity).startActionMode(mActionModeCallback)
+    }
+
+    private fun finishActionMode() {
+        mActionMode?.finish()
+    }
 
 }

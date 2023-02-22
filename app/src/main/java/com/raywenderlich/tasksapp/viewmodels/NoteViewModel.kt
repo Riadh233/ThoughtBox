@@ -67,7 +67,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun insertDataToDatabase(context : Context, navController: NavController, etTitle : EditText, etDescription : EditText, date : String){
         viewModelScope.launch {
-            repository.insertDataToDatabase(context,navController,etTitle,etDescription,date)
+            repository.insertDataToDatabase(context,etTitle,etDescription,date)
         }
     }
     fun updateData(context : Context, navController : NavController,
@@ -75,7 +75,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
                    date: String , args : UpdateFragmentArgs
     ){
         viewModelScope.launch {
-            repository.updateData(context,navController,etTitle,etDescription,date,args)
+            repository.updateData(context,etTitle,etDescription,date,args)
         }
     }
 
@@ -85,14 +85,16 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         }
 
     }
-
-
+    fun selectAllNotes(){
+        viewModelScope.launch {
+            repository.selectAllNotes()
+        }
+    }
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
             repository.deleteSelectedNotes()
         }
     }
-
 
 }

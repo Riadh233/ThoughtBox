@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModel(): ViewModel() {
 
-    private val _deleteAndCancelIconVisibility = MutableLiveData<Boolean>(false)
-    val deleteAndCancelIconVisibility: LiveData<Boolean>
-    get() = _deleteAndCancelIconVisibility
+    private val _cabVisibility = MutableLiveData<Boolean>(false)
+    val cabVisibility: LiveData<Boolean>
+    get() = _cabVisibility
 
     private val _onDeleteEvent = MutableLiveData(false)
     val onDeleteEvent: LiveData<Boolean>
@@ -18,14 +18,21 @@ class SharedViewModel(): ViewModel() {
     val onCancelEvent: LiveData<Boolean>
         get() = _onCancelEvent
 
+    private val _selectedItemsCount = MutableLiveData(0)
+    val selectedItemsCount : LiveData<Int>
+    get() = _selectedItemsCount
+
+    private val _onSelectAllEvent = MutableLiveData(false)
+    val onSelectAll: LiveData<Boolean>
+        get() = _onSelectAllEvent
 
 
-    fun showDeleteAndCancelIcon(){
-        _deleteAndCancelIconVisibility.value = true
+    fun showCAB(){
+        _cabVisibility.value = true
     }
 
-    fun hideDeleteAndCancelIcon(){
-        _deleteAndCancelIconVisibility.value = false
+    fun hideCAB(){
+        _cabVisibility.value = false
     }
 
     fun onDelete(){
@@ -44,7 +51,15 @@ class SharedViewModel(): ViewModel() {
     fun consumeCancelEvent() {
         _onCancelEvent.value = false
     }
+    fun setSelectedItemsCount(count : Int){
+        _selectedItemsCount.value = count
+    }
 
+    fun selectAllEvent(){
+        _onSelectAllEvent.value = true
+    }
 
-
+    fun consumeSelectAllEvent(){
+        _onSelectAllEvent.value = false
+    }
 }

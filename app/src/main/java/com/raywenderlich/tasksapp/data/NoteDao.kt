@@ -32,6 +32,9 @@ interface NoteDao {
     @Query("UPDATE note_table SET selected = 1 WHERE id = :id")
     fun selectNote(id : Int)
 
+    @Query("UPDATE note_table SET selected = 1")
+    fun selectAllNotes(): Int
+
     @Query("UPDATE note_table SET selected = 0")
     fun unselectAllNotes(): Int
 

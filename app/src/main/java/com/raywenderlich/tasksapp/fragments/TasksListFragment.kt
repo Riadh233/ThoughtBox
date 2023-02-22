@@ -16,6 +16,7 @@ import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
 
 class TasksListFragment : Fragment() {
+
     private lateinit var viewModel: TasksViewModel
     private lateinit var adapter: TasksAdapter
     override fun onCreateView(

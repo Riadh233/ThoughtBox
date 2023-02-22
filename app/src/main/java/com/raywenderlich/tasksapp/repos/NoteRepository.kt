@@ -42,35 +42,28 @@ class NoteRepository(private val dao: NoteDao) {
     fun searchDatabase(query : String) : LiveData<List<Note>>{
         return dao.searchDatabase(query)
     }
-    suspend fun insertDataToDatabase(context : Context, navController : NavController,
+    suspend fun insertDataToDatabase(context : Context,
                                      etTitle : EditText, etDescription :
                                      EditText, date : String) {
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
-
-        if(inputCheck(title,description)){
             withContext(IO){
             dao.insert(Note(0,title,description,date))
             }
-            Toast.makeText(context, "Task Added", Toast.LENGTH_SHORT).show()
-            navController.navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
-        }else{
-            Toast.makeText(context, "please fill all the fields", Toast.LENGTH_SHORT).show()
-            return
-        }
+            Toast.makeText(context, "Note added", Toast.LENGTH_SHORT).show()
     }
-    suspend fun updateData(context : Context, navController : NavController,
-                           etTitle : EditText, etDescription : EditText,
-                           date: String , args : UpdateFragmentArgs ){
+    suspend fun updateData(
+        context: Context,
+        etTitle: EditText, etDescription: EditText,
+        date: String, args: UpdateFragmentArgs
+    ){
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
-        if(inputCheck(title,description)){
+
             withContext(IO){
                 dao.update(Note(args.currTask.id,title,description,date))
             }
-            navController.navigate(UpdateFragmentDirections.actionUpdateFragmentToViewPagerFragment2())
-        }else
-            Toast.makeText(context, "please fill out all fields", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Note updated", Toast.LENGTH_SHORT).show()
     }
 
     private fun inputCheck(title : String,description : String) : Boolean{
@@ -84,10 +77,16 @@ class NoteRepository(private val dao: NoteDao) {
             dao.unselectAllNotes()
         }
     }
+    suspend fun selectAllNotes(){
+        withContext(IO){
+            dao.selectAllNotes()
+        }
+    }
 
     suspend fun deleteSelectedNotes() {
         withContext(IO){
             dao.deleteSelectedNotes()
         }
+        Log.d("delete selected notes ","called")
     }
 }

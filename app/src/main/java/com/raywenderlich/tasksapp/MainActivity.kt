@@ -2,13 +2,7 @@ package com.raywenderlich.tasksapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import com.raywenderlich.tasksapp.databinding.ActivityMainBinding
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
@@ -21,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     val notesViewModel : NoteViewModel by lazy {
         ViewModelProvider(this)[NoteViewModel::class.java]
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(viewModel.deleteAndCancelIconVisibility.value!!) {
+        if(viewModel.cabVisibility.value!!) {
             notesViewModel.unselectNotes()
         }else
             super.onBackPressed()

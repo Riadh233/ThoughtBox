@@ -36,20 +36,6 @@
                 android:hint="Description" />
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="30dp"
-                android:elevation="15dp"
-                android:src="@android:color/transparent"
-                android:text="ADD"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:cornerRadius="15dp" />
-
-
         </FrameLayout>
 
         <EditText
@@ -70,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/back_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginStart="20dp"

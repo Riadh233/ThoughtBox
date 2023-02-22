@@ -1,6 +1,7 @@
 package com.raywenderlich.tasksapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.raywenderlich.tasksapp.databinding.FragmentListBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
+
     private val sharedViewModel: SharedViewModel by lazy {
         (requireActivity() as MainActivity).viewModel
     }
@@ -30,17 +32,16 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(inflater)
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setUpRecyclerView(binding)
         setUpAddButton(binding)
         setupObservers()
         setUpSearchView(binding)
-
     }
 
     private fun unselectNotes() {
@@ -52,6 +53,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         binding.addListButton.setOnClickListener {
             it?.let {
                 unselectNotes()
+                sharedViewModel.hideCAB()
                 Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
 
                         findNavController()
@@ -60,8 +62,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             }
         }
     }
-
-
 
     private fun setUpSearchView(binding: FragmentListBinding) {
         val searchView = binding.search
@@ -72,7 +72,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         adapter = NotesAdapter(NotesAdapter.ClickListener {
             viewModel.displayUpdateScreen(it)
         }, NotesAdapter.LongClickListener {
-            sharedViewModel.showDeleteAndCancelIcon()
+            sharedViewModel.showCAB()
         }, NotesAdapter.OnSelectItem{
             viewModel.selectItem(it)
         })
@@ -89,8 +89,9 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             }
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
+            sharedViewModel.setSelectedItemsCount(it)
             if(it == 0){
-                sharedViewModel.hideDeleteAndCancelIcon()
+                sharedViewModel.hideCAB()
             }
         }
         viewModel.navigateToAddFragment.observe(viewLifecycleOwner) {
@@ -112,6 +113,12 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             if(shouldConsumeEvent){
                 unselectNotes()
                 sharedViewModel.consumeCancelEvent()
+            }
+        }
+        sharedViewModel.onSelectAll.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+            if (shouldConsumeEvent){
+                selectAllItems()
+                sharedViewModel.consumeSelectAllEvent()
             }
         }
     }
@@ -141,6 +148,10 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         adapter.notifyDataSetChanged()
     }
 
+    private fun selectAllItems(){
+        viewModel.selectAllNotes()
+        adapter.notifyDataSetChanged()
+    }
     private fun deleteAllUser() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes"){_,_->
@@ -156,6 +167,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     override fun onPause() {
         super.onPause()
         unselectNotes()
-      //  Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT).show()
     }
+
 }
