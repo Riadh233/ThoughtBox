@@ -12,7 +12,6 @@ import com.raywenderlich.tasksapp.repos.NoteRepository
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDatabase
 import com.raywenderlich.tasksapp.fragments.AddFragmentArgs
-import com.raywenderlich.tasksapp.fragments.UpdateFragmentArgs
 import kotlinx.coroutines.launch
 
 

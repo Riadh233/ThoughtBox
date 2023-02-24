@@ -24,28 +24,6 @@ class TasksListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentTasksBinding.inflate(inflater)
-        binding.lifecycleOwner = this
-        viewModel = ViewModelProvider(this)[TasksViewModel::class.java]
-
-        adapter = TasksAdapter(TasksAdapter.TasksClickListener {
-            viewModel.displayUpdateScreen(it)
-        })
-        binding.recyclerView.adapter = adapter
-        binding.addTaskButton.setOnClickListener {
-            it?.let {
-                this.findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddTaskFragment())
-            }
-        }
-        viewModel.navigateToAddFragment.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                findNavController().navigate(
-                    ViewPagerFragmentDirections.actionViewPagerFragment2ToUpdateTaskFragment(it)
-                )
-                viewModel.navigateToUpdateScreenFinished()
-            }
-
-        })
-
 
         return binding.root
     }

@@ -1,20 +1,10 @@
 package com.raywenderlich.tasksapp.repos
-
-import android.content.Context
-import android.text.TextUtils
 import android.util.Log
 import android.widget.EditText
-import android.widget.NumberPicker
-import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDao
 import com.raywenderlich.tasksapp.fragments.AddFragmentArgs
-import com.raywenderlich.tasksapp.fragments.AddFragmentDirections
-import com.raywenderlich.tasksapp.fragments.UpdateFragmentArgs
-import com.raywenderlich.tasksapp.fragments.UpdateFragmentDirections
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 

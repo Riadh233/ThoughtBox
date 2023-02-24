@@ -22,18 +22,6 @@
 
     </fragment>
     <fragment
-        android:id="@+id/updateFragment"
-        android:name="com.raywenderlich.tasksapp.fragments.UpdateFragment"
-        android:label="UpdateFragment" >
-        <argument
-            android:name="currTask"
-            app:argType="com.raywenderlich.tasksapp.data.Note" />
-        <action
-            android:id="@+id/action_updateFragment_to_viewPagerFragment2"
-            app:destination="@id/viewPagerFragment2" />
-
-    </fragment>
-    <fragment
         android:id="@+id/viewPagerFragment2"
         android:name="com.raywenderlich.tasksapp.fragments.ViewPagerFragment"
         android:label="Notes" >
@@ -42,9 +30,6 @@
             app:destination="@id/addFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left" />
-        <action
-            android:id="@+id/action_viewPagerFragment2_to_updateFragment"
-            app:destination="@id/updateFragment" />
         <action
             android:id="@+id/action_viewPagerFragment2_to_updateTaskFragment"
             app:destination="@id/updateTaskFragment" />
