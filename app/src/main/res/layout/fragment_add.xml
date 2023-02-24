@@ -62,6 +62,7 @@
             android:layout_marginStart="20dp"
             android:rotation="180"
             android:elevation="12dp"
+            android:background="?selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toTopOf="@+id/et_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

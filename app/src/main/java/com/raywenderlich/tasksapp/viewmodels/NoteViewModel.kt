@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.raywenderlich.tasksapp.repos.NoteRepository
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDatabase
+import com.raywenderlich.tasksapp.fragments.AddFragmentArgs
 import com.raywenderlich.tasksapp.fragments.UpdateFragmentArgs
 import kotlinx.coroutines.launch
 
@@ -67,15 +68,15 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun insertDataToDatabase(context : Context, navController: NavController, etTitle : EditText, etDescription : EditText, date : String){
         viewModelScope.launch {
-            repository.insertDataToDatabase(context,etTitle,etDescription,date)
+            repository.insertDataToDatabase(etTitle,etDescription,date)
         }
     }
     fun updateData(context : Context, navController : NavController,
                    etTitle : EditText, etDescription : EditText,
-                   date: String , args : UpdateFragmentArgs
+                   date: String , args : AddFragmentArgs
     ){
         viewModelScope.launch {
-            repository.updateData(context,etTitle,etDescription,date,args)
+            repository.updateData(etTitle,etDescription,date,args)
         }
     }
 

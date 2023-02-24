@@ -55,12 +55,12 @@ class ViewPagerFragment : Fragment() {
                 finishActionMode()
         }
         sharedViewModel.selectedItemsCount.observe(viewLifecycleOwner) {
-            Log.d("selected items count12", "$it")
             if (it == 1)
                 mActionMode?.title = "$it item selected"
             else
                 mActionMode?.title = "$it items selected"
         }
+
     }
 
     private val mActionModeCallback = object : ActionMode.Callback {

@@ -1,8 +1,12 @@
 package com.raywenderlich.tasksapp.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -12,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raywenderlich.tasksapp.MainActivity
+import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListBinding
@@ -37,11 +42,11 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val searchView = binding.search
         setUpRecyclerView(binding)
         setUpAddButton(binding)
         setupObservers()
-        setUpSearchView(binding)
+        setUpSearchView(searchView)
     }
 
     private fun unselectNotes() {
@@ -55,16 +60,14 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
                 unselectNotes()
                 sharedViewModel.hideCAB()
                 Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
-
-                        findNavController()
+                findNavController()
                             .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
 
             }
         }
     }
 
-    private fun setUpSearchView(binding: FragmentListBinding) {
-        val searchView = binding.search
+    private fun setUpSearchView(searchView: SearchView) {
         searchView.setOnQueryTextListener(this)
     }
 
@@ -97,7 +100,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.navigateToAddFragment.observe(viewLifecycleOwner) {
             if (it != null) {
                 findNavController().navigate(
-                    ViewPagerFragmentDirections.actionViewPagerFragment2ToUpdateFragment(it)
+                    ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment(it)
                 )
                 viewModel.navigateToUpdateScreenFinished()
             }
@@ -151,17 +154,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private fun selectAllItems(){
         viewModel.selectAllNotes()
         adapter.notifyDataSetChanged()
-    }
-    private fun deleteAllUser() {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes"){_,_->
-            viewModel.deleteAllNotes()
-            Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
-        }
-        builder.setNegativeButton("No"){_,_-> }
-        builder.setTitle("Delete All Tasks ?")
-        builder.setMessage("are you sure you want to delete All Tasks ?")
-        builder.create().show()
     }
 
     override fun onPause() {

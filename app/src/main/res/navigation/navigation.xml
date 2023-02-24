@@ -12,7 +12,13 @@
         tools:layout="@layout/fragment_add" >
         <action
             android:id="@+id/action_addFragment_to_viewPagerFragment2"
-            app:destination="@id/viewPagerFragment2" />
+            app:destination="@id/viewPagerFragment2"
+            app:enterAnim="@anim/from_left" />
+        <argument
+            android:name="currNote"
+            app:argType="com.raywenderlich.tasksapp.data.Note"
+            app:nullable="true"
+            android:defaultValue="@null" />
 
     </fragment>
     <fragment
@@ -33,7 +39,9 @@
         android:label="Notes" >
         <action
             android:id="@+id/action_viewPagerFragment2_to_addFragment"
-            app:destination="@id/addFragment" />
+            app:destination="@id/addFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
         <action
             android:id="@+id/action_viewPagerFragment2_to_updateFragment"
             app:destination="@id/updateFragment" />

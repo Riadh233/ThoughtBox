@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -25,36 +27,70 @@ import java.time.format.DateTimeFormatter
 class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
     private lateinit var viewModel: NoteViewModel
+    private val args by navArgs<AddFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddBinding.inflate(inflater)
+        binding = FragmentAddBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        binding.etTitle.setText(args.currNote?.title)
+        binding.etDescription.setText(args.currNote?.description)
 
         binding.backButton.setOnClickListener {
-                if ((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString())))
+            if (inputCheck(
+                    binding.etTitle.text.toString(),
+                    binding.etDescription.text.toString()
+                )
+            ) {
+                if (args.currNote == null) {
                     createNote()
+                } else
+                    updateNote()
+            }
             findNavController().navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if ((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString())))
-                createNote()
+            if (inputCheck(
+                    binding.etTitle.text.toString(),
+                    binding.etDescription.text.toString()
+                )
+            ) {
+                if (args.currNote == null) {
+                    createNote()
+                } else
+                    updateNote()
+            }
             findNavController().navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
         callback.isEnabled = true
-        Log.d("CALLBACK","${callback.isEnabled}")
-
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val etDesc = binding.etDescription
+        etDesc.requestFocus()
+        showKeyboard(etDesc)
+
     }
     private fun createNote(){
         viewModel.insertDataToDatabase(requireContext(),findNavController(), binding.etTitle,binding.etDescription,
             DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()))
     }
+    private fun updateNote(){
+        viewModel.updateData(requireContext(), findNavController(),
+            binding.etTitle,binding.etDescription,
+            DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()),args)
+    }
 
     private fun inputCheck(title : String,description : String) : Boolean{
         return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
+    }
+    private fun showKeyboard(et : EditText) {
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
     }
 }
