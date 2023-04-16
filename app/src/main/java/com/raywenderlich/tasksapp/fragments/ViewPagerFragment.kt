@@ -3,7 +3,10 @@ package com.raywenderlich.tasksapp.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R
@@ -34,17 +37,32 @@ class ViewPagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupObservers()
+
     }
+
 
     private fun setupViewPager() {
         binding.viewPager.adapter = ViewPagerAdapter(this)
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.setIcon(R.drawable.ic_notes)
-                1 -> tab.setIcon(R.drawable.ic_check)
+                0 -> {
+                    tab.setIcon(R.drawable.ic_notes)
+                }
+                1 -> {
+                    tab.setIcon(R.drawable.ic_check)
+                }
             }
         }.attach()
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when(position){
+                    0 -> sharedViewModel.isNotesPage()
+                    else -> sharedViewModel.isTasksPage()
+                }
+            }
+        })
     }
 
     private fun setupObservers() {
@@ -59,6 +77,13 @@ class ViewPagerFragment : Fragment() {
                 mActionMode?.title = "$it item selected"
             else
                 mActionMode?.title = "$it items selected"
+        }
+        sharedViewModel.navigateToTasksScreen.observe(viewLifecycleOwner){
+            if(it){
+                binding.viewPager.setCurrentItem(1,false)
+                Log.d("navigate to tasks","$it")
+//                sharedViewModel.navigateToTasksScreenFinished()
+            }
         }
 
     }
@@ -77,7 +102,6 @@ class ViewPagerFragment : Fragment() {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.delete_item -> {
-                    // delete selected items
                     sharedViewModel.onDelete()
                     mode?.finish() // Action picked, so close the CAB
                     true
@@ -106,5 +130,4 @@ class ViewPagerFragment : Fragment() {
     private fun finishActionMode() {
         mActionMode?.finish()
     }
-
 }

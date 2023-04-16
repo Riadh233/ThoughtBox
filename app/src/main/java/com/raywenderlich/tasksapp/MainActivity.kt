@@ -1,7 +1,13 @@
 package com.raywenderlich.tasksapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.tasksapp.databinding.ActivityMainBinding
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
@@ -18,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
+        createNotificationChannel()
 
         setContentView(binding.root)
     }
@@ -28,5 +35,18 @@ class MainActivity : AppCompatActivity() {
         }else
             super.onBackPressed()
     }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Tasks Notifications"
+            val descriptionText = "Channel Description"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("channel_id", name, importance).apply {
+                description = descriptionText
+            }
 
+            val notificationManager: NotificationManager =
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }

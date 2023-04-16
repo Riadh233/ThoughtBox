@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDao
 import com.raywenderlich.tasksapp.fragments.AddFragmentArgs
+import com.raywenderlich.tasksapp.tools.IDGenerator
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class NoteRepository(private val dao: NoteDao) {
@@ -38,7 +40,7 @@ class NoteRepository(private val dao: NoteDao) {
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
             withContext(IO){
-            dao.insert(Note(0,title,description,date))
+            dao.insert(Note(IDGenerator.generateID(),title,description,date))
             }
     }
     suspend fun updateData(
@@ -71,6 +73,5 @@ class NoteRepository(private val dao: NoteDao) {
         withContext(IO){
             dao.deleteSelectedNotes()
         }
-        Log.d("delete selected notes ","called")
     }
 }

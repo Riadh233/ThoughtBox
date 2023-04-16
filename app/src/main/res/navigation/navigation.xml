@@ -57,5 +57,11 @@
         <action
             android:id="@+id/action_addTaskFragment_to_viewPagerFragment2"
             app:destination="@id/viewPagerFragment2" />
+        <argument
+            android:name="currTask"
+            app:argType="com.raywenderlich.tasksapp.data.Task"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
     </fragment>
 </navigation>

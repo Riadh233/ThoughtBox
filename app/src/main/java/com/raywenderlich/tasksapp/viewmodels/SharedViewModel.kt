@@ -26,6 +26,13 @@ class SharedViewModel(): ViewModel() {
     val onSelectAll: LiveData<Boolean>
         get() = _onSelectAllEvent
 
+    private val _currScreen = MutableLiveData(0)
+    val currScreen: LiveData<Int>
+        get() = _currScreen
+
+    private val _navigateToTasksScreen = MutableLiveData(false)
+    val navigateToTasksScreen: LiveData<Boolean>
+        get() = _navigateToTasksScreen
 
     fun showCAB(){
         _cabVisibility.value = true
@@ -61,5 +68,17 @@ class SharedViewModel(): ViewModel() {
 
     fun consumeSelectAllEvent(){
         _onSelectAllEvent.value = false
+    }
+    fun isNotesPage(){
+        _currScreen.value = 0
+    }
+    fun isTasksPage(){
+        _currScreen.value = 1
+    }
+    fun navigateToTasksScreen(){
+        _navigateToTasksScreen.value = true
+    }
+    fun navigateToTasksScreenFinished(){
+        _navigateToTasksScreen.value = false
     }
 }

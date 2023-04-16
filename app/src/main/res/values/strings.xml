@@ -6,4 +6,13 @@
     <string name="delete">Delete</string>
     <string name="search">Search</string>
     <string name="selectall">selectall</string>
+    <string-array name="priorites">
+        <item>HIGH</item>
+        <item>MEDIUM</item>
+        <item>LOW</item>
+    </string-array>
+    <string name="priority_prompt">Select priority</string>
+    <string name="notification_channel_id">channel_id</string>
+    <string name="notification_title">Task has Expired</string>
+
 </resources>

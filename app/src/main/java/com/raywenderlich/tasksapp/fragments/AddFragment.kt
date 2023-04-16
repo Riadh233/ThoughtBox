@@ -21,6 +21,7 @@ import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.databinding.FragmentAddBinding
+import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -73,15 +74,13 @@ class AddFragment : Fragment() {
         val etDesc = binding.etDescription
         etDesc.requestFocus()
         showKeyboard(etDesc)
-
     }
     private fun createNote(){
-        viewModel.insertDataToDatabase(requireContext(),findNavController(), binding.etTitle,binding.etDescription,
+        viewModel.insertDataToDatabase(binding.etTitle,binding.etDescription,
             DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()))
     }
     private fun updateNote(){
-        viewModel.updateData(requireContext(), findNavController(),
-            binding.etTitle,binding.etDescription,
+        viewModel.updateData(binding.etTitle,binding.etDescription,
             DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()),args)
     }
 

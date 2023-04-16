@@ -21,6 +21,7 @@ import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
+import kotlin.properties.Delegates
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
@@ -32,6 +33,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     private lateinit var adapter: NotesAdapter
     private lateinit var binding : FragmentListBinding
+    private var currPage : Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,20 +108,23 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             }
         }
         sharedViewModel.onDeleteEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
-            if(shouldConsumeEvent){
+            if(shouldConsumeEvent && currPage == 0){
                 deleteSelectedItems()
                 sharedViewModel.consumeDeletionEvent()
             }
         }
+        sharedViewModel.currScreen.observe(viewLifecycleOwner){
+            currPage = it
+        }
 
         sharedViewModel.onCancelEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
-            if(shouldConsumeEvent){
+            if(shouldConsumeEvent && currPage == 0){
                 unselectNotes()
                 sharedViewModel.consumeCancelEvent()
             }
         }
         sharedViewModel.onSelectAll.observe(viewLifecycleOwner){ shouldConsumeEvent ->
-            if (shouldConsumeEvent){
+            if (shouldConsumeEvent && currPage == 0){
                 selectAllItems()
                 sharedViewModel.consumeSelectAllEvent()
             }

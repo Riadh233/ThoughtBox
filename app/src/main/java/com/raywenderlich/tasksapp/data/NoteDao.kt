@@ -27,10 +27,10 @@ interface NoteDao {
     fun getAllSelectedNotes(): LiveData<Int>
 
     @Query("UPDATE note_table SET selected = 0 WHERE id = :id")
-    fun unselectNote(id : Int)
+    fun unselectNote(id : Long)
 
     @Query("UPDATE note_table SET selected = 1 WHERE id = :id")
-    fun selectNote(id : Int)
+    fun selectNote(id : Long)
 
     @Query("UPDATE note_table SET selected = 1")
     fun selectAllNotes(): Int

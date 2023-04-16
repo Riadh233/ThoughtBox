@@ -13,6 +13,9 @@ class ViewPagerAdapter(fragment : Fragment) : FragmentStateAdapter(fragment) {
         return fragmentsList.size
     }
     override fun createFragment(position: Int): Fragment {
-        return fragmentsList[position]
+        return when(position){
+            0 -> NotesListFragment()
+            else -> TasksListFragment()
+        }
     }
 }
