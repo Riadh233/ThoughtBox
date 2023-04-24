@@ -1,20 +1,24 @@
 package com.raywenderlich.tasksapp.repos
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.util.Log
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.data.TasksDao
-import com.raywenderlich.tasksapp.tools.IDGenerator
+import com.raywenderlich.tasksapp.tools.AlarmReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
 class TasksRepository(private val dao : TasksDao) {
+
+
     suspend fun insert(task: Task) {
         withContext(Dispatchers.IO) {
             dao.insert(task)
@@ -49,6 +53,7 @@ class TasksRepository(private val dao : TasksDao) {
     }
 
     fun getAllTasks() = dao.getAllTasks()
+    fun getSelectedTasks() = dao.getSelectedTasks()
     fun getSelectedItemsCount() :LiveData<Int> = dao.getAllSelectedTasks()
 
     suspend fun getTaskById(id : Long) : Task?{
@@ -92,4 +97,5 @@ class TasksRepository(private val dao : TasksDao) {
         }
         Log.d("update text","done")
     }
+
 }

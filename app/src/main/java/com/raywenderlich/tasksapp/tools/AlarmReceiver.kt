@@ -23,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AlarmReceiver : BroadcastReceiver() {
-    private lateinit var alarmManager: AlarmManager
     override fun onReceive(context: Context?, intent: Intent?) {
         val tasksRep = context?.let { TasksRepository(NoteDatabase.getInstance(it.applicationContext).taskDao()) } ?: return
         intent  ?: return

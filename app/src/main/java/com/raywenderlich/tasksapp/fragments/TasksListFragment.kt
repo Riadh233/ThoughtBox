@@ -10,10 +10,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.tasksapp.MainActivity
+import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.databinding.FragmentTasksBinding
-import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.ui.TasksAdapter
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
@@ -28,6 +29,7 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     private lateinit var adapter: TasksAdapter
     private lateinit var binding: FragmentTasksBinding
+    private lateinit var deletedTasks : List<Task>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +57,7 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
     private fun setUpRecyclerView() {
         adapter = TasksAdapter(TasksAdapter.TasksClickListener{
             viewModel.displayUpdateScreen(it)
+            sharedViewModel.navigateToTasksScreen()
         }, TasksAdapter.LongClickListener {
             sharedViewModel.showCAB()
         }, TasksAdapter.OnSelectItem{
@@ -107,11 +110,15 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
                 viewModel.navigateToUpdateScreenFinished()
             }
         }
+        viewModel.getSelectedTasks().observe(viewLifecycleOwner){
+            deletedTasks = it
+        }
 
-        sharedViewModel.onDeleteEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+        sharedViewModel.onDeleteTasksEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
             if(shouldConsumeEvent){
                 deleteSelectedItems()
-                sharedViewModel.consumeDeletionEvent()
+                sharedViewModel.cancelAlarms(deletedTasks)
+                sharedViewModel.consumeTasksDeletionEvent()
             }
         }
 
@@ -121,10 +128,10 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
                 sharedViewModel.consumeCancelEvent()
             }
         }
-        sharedViewModel.onSelectAll.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+        sharedViewModel.onSelectAllTasks.observe(viewLifecycleOwner){ shouldConsumeEvent ->
             if (shouldConsumeEvent){
                 selectAllItems()
-                sharedViewModel.consumeSelectAllEvent()
+                sharedViewModel.consumeSelectAllTasksEvent()
             }
         }
     }

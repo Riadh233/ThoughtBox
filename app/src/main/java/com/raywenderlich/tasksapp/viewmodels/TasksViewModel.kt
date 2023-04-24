@@ -1,25 +1,24 @@
 package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
-import android.util.Log
-import android.widget.AutoCompleteTextView
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.repos.TasksRepository
 import com.raywenderlich.tasksapp.data.NoteDatabase
 import com.raywenderlich.tasksapp.data.Task
-import com.raywenderlich.tasksapp.data.TasksDao
 import kotlinx.coroutines.*
+import java.util.*
 
 class TasksViewModel(application : Application) : AndroidViewModel(application) {
     private val repository: TasksRepository
     private val appDB = NoteDatabase.getInstance(application)
     private var allTasks: LiveData<List<Task>>
+    private var selectedTasks : LiveData<List<Task>>
     private var selectedItemsCount: LiveData<Int>
 
 
@@ -27,13 +26,11 @@ class TasksViewModel(application : Application) : AndroidViewModel(application) 
     val navigateToAddFragment : LiveData<Task>
         get() = _navigateToAddFragment
 
-    private val _onCancelAlarm = MutableLiveData<Boolean>(false)
-    val onCancelAlarm : LiveData<Boolean>
-        get() = _onCancelAlarm
 
     init {
         repository = TasksRepository(appDB.taskDao())
         allTasks = repository.getAllTasks()
+        selectedTasks = repository.getSelectedTasks()
         selectedItemsCount = repository.getSelectedItemsCount()
     }
     fun insetTask(task : Task){
@@ -58,6 +55,9 @@ class TasksViewModel(application : Application) : AndroidViewModel(application) 
     }
     fun getAllTasks() : LiveData<List<Task>>{
         return allTasks
+    }
+    fun getSelectedTasks() : LiveData<List<Task>>{
+        return selectedTasks
     }
 
     fun displayUpdateScreen(task : Task){

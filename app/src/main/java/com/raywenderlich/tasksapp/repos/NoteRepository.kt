@@ -70,6 +70,7 @@ class NoteRepository(private val dao: NoteDao) {
     }
 
     suspend fun deleteSelectedNotes() {
+        Log.d("delete from notes","done")
         withContext(IO){
             dao.deleteSelectedNotes()
         }

@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.raywenderlich.tasksapp.MainActivity
@@ -28,6 +30,7 @@ import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.MonthDay
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -36,8 +39,6 @@ class AddTaskFragment : Fragment() {
     private lateinit var viewModel: TasksViewModel
     private val args by navArgs<AddTaskFragmentArgs>()
     private lateinit var timePicker: MaterialTimePicker
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
     private lateinit var calendar : Calendar
     private val sharedViewModel: SharedViewModel by lazy {
         (requireActivity() as MainActivity).viewModel
@@ -49,8 +50,8 @@ class AddTaskFragment : Fragment() {
     ): View? {
         binding = FragmentAddTaskBinding.inflate(inflater)
         viewModel = ViewModelProvider(this)[TasksViewModel::class.java]
+        if(args.currTask != null)
         setUpCurrTask()
-
 
         return binding.root
     }
@@ -61,10 +62,18 @@ class AddTaskFragment : Fragment() {
         setUpReminderButton()
         val taskId : Long = IDGenerator.generateID()
         binding.createBtn.setOnClickListener {
-            if(timeScheduled()){
-                setAlarm(taskId)
-            }
-            createTask(taskId)
+                if(args.currTask == null){
+                    createTask(taskId)
+                    if(timeScheduled())
+                       sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
+                }
+                else{
+                    updateTask()
+                    if(timeScheduled())
+                        sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
+                }
+
+        findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
         }
         binding.backButton.setOnClickListener {
             findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
@@ -108,8 +117,8 @@ class AddTaskFragment : Fragment() {
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
             val currentTime = Calendar.getInstance()
-            if(calendar.get(Calendar.HOUR_OF_DAY) < currentTime.get(Calendar.HOUR_OF_DAY)
-                && calendar.get(Calendar.MINUTE) < currentTime.get(Calendar.MINUTE)){
+            if(calendar.timeInMillis <= currentTime.timeInMillis){
+                calendar.add(Calendar.DATE, 1)
                 binding.reminderButton.text = "Tomorrow $selectedTime"
             }else{
                 binding.reminderButton.text = " Today $selectedTime"
@@ -123,24 +132,11 @@ class AddTaskFragment : Fragment() {
         val format = SimpleDateFormat("h:mm a", Locale.getDefault())
         return format.format(calendar.time)
     }
-    private fun setAlarm(taskId : Long){
-        alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
-        intent.putExtra("taskId",taskId)
-        val pendingIntent = PendingIntent.getBroadcast(requireContext(), taskId.toInt(), intent, 0)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-    }
-    private fun cancelAlarm(taskId: Long) {
-        alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(requireContext(), taskId.toInt(), intent, 0)
-        alarmManager.cancel(pendingIntent)
-    }
     private fun setUpCurrTask(){
-//        binding.etTitle.setText(args.currTask?.title)
-//        binding.etDescription.setText(args.currTask?.description)
-//        binding.etPriority.setText(args.currTask?.priority?.let { getPriorityForColor(it) })
-//        binding.reminderButton.text = args.currTask?.alarmTime
+        binding.etTitle.setText(args.currTask?.title)
+        binding.etDescription.setText(args.currTask?.description)
+        binding.etPriority.setText(args.currTask?.priority?.let { getPriorityForColor(it) })
+        binding.reminderButton.text = args.currTask?.alarmTime
     }
 
 
@@ -150,7 +146,6 @@ class AddTaskFragment : Fragment() {
             text = "Set reminder"
 
         viewModel.insertDataToDatabase(taskId,binding.etTitle,binding.etDescription,getColorForPriority(binding.etPriority.text.toString()),text)
-        findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
     }
     fun getColorForPriority(priority: String): Int {
         return when(priority) {
@@ -167,12 +162,12 @@ class AddTaskFragment : Fragment() {
         }
     }
 
-    private fun updateTask(taskId: Long){
+    private fun updateTask(){
         var text = "Rings${binding.reminderButton.text}"
         if(!timeScheduled())
             text = "Set reminder"
 
-        viewModel.updateData(taskId,binding.etTitle,binding.etDescription,getColorForPriority(binding.etPriority.text.toString()),text)
+        viewModel.updateData(args.currTask!!.id,binding.etTitle,binding.etDescription,getColorForPriority(binding.etPriority.text.toString()),text)
     }
 
     private fun inputCheck(title : String,description : String) : Boolean{

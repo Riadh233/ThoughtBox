@@ -1,18 +1,28 @@
 package com.raywenderlich.tasksapp.viewmodels
 
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.raywenderlich.tasksapp.data.Task
+import com.raywenderlich.tasksapp.tools.AlarmUtils
+import java.util.*
 
-class SharedViewModel(): ViewModel() {
+class SharedViewModel(application: Application): AndroidViewModel(application) {
 
     private val _cabVisibility = MutableLiveData<Boolean>(false)
     val cabVisibility: LiveData<Boolean>
     get() = _cabVisibility
 
-    private val _onDeleteEvent = MutableLiveData(false)
-    val onDeleteEvent: LiveData<Boolean>
-    get() = _onDeleteEvent
+    private val _onDeleteNotesEvent = MutableLiveData(false)
+    val onDeleteNotesEvent: LiveData<Boolean>
+    get() = _onDeleteNotesEvent
+
+    private val _onDeleteTasksEvent = MutableLiveData(false)
+    val onDeleteTasksEvent: LiveData<Boolean>
+        get() = _onDeleteTasksEvent
 
     private val _onCancelEvent = MutableLiveData(false)
     val onCancelEvent: LiveData<Boolean>
@@ -22,17 +32,21 @@ class SharedViewModel(): ViewModel() {
     val selectedItemsCount : LiveData<Int>
     get() = _selectedItemsCount
 
-    private val _onSelectAllEvent = MutableLiveData(false)
-    val onSelectAll: LiveData<Boolean>
-        get() = _onSelectAllEvent
+    private val _onSelectAllNotesEvent = MutableLiveData(false)
+    val onSelectAllNotes: LiveData<Boolean>
+        get() = _onSelectAllNotesEvent
 
-    private val _currScreen = MutableLiveData(0)
-    val currScreen: LiveData<Int>
-        get() = _currScreen
+    private val _onSelectAllTasksEvent = MutableLiveData(false)
+    val onSelectAllTasks: LiveData<Boolean>
+        get() = _onSelectAllTasksEvent
+
 
     private val _navigateToTasksScreen = MutableLiveData(false)
     val navigateToTasksScreen: LiveData<Boolean>
         get() = _navigateToTasksScreen
+
+    private val alarmUtils = AlarmUtils()
+
 
     fun showCAB(){
         _cabVisibility.value = true
@@ -42,8 +56,11 @@ class SharedViewModel(): ViewModel() {
         _cabVisibility.value = false
     }
 
-    fun onDelete(){
-        _onDeleteEvent.value = true
+    fun onDeleteNotes(){
+        _onDeleteNotesEvent.value = true
+    }
+    fun onDeleteTasks(){
+        _onDeleteTasksEvent.value = true
     }
 
     fun onCancel(){
@@ -51,8 +68,11 @@ class SharedViewModel(): ViewModel() {
     }
 
 
-    fun consumeDeletionEvent() {
-        _onDeleteEvent.value = false
+    fun consumeNotesDeletionEvent() {
+        _onDeleteNotesEvent.value = false
+    }
+    fun consumeTasksDeletionEvent() {
+        _onDeleteTasksEvent.value = false
     }
 
     fun consumeCancelEvent() {
@@ -62,23 +82,30 @@ class SharedViewModel(): ViewModel() {
         _selectedItemsCount.value = count
     }
 
-    fun selectAllEvent(){
-        _onSelectAllEvent.value = true
+    fun selectAllNotesEvent(){
+        _onSelectAllNotesEvent.value = true
     }
 
-    fun consumeSelectAllEvent(){
-        _onSelectAllEvent.value = false
+    fun consumeSelectAllNotesEvent(){
+        _onSelectAllNotesEvent.value = false
     }
-    fun isNotesPage(){
-        _currScreen.value = 0
+    fun selectAllTasksEvent(){
+        _onSelectAllTasksEvent.value = true
     }
-    fun isTasksPage(){
-        _currScreen.value = 1
+
+    fun consumeSelectAllTasksEvent(){
+        _onSelectAllTasksEvent.value = false
     }
     fun navigateToTasksScreen(){
         _navigateToTasksScreen.value = true
     }
-    fun navigateToTasksScreenFinished(){
+    fun navigateToNotesScreen(){
         _navigateToTasksScreen.value = false
+    }
+    fun setAlarm(taskId:Long,timeScheduled:Long){
+        alarmUtils.setAlarm(taskId,timeScheduled,getApplication<Application>())
+    }
+    fun cancelAlarms(tasks : List<Task>){
+        alarmUtils.cancelAlarms(tasks,getApplication<Application>())
     }
 }

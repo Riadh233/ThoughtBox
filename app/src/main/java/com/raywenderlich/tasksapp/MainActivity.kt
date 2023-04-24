@@ -10,8 +10,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.tasksapp.databinding.ActivityMainBinding
+import com.raywenderlich.tasksapp.fragments.AddTaskFragment
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
+import javax.xml.parsers.DocumentBuilderFactory.newInstance
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         createNotificationChannel()
-
         setContentView(binding.root)
     }
 

@@ -52,20 +52,7 @@ class AddFragment : Fragment() {
             }
             findNavController().navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (inputCheck(
-                    binding.etTitle.text.toString(),
-                    binding.etDescription.text.toString()
-                )
-            ) {
-                if (args.currNote == null) {
-                    createNote()
-                } else
-                    updateNote()
-            }
-            findNavController().navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
-        }
-        callback.isEnabled = true
+
         return binding.root
     }
 

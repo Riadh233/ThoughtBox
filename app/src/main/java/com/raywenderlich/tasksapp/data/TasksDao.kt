@@ -23,6 +23,9 @@ interface TasksDao {
     @Query("SELECT * FROM tasks_table ORDER BY priority DESC")
     fun getAllTasks() : LiveData<List<Task>>
 
+    @Query("SELECT * FROM tasks_table WHERE selected = 1")
+    fun getSelectedTasks() : LiveData<List<Task>>
+
     @Query("SELECT * FROM tasks_table WHERE id = :id")
     fun getTaskById(id: Long) : Task?
 

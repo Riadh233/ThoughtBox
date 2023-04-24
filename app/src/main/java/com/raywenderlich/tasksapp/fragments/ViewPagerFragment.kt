@@ -16,6 +16,7 @@ import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 
 class ViewPagerFragment : Fragment() {
     private var mActionMode: ActionMode? = null
+    private var isActionModeActive = false
 
     private lateinit var binding: FragmentViewPagerBinding
     private val sharedViewModel: SharedViewModel by lazy {
@@ -27,6 +28,7 @@ class ViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false)
+
 
 
         return binding.root
@@ -54,23 +56,15 @@ class ViewPagerFragment : Fragment() {
                 }
             }
         }.attach()
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when(position){
-                    0 -> sharedViewModel.isNotesPage()
-                    else -> sharedViewModel.isTasksPage()
-                }
-            }
-        })
     }
-
     private fun setupObservers() {
         sharedViewModel.cabVisibility.observe(viewLifecycleOwner) { showCAB ->
-            if (showCAB)
+            if (showCAB) {
                 startActionMode()
-            else
+            }
+            else{
                 finishActionMode()
+            }
         }
         sharedViewModel.selectedItemsCount.observe(viewLifecycleOwner) {
             if (it == 1)
@@ -81,9 +75,8 @@ class ViewPagerFragment : Fragment() {
         sharedViewModel.navigateToTasksScreen.observe(viewLifecycleOwner){
             if(it){
                 binding.viewPager.setCurrentItem(1,false)
-                Log.d("navigate to tasks","$it")
 //                sharedViewModel.navigateToTasksScreenFinished()
-            }
+            }else binding.viewPager.setCurrentItem(0,false)
         }
 
     }
@@ -102,12 +95,18 @@ class ViewPagerFragment : Fragment() {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.delete_item -> {
-                    sharedViewModel.onDelete()
+                    if(binding.viewPager.currentItem == 0)
+                    sharedViewModel.onDeleteNotes()
+
+                    else sharedViewModel.onDeleteTasks()
                     mode?.finish() // Action picked, so close the CAB
                     true
                 }
                 R.id.select_all -> {
-                    sharedViewModel.selectAllEvent()
+                    if (binding.viewPager.currentItem == 0)
+                        sharedViewModel.selectAllNotesEvent()
+                    else sharedViewModel.selectAllTasksEvent()
+
                     true
                 }
                 else -> false
@@ -125,9 +124,18 @@ class ViewPagerFragment : Fragment() {
             return
         }
         mActionMode = (activity as MainActivity).startActionMode(mActionModeCallback)
+        isActionModeActive = true
     }
 
     private fun finishActionMode() {
         mActionMode?.finish()
+        isActionModeActive = false
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if(mActionMode != null){
+            outState.putBoolean("isActionModeActive",isActionModeActive)
+        }
     }
 }

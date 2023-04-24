@@ -33,7 +33,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     private lateinit var adapter: NotesAdapter
     private lateinit var binding : FragmentListBinding
-    private var currPage : Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,6 +60,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             it?.let {
                 unselectNotes()
                 sharedViewModel.hideCAB()
+                sharedViewModel.navigateToNotesScreen()
                 Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
                 findNavController()
                             .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
@@ -76,6 +76,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private fun setUpRecyclerView(binding: FragmentListBinding) {
         adapter = NotesAdapter(NotesAdapter.ClickListener {
             viewModel.displayUpdateScreen(it)
+            sharedViewModel.navigateToNotesScreen()
         }, NotesAdapter.LongClickListener {
             sharedViewModel.showCAB()
         }, NotesAdapter.OnSelectItem{
@@ -107,26 +108,22 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
                 viewModel.navigateToUpdateScreenFinished()
             }
         }
-        sharedViewModel.onDeleteEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
-            if(shouldConsumeEvent && currPage == 0){
+        sharedViewModel.onDeleteNotesEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+            if(shouldConsumeEvent){
                 deleteSelectedItems()
-                sharedViewModel.consumeDeletionEvent()
+                sharedViewModel.consumeNotesDeletionEvent()
             }
         }
-        sharedViewModel.currScreen.observe(viewLifecycleOwner){
-            currPage = it
-        }
-
         sharedViewModel.onCancelEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
-            if(shouldConsumeEvent && currPage == 0){
+            if(shouldConsumeEvent){
                 unselectNotes()
                 sharedViewModel.consumeCancelEvent()
             }
         }
-        sharedViewModel.onSelectAll.observe(viewLifecycleOwner){ shouldConsumeEvent ->
-            if (shouldConsumeEvent && currPage == 0){
+        sharedViewModel.onSelectAllNotes.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+            if (shouldConsumeEvent){
                 selectAllItems()
-                sharedViewModel.consumeSelectAllEvent()
+                sharedViewModel.consumeSelectAllNotesEvent()
             }
         }
     }
