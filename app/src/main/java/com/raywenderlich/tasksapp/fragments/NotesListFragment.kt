@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
@@ -110,14 +111,19 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         }
         sharedViewModel.onDeleteNotesEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
             if(shouldConsumeEvent){
-                deleteSelectedItems()
+                Snackbar.make(requireView(), "Delete Selected Notes ?", Snackbar.LENGTH_LONG)
+                    .setAction("Ok") {
+                        deleteSelectedItems()
+                        sharedViewModel.hideCAB()
+                    }.show()
                 sharedViewModel.consumeNotesDeletionEvent()
             }
+            Log.d("shouldConsumeEvent","$shouldConsumeEvent")
         }
-        sharedViewModel.onCancelEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
+        sharedViewModel.onCancelNotesEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
             if(shouldConsumeEvent){
                 unselectNotes()
-                sharedViewModel.consumeCancelEvent()
+                sharedViewModel.consumeCancelNotesEvent()
             }
         }
         sharedViewModel.onSelectAllNotes.observe(viewLifecycleOwner){ shouldConsumeEvent ->

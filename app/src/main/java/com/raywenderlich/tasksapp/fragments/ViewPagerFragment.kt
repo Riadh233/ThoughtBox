@@ -1,5 +1,6 @@
 package com.raywenderlich.tasksapp.fragments
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -29,8 +30,6 @@ class ViewPagerFragment : Fragment() {
     ): View? {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false)
 
-
-
         return binding.root
     }
 
@@ -39,7 +38,6 @@ class ViewPagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupObservers()
-
     }
 
 
@@ -75,7 +73,6 @@ class ViewPagerFragment : Fragment() {
         sharedViewModel.navigateToTasksScreen.observe(viewLifecycleOwner){
             if(it){
                 binding.viewPager.setCurrentItem(1,false)
-//                sharedViewModel.navigateToTasksScreenFinished()
             }else binding.viewPager.setCurrentItem(0,false)
         }
 
@@ -95,11 +92,10 @@ class ViewPagerFragment : Fragment() {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.delete_item -> {
-                    if(binding.viewPager.currentItem == 0)
-                    sharedViewModel.onDeleteNotes()
-
-                    else sharedViewModel.onDeleteTasks()
-                    mode?.finish() // Action picked, so close the CAB
+                    if(binding.viewPager.currentItem == 0){
+                        sharedViewModel.onDeleteNotes()
+                    } else
+                        sharedViewModel.onDeleteTasks()
                     true
                 }
                 R.id.select_all -> {
@@ -115,7 +111,10 @@ class ViewPagerFragment : Fragment() {
 
         override fun onDestroyActionMode(mode: ActionMode?) {
             mActionMode = null
-            sharedViewModel.onCancel()
+            if(binding.viewPager.currentItem == 0)
+            sharedViewModel.onCancelNotes()
+            else
+                sharedViewModel.onCancelTasks()
         }
     }
 

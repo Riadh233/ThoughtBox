@@ -25,10 +25,10 @@ import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class AddFragment : Fragment() {
+class AddNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
     private lateinit var viewModel: NoteViewModel
-    private val args by navArgs<AddFragmentArgs>()
+    private val args by navArgs<AddNoteFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +50,7 @@ class AddFragment : Fragment() {
                 } else
                     updateNote()
             }
-            findNavController().navigate(AddFragmentDirections.actionAddFragmentToViewPagerFragment2())
+            findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
 
         return binding.root

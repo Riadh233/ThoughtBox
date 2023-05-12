@@ -14,28 +14,15 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notes_text"
+            app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp"
             app:tabMinWidth="90dp" />
 
-        <TextView
-            android:id="@+id/notes_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text=" Notes"
-            android:textColor="@color/black"
-            android:textSize="35sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"

@@ -112,4 +112,9 @@ class TasksViewModel(application : Application) : AndroidViewModel(application) 
         }
         return task
     }
+    fun changeCheckState(task : Task){
+        viewModelScope.launch {
+            repository.changeCheckState(task)
+        }
+    }
 }

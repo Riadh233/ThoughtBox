@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.raywenderlich.tasksapp.fragments.AddFragment"
+        android:name="com.raywenderlich.tasksapp.fragments.AddNoteFragment"
         android:label="Add"
         tools:layout="@layout/fragment_add" >
         <action
@@ -31,23 +31,10 @@
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left" />
         <action
-            android:id="@+id/action_viewPagerFragment2_to_updateTaskFragment"
-            app:destination="@id/updateTaskFragment" />
-        <action
             android:id="@+id/action_viewPagerFragment2_to_addTaskFragment"
-            app:destination="@id/addTaskFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/updateTaskFragment"
-        android:name="com.raywenderlich.tasksapp.fragments.UpdateTaskFragment"
-        android:label="fragment_update_task"
-        tools:layout="@layout/fragment_update_task" >
-        <action
-            android:id="@+id/action_updateTaskFragment_to_viewPagerFragment2"
-            app:destination="@id/viewPagerFragment2" />
-        <argument
-            android:name="currTask"
-            app:argType="com.raywenderlich.tasksapp.data.Task" />
+            app:destination="@id/addTaskFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"/>
     </fragment>
     <fragment
         android:id="@+id/addTaskFragment"
@@ -56,7 +43,8 @@
         tools:layout="@layout/fragment_add_task" >
         <action
             android:id="@+id/action_addTaskFragment_to_viewPagerFragment2"
-            app:destination="@id/viewPagerFragment2" />
+            app:destination="@id/viewPagerFragment2"
+            app:enterAnim="@anim/from_left"/>
         <argument
             android:name="currTask"
             app:argType="com.raywenderlich.tasksapp.data.Task"

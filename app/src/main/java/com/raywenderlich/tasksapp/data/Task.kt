@@ -16,5 +16,6 @@ data class Task (
     val description : String,
     val priority : Int,
     var alarmTime: String,
-    val selected : Boolean = false
+    val selected : Boolean = false,
+    val checkState : Boolean = false
 ) : Parcelable

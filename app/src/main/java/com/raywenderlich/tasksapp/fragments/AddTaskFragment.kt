@@ -1,37 +1,28 @@
 package com.raywenderlich.tasksapp.fragments
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.raywenderlich.tasksapp.MainActivity
-import com.raywenderlich.tasksapp.tools.AlarmReceiver
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.databinding.FragmentAddTaskBinding
 import com.raywenderlich.tasksapp.tools.IDGenerator
+import com.raywenderlich.tasksapp.tools.Priority
+import com.raywenderlich.tasksapp.ui.SpinnerAdapter
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
-import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.MonthDay
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddTaskFragment : Fragment() {
@@ -40,6 +31,11 @@ class AddTaskFragment : Fragment() {
     private val args by navArgs<AddTaskFragmentArgs>()
     private lateinit var timePicker: MaterialTimePicker
     private lateinit var calendar : Calendar
+    private val priorities = listOf(
+        Priority("High Priority", R.drawable.ic_priority_high),
+        Priority("Medium Priority", R.drawable.ic_priority_mid),
+        Priority("Low Priority", R.drawable.ic_priority_low)
+    )
     private val sharedViewModel: SharedViewModel by lazy {
         (requireActivity() as MainActivity).viewModel
     }
@@ -47,37 +43,77 @@ class AddTaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddTaskBinding.inflate(inflater)
         viewModel = ViewModelProvider(this)[TasksViewModel::class.java]
-        if(args.currTask != null)
-        setUpCurrTask()
+        calendar = Calendar.getInstance()
+
+        if(savedInstanceState != null){
+            handleLandscapeMode(savedInstanceState)
+        }
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpPriority()
-        setUpReminderButton()
         val taskId : Long = IDGenerator.generateID()
-        binding.createBtn.setOnClickListener {
-                if(args.currTask == null){
-                    createTask(taskId)
-                    if(timeScheduled())
-                       sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
-                }
-                else{
-                    updateTask()
-                    if(timeScheduled())
-                        sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
-                }
+        setUpReminderButton()
+        setUpCreateButton(taskId)
+        setUpBackButton()
+        setUpObservers()
+        setUpPrioritySpinner()
+        if(args.currTask != null)
+            setUpCurrTask()
+    }
 
-        findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
-        }
+    private fun setUpPrioritySpinner() {
+        binding.spinner.adapter = SpinnerAdapter(requireContext(),priorities)
+        binding.spinner.background.colorFilter = PorterDuffColorFilter(
+            ContextCompat.getColor(requireContext(), R.color.blue),
+            PorterDuff.Mode.SRC_ATOP
+        )
+    }
+
+    private fun setUpBackButton() {
         binding.backButton.setOnClickListener {
             findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
         }
+    }
+
+    private fun setUpObservers() {
+        sharedViewModel.navigateToTasksScreen.observe(viewLifecycleOwner) {
+            if (it) {
+                if (args.currTask != null) {
+                    binding.createBtn.text = "Update Task"
+                    Log.d("currTask", "not null")
+                } else
+                    binding.createBtn.text = "Create Task"
+            }
+        }
+    }
+
+    private fun setUpCreateButton(taskId: Long) {
+        binding.createBtn.setOnClickListener {
+            if (binding.etTitle.text!!.isNotEmpty()) {
+                if (args.currTask == null) {
+                    createTask(taskId)
+                    if (timeScheduled())
+                        sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
+                } else {
+                    updateTask()
+                    if (timeScheduled())
+                        sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
+                }
+            }
+            findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
+        }
+    }
+
+    private fun handleLandscapeMode(savedInstanceState: Bundle) {
+        val buttonText = savedInstanceState.getString("buttonText")
+        binding.reminderButton.text = buttonText
+        calendar.timeInMillis = savedInstanceState.getLong("calendar")
     }
 
     private fun timeScheduled(): Boolean {
@@ -89,14 +125,7 @@ class AddTaskFragment : Fragment() {
             setUpTimePicker()
         }
     }
-
-    private fun setUpPriority() {
-        val priorites = resources.getStringArray(R.array.priorites)
-        val arrAdapter = ArrayAdapter(requireContext(),R.layout.dropdown_item,priorites)
-        binding.etPriority.setAdapter(arrAdapter)
-    }
     private fun setUpTimePicker(){
-        calendar = Calendar.getInstance()
         val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
         val currentMinute = calendar.get(Calendar.MINUTE)
 
@@ -135,8 +164,13 @@ class AddTaskFragment : Fragment() {
     private fun setUpCurrTask(){
         binding.etTitle.setText(args.currTask?.title)
         binding.etDescription.setText(args.currTask?.description)
-        binding.etPriority.setText(args.currTask?.priority?.let { getPriorityForColor(it) })
-        binding.reminderButton.text = args.currTask?.alarmTime
+
+        binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
+        if(args.currTask?.alarmTime == "Expired")
+            binding.reminderButton.text = "Set reminder"
+        else{
+            binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
+        }
     }
 
 
@@ -144,21 +178,22 @@ class AddTaskFragment : Fragment() {
         var text = "Rings${binding.reminderButton.text}"
         if(!timeScheduled())
             text = "Set reminder"
+        val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
 
-        viewModel.insertDataToDatabase(taskId,binding.etTitle,binding.etDescription,getColorForPriority(binding.etPriority.text.toString()),text)
+        viewModel.insertDataToDatabase(taskId,binding.etTitle,binding.etDescription,selectedPriority,text)
     }
-    fun getColorForPriority(priority: String): Int {
+    private fun getColorForPriority(priority: String): Int {
         return when(priority) {
-            "HIGH" ->R.color.red
-            "MEDIUM" -> R.color.orange
+            "High Priority" ->R.color.red
+            "Medium Priority" -> R.color.orange
             else -> R.color.light_blue
         }
     }
-    fun getPriorityForColor(color: Int): String {
+    private fun getPriorityForColor(color: Int): String {
         return when(color) {
-            R.color.red -> "HIGH"
-            R.color.orange -> "MEDIUM"
-            else -> "LOW"
+            R.color.red -> "High Priority"
+            R.color.orange -> "Medium Priority"
+            else -> "Low Priority"
         }
     }
 
@@ -167,10 +202,15 @@ class AddTaskFragment : Fragment() {
         if(!timeScheduled())
             text = "Set reminder"
 
-        viewModel.updateData(args.currTask!!.id,binding.etTitle,binding.etDescription,getColorForPriority(binding.etPriority.text.toString()),text)
+        val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
+        viewModel.updateData(args.currTask!!.id,binding.etTitle,binding.etDescription,selectedPriority,text)
     }
 
-    private fun inputCheck(title : String,description : String) : Boolean{
-        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (::binding.isInitialized) {
+            outState.putString("buttonText", binding.reminderButton.text.toString())
+            outState.putLong("calendar", calendar.timeInMillis)
+        }
     }
 }

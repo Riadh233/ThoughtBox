@@ -4,7 +4,7 @@ import android.widget.EditText
 import androidx.lifecycle.LiveData
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDao
-import com.raywenderlich.tasksapp.fragments.AddFragmentArgs
+import com.raywenderlich.tasksapp.fragments.AddNoteFragmentArgs
 import com.raywenderlich.tasksapp.tools.IDGenerator
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -45,7 +45,7 @@ class NoteRepository(private val dao: NoteDao) {
     }
     suspend fun updateData(
         etTitle: EditText, etDescription: EditText,
-        date: String, args: AddFragmentArgs
+        date: String, args: AddNoteFragmentArgs
     ){
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()

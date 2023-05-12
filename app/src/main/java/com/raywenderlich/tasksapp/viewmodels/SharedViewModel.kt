@@ -2,6 +2,8 @@ package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
+import android.view.ActionMode
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,9 +26,14 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     val onDeleteTasksEvent: LiveData<Boolean>
         get() = _onDeleteTasksEvent
 
-    private val _onCancelEvent = MutableLiveData(false)
-    val onCancelEvent: LiveData<Boolean>
-        get() = _onCancelEvent
+    private val _onCancelNotesEvent = MutableLiveData(false)
+    val onCancelNotesEvent: LiveData<Boolean>
+        get() = _onCancelNotesEvent
+
+    private val _onCancelTasksEvent = MutableLiveData(false)
+    val onCancelTasksEvent: LiveData<Boolean>
+        get() = _onCancelTasksEvent
+
 
     private val _selectedItemsCount = MutableLiveData(0)
     val selectedItemsCount : LiveData<Int>
@@ -63,21 +70,14 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
         _onDeleteTasksEvent.value = true
     }
 
-    fun onCancel(){
-        _onCancelEvent.value = true
-    }
-
-
     fun consumeNotesDeletionEvent() {
         _onDeleteNotesEvent.value = false
     }
     fun consumeTasksDeletionEvent() {
         _onDeleteTasksEvent.value = false
+        Log.d("shouldConsumeEvent","consumeEvent is false")
     }
 
-    fun consumeCancelEvent() {
-        _onCancelEvent.value = false
-    }
     fun setSelectedItemsCount(count : Int){
         _selectedItemsCount.value = count
     }
@@ -108,4 +108,22 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     fun cancelAlarms(tasks : List<Task>){
         alarmUtils.cancelAlarms(tasks,getApplication<Application>())
     }
+    fun cancelAlarm(task : Task){
+        alarmUtils.cancelAlarm(task,getApplication<Application>())
+    }
+
+    fun onCancelNotes() {
+        _onCancelNotesEvent.value = true
+    }
+
+    fun onCancelTasks() {
+        _onCancelTasksEvent.value = true
+    }
+    fun consumeCancelNotesEvent() {
+        _onCancelNotesEvent.value = false
+    }
+    fun consumeCancelTasksEvent() {
+        _onCancelTasksEvent.value = false
+    }
+
 }

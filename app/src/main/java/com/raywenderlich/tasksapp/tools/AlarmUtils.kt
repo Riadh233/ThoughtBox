@@ -33,4 +33,13 @@ class AlarmUtils {
             }
         }
     }
+    fun cancelAlarm(task: Task, application: Context) {
+        alarmManager = application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(application, AlarmReceiver::class.java)
+        val pendingIntent: PendingIntent? =
+            PendingIntent.getBroadcast(application, task.id.toInt(), intent, FLAG_NO_CREATE)
+        if (pendingIntent != null) {
+            alarmManager.cancel(pendingIntent)
+        }
+    }
 }

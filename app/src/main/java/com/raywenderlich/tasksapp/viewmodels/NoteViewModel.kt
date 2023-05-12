@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import com.raywenderlich.tasksapp.repos.NoteRepository
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDatabase
-import com.raywenderlich.tasksapp.fragments.AddFragmentArgs
+import com.raywenderlich.tasksapp.fragments.AddNoteFragmentArgs
 import kotlinx.coroutines.launch
 
 
@@ -23,7 +23,6 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val _navigateToAddFragment = MutableLiveData<Note>()
     val navigateToAddFragment : LiveData<Note>
     get() = _navigateToAddFragment
-
 
 
     private var selectedItemsCount: LiveData<Int>
@@ -71,7 +70,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     fun updateData(etTitle : EditText, etDescription : EditText,
-                   date: String , args : AddFragmentArgs
+                   date: String , args : AddNoteFragmentArgs
     ){
         viewModelScope.launch {
             repository.updateData(etTitle,etDescription,date,args)

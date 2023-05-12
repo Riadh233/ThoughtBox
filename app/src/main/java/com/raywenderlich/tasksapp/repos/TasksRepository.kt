@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.google.android.material.textfield.TextInputEditText
+import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.data.TasksDao
 import com.raywenderlich.tasksapp.tools.AlarmReceiver
@@ -84,6 +85,16 @@ class TasksRepository(private val dao : TasksDao) {
                 dao.unselectTask(task.id)
             else
                 dao.selectTask(task.id)
+        }
+    }
+    suspend fun changeCheckState(task : Task){
+        withContext(Dispatchers.IO){
+            if(task.checkState){
+                dao.uncheckTask(task.id)
+                Log.d("checkbox","uncheck method used")
+            }else
+                dao.update(Task(task.id,task.title,task.description, R.color.light_gray,"Expired",task.selected,true))
+            Log.d("checkbox","check method used")
         }
     }
     suspend fun updateData(id:Long,etTitle: TextInputEditText, etDescription: TextInputEditText, taskPriority: Int, time: String){

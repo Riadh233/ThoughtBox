@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/white"
+                android:background="?android:attr/colorBackground"
                 android:elevation="0dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"

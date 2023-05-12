@@ -32,12 +32,16 @@ class AlarmReceiver : BroadcastReceiver() {
                  tasksRep.updateAlarmText(taskId)
             }
         }
+        var taskTitle = ""
+        CoroutineScope(Dispatchers.IO).launch {
+            taskTitle = tasksRep.getTaskById(taskId)?.title.toString()
+        }
         val i =  Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
         val builder =  NotificationCompat.Builder(context,"channel_id")
-            .setContentText("Check your daily tasks")
-            .setSmallIcon(R.drawable.ic_alarm) .setContentTitle("App name")
+            .setContentText("Tap to check out your task !")
+            .setSmallIcon(R.drawable.ic_alarm).setContentTitle(taskTitle)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(PRIORITY_HIGH).setContentIntent(pendingIntent)

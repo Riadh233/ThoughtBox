@@ -41,6 +41,12 @@ interface TasksDao {
     @Query("UPDATE tasks_table SET selected = 1 WHERE id = :id")
     fun selectTask(id : Long)
 
+    @Query("UPDATE tasks_table SET checkState = 0 WHERE id = :id")
+    fun uncheckTask(id : Long)
+
+    @Query("UPDATE tasks_table SET checkState = 1 WHERE id = :id")
+    fun checkTask(id : Long)
+
     @Query("UPDATE tasks_table SET selected = 1")
     fun selectAllTasks(): Int
 
