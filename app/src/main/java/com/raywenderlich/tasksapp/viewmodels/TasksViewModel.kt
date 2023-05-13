@@ -1,8 +1,6 @@
 package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +10,6 @@ import com.raywenderlich.tasksapp.repos.TasksRepository
 import com.raywenderlich.tasksapp.data.NoteDatabase
 import com.raywenderlich.tasksapp.data.Task
 import kotlinx.coroutines.*
-import java.util.*
 
 class TasksViewModel(application : Application) : AndroidViewModel(application) {
     private val repository: TasksRepository
@@ -33,26 +30,7 @@ class TasksViewModel(application : Application) : AndroidViewModel(application) 
         selectedTasks = repository.getSelectedTasks()
         selectedItemsCount = repository.getSelectedItemsCount()
     }
-    fun insetTask(task : Task){
-        viewModelScope.launch {
-            repository.insert(task)
-        }
-    }
-    fun updateTask(task : Task){
-        viewModelScope.launch {
-            repository.update(task)
-        }
-    }
-    fun deleteTask(task : Task){
-        viewModelScope.launch {
-            repository.delete(task)
-        }
-    }
-    fun deleteAllTasks(){
-        viewModelScope.launch {
-            repository.deleteAllTasks()
-        }
-    }
+
     fun getAllTasks() : LiveData<List<Task>>{
         return allTasks
     }
@@ -104,13 +82,6 @@ class TasksViewModel(application : Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             repository.selectionItemState(task)
         }
-    }
-    fun getTaskById(taskId : Long) : Task?{
-        var task : Task ?= null
-        viewModelScope.launch {
-            task = repository.getTaskById(taskId)
-        }
-        return task
     }
     fun changeCheckState(task : Task){
         viewModelScope.launch {

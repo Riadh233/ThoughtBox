@@ -9,7 +9,7 @@
         android:id="@+id/addFragment"
         android:name="com.raywenderlich.tasksapp.fragments.AddNoteFragment"
         android:label="Add"
-        tools:layout="@layout/fragment_add" >
+        tools:layout="@layout/fragment_add_note" >
         <action
             android:id="@+id/action_addFragment_to_viewPagerFragment2"
             app:destination="@id/viewPagerFragment2"

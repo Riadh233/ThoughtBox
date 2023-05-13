@@ -1,28 +1,20 @@
 package com.raywenderlich.tasksapp.fragments
-
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raywenderlich.tasksapp.MainActivity
-import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
-import com.raywenderlich.tasksapp.databinding.FragmentListBinding
+import com.raywenderlich.tasksapp.databinding.FragmentListNotesBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
-import kotlin.properties.Delegates
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
@@ -33,12 +25,12 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         ViewModelProvider(this)[NoteViewModel::class.java]
     }
     private lateinit var adapter: NotesAdapter
-    private lateinit var binding : FragmentListBinding
+    private lateinit var binding : FragmentListNotesBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentListBinding.inflate(inflater)
+    ): View {
+        binding = FragmentListNotesBinding.inflate(inflater)
 
         return binding.root
     }
@@ -55,7 +47,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.unselectNotes()
     }
 
-    private fun setUpAddButton(binding: FragmentListBinding) {
+    private fun setUpAddButton(binding: FragmentListNotesBinding) {
 
         binding.addListButton.setOnClickListener {
             it?.let {
@@ -74,7 +66,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         searchView.setOnQueryTextListener(this)
     }
 
-    private fun setUpRecyclerView(binding: FragmentListBinding) {
+    private fun setUpRecyclerView(binding: FragmentListNotesBinding) {
         adapter = NotesAdapter(NotesAdapter.ClickListener {
             viewModel.displayUpdateScreen(it)
             sharedViewModel.navigateToNotesScreen()
@@ -148,11 +140,11 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     private fun searchDatabase(query : String){
         val searchQuery = "%$query%"
 
-        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner, Observer {
+        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
             it.let {
                 adapter.submitList(it)
             }
-        })
+        }
     }
     private fun deleteSelectedItems() {
         viewModel.deleteSelectedNotes()

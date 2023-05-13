@@ -1,20 +1,16 @@
 package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import android.view.ActionMode
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.tools.AlarmUtils
-import java.util.*
 
 class SharedViewModel(application: Application): AndroidViewModel(application) {
 
-    private val _cabVisibility = MutableLiveData<Boolean>(false)
+    private val _cabVisibility = MutableLiveData(false)
     val cabVisibility: LiveData<Boolean>
     get() = _cabVisibility
 

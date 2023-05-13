@@ -1,13 +1,8 @@
 package com.raywenderlich.tasksapp.fragments
 
-import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R
@@ -27,7 +22,7 @@ class ViewPagerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false)
 
         return binding.root

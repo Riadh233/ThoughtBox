@@ -1,7 +1,6 @@
 package com.raywenderlich.tasksapp.ui
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -9,16 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.tasksapp.data.Note
-import com.raywenderlich.tasksapp.databinding.ListItemBinding
-import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
+import com.raywenderlich.tasksapp.databinding.ListItemNoteBinding
 
-class NotesAdapter(val clickListener : ClickListener, val longClickListener: LongClickListener,val selectedItem: OnSelectItem) : ListAdapter<Note, NotesAdapter.viewHolder>(DiffCallback) {
+class NotesAdapter(private val clickListener : ClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem) : ListAdapter<Note, NotesAdapter.ViewHolder>(DiffCallback) {
     private var isEnable = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder =
-        viewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(ListItemNoteBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    override fun onBindViewHolder(holder: viewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
 
         holder.itemView.setOnLongClickListener {
@@ -44,9 +42,9 @@ class NotesAdapter(val clickListener : ClickListener, val longClickListener: Lon
         holder.bind(item)
     }
 
-    class viewHolder(private var binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val selectIcon = binding.icSelected
-        val cardView = binding.view
+    class ViewHolder(private var binding: ListItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val selectIcon = binding.icSelected
+        private val cardView = binding.view
         fun bind(item : Note){
             binding.title.text = item.title
             binding.description.text = item.description

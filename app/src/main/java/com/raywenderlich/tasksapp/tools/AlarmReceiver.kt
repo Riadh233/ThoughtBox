@@ -1,23 +1,16 @@
 package com.raywenderlich.tasksapp.tools
 
-import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.telephony.AvailableNetworkInfo.PRIORITY_HIGH
-import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.data.NoteDatabase
-import com.raywenderlich.tasksapp.fragments.ViewPagerFragment
 import com.raywenderlich.tasksapp.repos.TasksRepository
-import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
-import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

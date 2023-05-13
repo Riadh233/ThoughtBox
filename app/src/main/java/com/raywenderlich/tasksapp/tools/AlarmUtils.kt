@@ -6,10 +6,7 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_NO_CREATE
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.widget.Toast
 import com.raywenderlich.tasksapp.data.Task
-import java.util.*
 
 class AlarmUtils {
     private lateinit var alarmManager: AlarmManager

@@ -1,5 +1,4 @@
 package com.raywenderlich.tasksapp.ui
-
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Paint
@@ -14,24 +13,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.tasksapp.R
-import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.Task
-import com.raywenderlich.tasksapp.databinding.ListTasksBinding
-import java.util.*
+import com.raywenderlich.tasksapp.databinding.ListItemTaskBinding
 
-
-class TasksAdapter(val clickListener : TasksClickListener, val longClickListener: LongClickListener, val selectedItem: OnSelectItem,val checkListener : OnCheckChangeListener) : ListAdapter<Task, TasksAdapter.ViewHolder>(DiffCallback) {
+class TasksAdapter(private val clickListener : TasksClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem, private val checkListener : OnCheckChangeListener) : ListAdapter<Task, TasksAdapter.ViewHolder>(DiffCallback) {
     private var isEnable = false
-    class ViewHolder(val binding : ListTasksBinding) : RecyclerView.ViewHolder(binding.root) {
-        val selectIcon = binding.icSelected
-        val cardView = binding.view
+    class ViewHolder(val binding : ListItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val selectIcon = binding.icSelected
+        private val cardView = binding.view
+        private val frameLayout = binding.frameLayout
         val title = binding.title
         fun bind(item : Task){
             binding.title.text = item.title
             binding.description.text = item.description
             binding.alarm.text = item.alarmTime
             binding.checkbox.isChecked = item.checkState
-            binding.frameLayout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, item.priority))
+            frameLayout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, item.priority))
             if (item.selected){
                 selectItem()
             }else{
@@ -46,25 +43,25 @@ class TasksAdapter(val clickListener : TasksClickListener, val longClickListener
             DrawableCompat.setTint(wrappedDrawable, Color.GREEN)
         }
         private fun checkedMode() {
-            title.setTextColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
+            title.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
             title.paintFlags = title.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            cardView.elevation = 0F
         }
 
         private fun selectItem() {
             selectIcon.isVisible = true
             cardView.setCardBackgroundColor(Color.parseColor("#d3d3d3"))
             cardView.elevation = 0F
+            frameLayout.elevation = 0F
         }
         private fun unselectItem(){
             cardView.setCardBackgroundColor(Color.parseColor("#ffffff"))
-            cardView.elevation = 10F
+            frameLayout.elevation = 8F
+            cardView.elevation = 5F
             selectIcon.isVisible = false
-            Log.d("unselectItem","true")
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ListTasksBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(ListItemTaskBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

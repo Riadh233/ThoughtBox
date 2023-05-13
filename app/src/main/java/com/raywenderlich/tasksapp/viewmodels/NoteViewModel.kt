@@ -1,13 +1,11 @@
 package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
-import android.content.Context
 import android.widget.EditText
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.raywenderlich.tasksapp.repos.NoteRepository
 import com.raywenderlich.tasksapp.data.Note
 import com.raywenderlich.tasksapp.data.NoteDatabase
@@ -33,17 +31,6 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         selectedItemsCount = repository.getSelectedItemsCount()
     }
 
-    fun deleteNote(note: Note) {
-        viewModelScope.launch {
-            repository.delete(note)
-        }
-    }
-
-    fun deleteAllNotes() {
-        viewModelScope.launch {
-            repository.deleteAllNotes()
-        }
-    }
     fun getAllNotes() : LiveData<List<Note>>{
          return allNotes
     }

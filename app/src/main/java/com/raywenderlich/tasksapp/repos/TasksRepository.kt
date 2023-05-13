@@ -1,21 +1,12 @@
 package com.raywenderlich.tasksapp.repos
-
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.google.android.material.textfield.TextInputEditText
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.data.TasksDao
-import com.raywenderlich.tasksapp.tools.AlarmReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class TasksRepository(private val dao : TasksDao) {
 
