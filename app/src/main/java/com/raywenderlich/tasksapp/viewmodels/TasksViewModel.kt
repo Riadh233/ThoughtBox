@@ -44,15 +44,15 @@ class TasksViewModel(application : Application) : AndroidViewModel(application) 
     fun navigateToUpdateScreenFinished(){
         _navigateToAddFragment.value = null
     }
-    fun insertDataToDatabase(id:Long,etTitle: TextInputEditText, etDescription: TextInputEditText, taskPriority: Int, time: String) {
+    fun insertDataToDatabase(id:Long,title: String, description: String, taskPriority: Int, time: String) {
         viewModelScope.launch {
-            repository.insertDataToDatabase(id,etTitle,etDescription,taskPriority,time)
+            repository.insertDataToDatabase(id,title,description,taskPriority,time)
         }
 
     }
-    fun updateData(id:Long,etTitle: TextInputEditText, etDescription: TextInputEditText, taskPriority: Int, time: String){
+    fun updateData(id:Long,title: String, description: String, taskPriority: Int, time: String){
         viewModelScope.launch {
-            repository.updateData(id,etTitle,etDescription,taskPriority,time)
+            repository.updateData(id,title,description,taskPriority,time)
         }
     }
     fun searchDatabase(query : String) : LiveData<List<Task>>{

@@ -39,17 +39,18 @@
 
         <EditText
             android:id="@+id/et_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:background="?android:attr/colorBackground"
             android:cursorVisible="true"
             android:ems="10"
             android:gravity="center"
-            android:inputType="textPersonName"
+            android:maxLength="40"
             android:hint="Note title"
+            android:inputType="textPersonName"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:background="?android:attr/colorBackground"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -35,9 +35,9 @@ class TasksRepository(private val dao : TasksDao) {
             dao.clear()
         }
     }
-    suspend fun insertDataToDatabase(id:Long,etTitle: TextInputEditText, etDescription: TextInputEditText, taskPriority: Int, time: String) {
+    suspend fun insertDataToDatabase(id:Long,title: String, description: String, taskPriority: Int, time: String) {
         withContext(Dispatchers.IO){
-            dao.insert(Task(id,etTitle.text.toString(),etDescription.text.toString(),taskPriority,time))
+            dao.insert(Task(id,title, description,taskPriority,time))
         }
     }
     fun searchDatabase(query : String) : LiveData<List<Task>>{
@@ -88,9 +88,9 @@ class TasksRepository(private val dao : TasksDao) {
             Log.d("checkbox","check method used")
         }
     }
-    suspend fun updateData(id:Long,etTitle: TextInputEditText, etDescription: TextInputEditText, taskPriority: Int, time: String){
+    suspend fun updateData(id:Long,title:String, description:String, taskPriority: Int, time: String){
         withContext(Dispatchers.IO){
-            dao.update(Task(id,etTitle.text.toString(),etDescription.text.toString(),taskPriority,time))
+            dao.update(Task(id,title,description,taskPriority,time))
         }
     }
     suspend fun updateAlarmText(id : Long){

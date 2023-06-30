@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -44,6 +47,19 @@ class AddNoteFragment : Fragment() {
             }
             findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(isEnabled){
+                    if((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString()))){
+                        if(args.currNote == null)
+                        createNote()
+                        else updateNote()
+                    }
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        })
 
         return binding.root
     }
@@ -71,4 +87,5 @@ class AddNoteFragment : Fragment() {
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
     }
+
 }

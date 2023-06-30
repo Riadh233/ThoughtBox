@@ -86,7 +86,6 @@ class AddTaskFragment : Fragment() {
             if (it) {
                 if (args.currTask != null) {
                     binding.createBtn.text = "Update Task"
-                    Log.d("currTask", "not null")
                 } else
                     binding.createBtn.text = "Create Task"
             }
@@ -166,10 +165,11 @@ class AddTaskFragment : Fragment() {
         binding.etDescription.setText(args.currTask?.description)
 
         binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
-        if(args.currTask?.alarmTime == "Expired")
-            binding.reminderButton.text = "Set reminder"
-        else{
+        if(args.currTask?.alarmTime == "Rings Set reminder"){
             binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
+        }
+        else{
+            binding.reminderButton.text = "Set reminder"
         }
     }
 
@@ -180,7 +180,7 @@ class AddTaskFragment : Fragment() {
             text = "Set reminder"
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
 
-        viewModel.insertDataToDatabase(taskId,binding.etTitle,binding.etDescription,selectedPriority,text)
+        viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim(),binding.etDescription.text.toString().trim(),selectedPriority,text)
     }
     private fun getColorForPriority(priority: String): Int {
         return when(priority) {
@@ -201,9 +201,8 @@ class AddTaskFragment : Fragment() {
         var text = "Rings${binding.reminderButton.text}"
         if(!timeScheduled())
             text = "Set reminder"
-
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
-        viewModel.updateData(args.currTask!!.id,binding.etTitle,binding.etDescription,selectedPriority,text)
+        viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),binding.etDescription.text.toString().trim(),selectedPriority,text)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
