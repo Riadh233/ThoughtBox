@@ -49,6 +49,10 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
             sharedViewModel.navigateToTasksScreen()
             findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddTaskFragment())
         }
+        binding.FABLayout.setOnClickListener {
+            sharedViewModel.navigateToTasksScreen()
+            findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddTaskFragment())
+        }
     }
 
 
@@ -97,6 +101,13 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.getAllTasks().observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
+                if(it.isEmpty()){
+                    binding.imgEmpty.visibility = View.VISIBLE
+                    binding.textEmpty.visibility =View.VISIBLE
+                }else{
+                    binding.imgEmpty.visibility = View.GONE
+                    binding.textEmpty.visibility =View.GONE
+                }
             }
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){

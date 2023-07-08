@@ -23,6 +23,7 @@
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/btn_background.xml" value="0.2115" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/cancel_btn.xml" value="0.155" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/edit_text_style.xml" value="0.155" />
+        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/fab_btn.xml" value="0.1415" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ic_add.xml" value="0.155" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ic_alarm.xml" value="0.2115" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ic_app_launcher_background.xml" value="0.155" />
@@ -43,6 +44,8 @@
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ic_search.xml" value="0.155" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ic_tasks.xml" value="0.155" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/inner_shadow.xml" value="0.155" />
+        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ripple_anim.xml" value="0.1415" />
+        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/ripple_bg.xml" value="0.1395" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/rounded_shape1.xml" value="0.155" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/drawable/search_view_bg.xml" value="0.1535" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
@@ -52,7 +55,7 @@
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_add_note.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_add_task.xml" value="0.25" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_list.xml" value="0.33" />
-        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_list_notes.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_list_notes.xml" value="0.33" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_splash_screen.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_tasks.xml" value="0.33" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/fragment_update_task.xml" value="0.20416666666666666" />
@@ -65,6 +68,7 @@
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/layout/sub_task_item.xml" value="0.203125" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/menu/delete_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/mipmap-anydpi-v26/ic_app_launcher.xml" value="0.155" />
+        <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp/app/src/main/res/mipmap-anydpi-v26/ic_empty_state.xml" value="0.1" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp1/app/src/main/res/drawable/btn_background.xml" value="0.1615" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp1/app/src/main/res/drawable/ic_check.xml" value="0.1" />
         <entry key="..\:/Users/RIADHa/AndroidStudioProjects/Tasksapp1/app/src/main/res/drawable/ic_checkall.xml" value="0.112" />

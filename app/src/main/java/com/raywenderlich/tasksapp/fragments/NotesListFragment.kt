@@ -1,16 +1,20 @@
 package com.raywenderlich.tasksapp.fragments
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raywenderlich.tasksapp.MainActivity
+import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListNotesBinding
@@ -48,8 +52,18 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
 
     private fun setUpAddButton(binding: FragmentListNotesBinding) {
+        binding.recyclerView.setOnScrollChangeListener{_,scrollX,scrollY,_,oldScrollY ->
+           when{
+               scrollY > oldScrollY -> {
+                   binding.FABText.isVisible = false
+               }
+              else -> {
+                   binding.FABText.isVisible = true
+               }
+           }
+        }
 
-        binding.addListButton.setOnClickListener {
+        binding.FABLayout.setOnClickListener {
             it?.let {
                 unselectNotes()
                 sharedViewModel.hideCAB()
@@ -57,6 +71,17 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
                 Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
                 findNavController()
                             .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
+
+            }
+        }
+        binding.addListButton.setOnClickListener {
+            it?.let {
+                unselectNotes()
+                sharedViewModel.hideCAB()
+                sharedViewModel.navigateToNotesScreen()
+                Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
+                findNavController()
+                    .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
 
             }
         }
@@ -85,6 +110,13 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.getAllNotes().observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
+                if(it.isEmpty()){
+                    binding.imgEmpty.visibility = View.VISIBLE
+                    binding.textEmpty.visibility =View.VISIBLE
+                }else{
+                    binding.imgEmpty.visibility = View.GONE
+                    binding.textEmpty.visibility =View.GONE
+                }
             }
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){

@@ -27,7 +27,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ListFragment">
-
+            <ImageView
+                android:id="@+id/img_empty"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_empty_state"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/text_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="170dp"
+                android:layout_marginBottom="10dp"
+                android:text="No notes available.Create your first note now!"
+                android:visibility="gone"
+                />
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
@@ -78,20 +97,50 @@
                 android:foreground="@drawable/inner_shadow"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:listitem="@layout/list_item_note" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addListButton"
+                />
+            <LinearLayout
+                android:id="@+id/FAB_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="28dp"
-                android:backgroundTint="@color/blue"
+                android:layout_gravity="bottom|end"
+                android:orientation="horizontal"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_add"
-                app:tint="@android:color/white" />
+                android:animateLayoutChanges="true"
+                android:clipToPadding="false"
+                android:layout_margin="16dp"
+                android:background="@drawable/fab_btn"
+                android:elevation="10dp"
+                >
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/addListButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="@color/blue"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
+                    app:fabSize="mini"
+                    android:padding="0dp"
+                    app:srcCompat="@drawable/ic_add"
+                    app:tint="@android:color/white"
+                    app:useCompatPadding="false" />
+
+                <TextView
+                    android:id="@+id/FAB_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADD NOTE"
+                    android:textColor="@color/white"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="20dp"
+                    android:layout_gravity="center_vertical"
+                    />
+            </LinearLayout>
+
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

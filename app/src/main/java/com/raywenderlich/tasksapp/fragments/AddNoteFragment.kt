@@ -56,7 +56,7 @@ class AddNoteFragment : Fragment() {
                         else updateNote()
                     }
                     isEnabled = false
-                    requireActivity().onBackPressed()
+                    findNavController().popBackStack()
                 }
             }
         })

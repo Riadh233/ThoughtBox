@@ -13,7 +13,10 @@
         <action
             android:id="@+id/action_addFragment_to_viewPagerFragment2"
             app:destination="@id/viewPagerFragment2"
-            app:enterAnim="@anim/from_left" />
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right" />
         <argument
             android:name="currNote"
             app:argType="com.raywenderlich.tasksapp.data.Note"
