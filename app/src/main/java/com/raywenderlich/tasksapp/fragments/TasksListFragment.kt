@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,8 @@ import com.raywenderlich.tasksapp.databinding.FragmentTasksBinding
 import com.raywenderlich.tasksapp.ui.TasksAdapter
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
 
@@ -109,6 +112,20 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
                     binding.textEmpty.visibility =View.GONE
                 }
             }
+//            val currentTime = Calendar.getInstance()
+//            val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+//            for(task in it){
+//                if(alarmIsSet(task.alarmTime)){
+//                    val length = task.alarmTime.length
+//                    val taskTime = timeFormat.parse(task.alarmTime.substring(length-8,length))
+//                    val taskCalendar = Calendar.getInstance()
+//                    taskCalendar.time = taskTime
+//                    if(currentTime.get(Calendar.DAY_OF_YEAR) == taskCalendar.get(Calendar.DAY_OF_YEAR)){
+//
+//                    }
+//
+//                }
+//            }   later work
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
             sharedViewModel.setSelectedItemsCount(it)
@@ -154,6 +171,12 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
             }
         }
     }
+
+    private fun alarmIsSet(alarmTime: String): Boolean {
+        val alarm = alarmTime.toCharArray()
+        return alarm[alarm.size-1] == 'm'
+    }
+
     private fun deleteSelectedItems() {
         viewModel.deleteSelectedTasks()
         adapter.notifyDataSetChanged()
