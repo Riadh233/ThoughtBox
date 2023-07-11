@@ -1,4 +1,5 @@
 package com.raywenderlich.tasksapp.repos
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.LiveData
@@ -35,22 +36,23 @@ class NoteRepository(private val dao: NoteDao) {
         return dao.searchDatabase(query)
     }
     suspend fun insertDataToDatabase(etTitle : EditText, etDescription :
-                                     EditText, date : String) {
+                                     EditText, date : String, color : Int) {
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
             withContext(IO){
-            dao.insert(Note(IDGenerator.generateID(),title,description,date))
+            dao.insert(Note(IDGenerator.generateID(),title,description,date,false, color))
             }
     }
+    @SuppressLint("SuspiciousIndentation")
     suspend fun updateData(
         etTitle: EditText, etDescription: EditText,
-        date: String, args: AddNoteFragmentArgs
+        date: String, args: AddNoteFragmentArgs, color: Int
     ){
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
 
             withContext(IO){
-                dao.update(Note(args.currNote!!.id,title,description,date))
+                dao.update(Note(args.currNote!!.id,title,description,date,false, color))
             }
     }
 

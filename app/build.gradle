@@ -64,6 +64,10 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.0")
 
+    //color picker library
+    implementation 'com.thebluealliance:spectrum:0.7.1'
+
+
     implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 
 }

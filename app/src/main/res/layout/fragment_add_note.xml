@@ -12,14 +12,14 @@
         android:layout_height="match_parent"
         tools:context=".AddFragment">
 
-        <FrameLayout
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="160dp"
             android:layout_marginBottom="-20dp"
             android:elevation="12dp"
-            android:background="@drawable/rounded_shape1"
+            app:cardCornerRadius="36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +31,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:gravity="top"
-                android:background="@color/white"
                 android:inputType="textMultiLine"
                 android:hint="Description" />
 
-        </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
         <EditText
             android:id="@+id/et_title"

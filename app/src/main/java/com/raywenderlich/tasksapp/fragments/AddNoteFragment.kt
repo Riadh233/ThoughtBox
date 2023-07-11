@@ -1,6 +1,7 @@
 package com.raywenderlich.tasksapp.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -12,9 +13,14 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.raywenderlich.tasksapp.R
+import com.raywenderlich.tasksapp.databinding.BottomSheetLayoutBinding
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.databinding.FragmentAddNoteBinding
 import java.time.LocalDate
@@ -23,8 +29,10 @@ import java.time.format.DateTimeFormatter
 class AddNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddNoteBinding
     private lateinit var viewModel: NoteViewModel
+    private var color = -1
     private val args by navArgs<AddNoteFragmentArgs>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +41,8 @@ class AddNoteFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         binding.etTitle.setText(args.currNote?.title)
         binding.etDescription.setText(args.currNote?.description)
+        args.currNote?.let { binding.cardView.setCardBackgroundColor(it.color) }
+
 
         binding.backButton.setOnClickListener {
             if (inputCheck(
@@ -46,6 +56,36 @@ class AddNoteFragment : Fragment() {
                     updateNote()
             }
             findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
+        }
+
+        binding.colorPicker.setOnClickListener {
+            val bottomSheetDialog = BottomSheetDialog(
+                requireContext(),
+                R.style.BottomSheetDialogTheme
+            )
+            val bottomSheetView : View = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
+            with(bottomSheetDialog){
+                setContentView(bottomSheetView)
+                show()
+            }
+            val bottomSheetBinding = BottomSheetLayoutBinding.bind(bottomSheetView)
+            bottomSheetBinding.apply {
+                colorPicker.apply {
+                    setSelectedColor(color)
+                    setOnColorSelectedListener {
+                        value -> color = value
+                        binding.apply {
+                            cardView.setCardBackgroundColor(color)
+                        }
+                        bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
+                    }
+                }
+                bottomSheetParent.setCardBackgroundColor(color)
+            }
+            bottomSheetView.post{
+                bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
@@ -70,13 +110,15 @@ class AddNoteFragment : Fragment() {
         etDesc.requestFocus()
         showKeyboard(etDesc)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNote(){
         viewModel.insertDataToDatabase(binding.etTitle,binding.etDescription,
-            DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()))
+            DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()), color)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateNote(){
         viewModel.updateData(binding.etTitle,binding.etDescription,
-            DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()),args)
+            DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now()),args, color)
     }
 
     private fun inputCheck(title : String,description : String) : Boolean{
