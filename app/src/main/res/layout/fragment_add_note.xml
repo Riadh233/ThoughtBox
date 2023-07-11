@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:gravity="top"
+                android:background="@null"
                 android:inputType="textMultiLine"
                 android:hint="Description" />
 

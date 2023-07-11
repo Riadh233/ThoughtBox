@@ -45,7 +45,9 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
     class ViewHolder(private var binding: ListItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
         private val selectIcon = binding.icSelected
         private val cardView = binding.view
+        private var color :Int = -1
         fun bind(item : Note){
+            color = item.color
             binding.title.text = item.title
             binding.description.text = item.description
             binding.number.text = item.date
@@ -60,13 +62,26 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
         }
         private fun selectItem() {
             selectIcon.isVisible = true
-            cardView.setCardBackgroundColor(Color.parseColor("#d3d3d3"))
+            binding.background.setBackgroundColor(manipulateColor(color, 0.8f))
             cardView.elevation = 0F
         }
         private fun unselectItem(){
-            cardView.setCardBackgroundColor(Color.parseColor("#ffffff"))
+            binding.background.setBackgroundColor(color)
             cardView.elevation = 10F
             selectIcon.isVisible = false
+        }
+
+        private fun manipulateColor(color: Int, factor: Float): Int {
+            val a = Color.alpha(color)
+            val r = Math.round(Color.red(color) * factor)
+            val g = Math.round(Color.green(color) * factor)
+            val b = Math.round(Color.blue(color) * factor)
+            return Color.argb(
+                a,
+                Math.min(r, 255),
+                Math.min(g, 255),
+                Math.min(b, 255)
+            )
         }
     }
     companion object DiffCallback : DiffUtil.ItemCallback<Note>() {

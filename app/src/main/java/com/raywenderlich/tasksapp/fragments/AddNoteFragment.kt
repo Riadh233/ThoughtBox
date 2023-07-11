@@ -41,7 +41,8 @@ class AddNoteFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         binding.etTitle.setText(args.currNote?.title)
         binding.etDescription.setText(args.currNote?.description)
-        args.currNote?.let { binding.cardView.setCardBackgroundColor(it.color) }
+        args.currNote?.let { binding.cardView.setCardBackgroundColor(it.color)
+        color = args.currNote!!.color}
 
 
         binding.backButton.setOnClickListener {
@@ -57,7 +58,7 @@ class AddNoteFragment : Fragment() {
             }
             findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
-
+        binding.colorPicker
         binding.colorPicker.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(
                 requireContext(),
