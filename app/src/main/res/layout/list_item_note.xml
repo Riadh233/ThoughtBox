@@ -24,6 +24,7 @@
         app:cardElevation="10dp"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"

@@ -51,16 +51,16 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     fun searchDatabase(query : String) : LiveData<List<Note>>{
         return repository.searchDatabase(query)
     }
-    fun insertDataToDatabase(etTitle : EditText, etDescription : EditText, date : String){
+    fun insertDataToDatabase(etTitle : EditText, etDescription : EditText, date : String, color : Int){
         viewModelScope.launch {
-            repository.insertDataToDatabase(etTitle,etDescription,date)
+            repository.insertDataToDatabase(etTitle,etDescription,date,color)
         }
     }
     fun updateData(etTitle : EditText, etDescription : EditText,
-                   date: String , args : AddNoteFragmentArgs
+                   date: String , args : AddNoteFragmentArgs, color: Int
     ){
         viewModelScope.launch {
-            repository.updateData(etTitle,etDescription,date,args)
+            repository.updateData(etTitle,etDescription,date,args, color)
         }
     }
 

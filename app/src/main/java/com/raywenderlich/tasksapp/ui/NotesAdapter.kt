@@ -49,6 +49,8 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
             binding.title.text = item.title
             binding.description.text = item.description
             binding.number.text = item.date
+            binding.background.setBackgroundColor(item.color)
+
             if (item.selected){
                 selectItem()
             }else{
