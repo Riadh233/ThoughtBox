@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -41,8 +42,9 @@ class AddNoteFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         binding.etTitle.setText(args.currNote?.title)
         binding.etDescription.setText(args.currNote?.description)
-        args.currNote?.let { binding.cardView.setCardBackgroundColor(it.color)
+        args.currNote?.let { binding.coloredView.setBackgroundColor(it.color)
         color = args.currNote!!.color}
+        changeInsetsColor(color)
 
 
         binding.backButton.setOnClickListener {
@@ -56,6 +58,7 @@ class AddNoteFragment : Fragment() {
                 } else
                     updateNote()
             }
+            changeInsetsColor(android.graphics.Color.TRANSPARENT)
             findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
         binding.colorPicker
@@ -76,7 +79,8 @@ class AddNoteFragment : Fragment() {
                     setOnColorSelectedListener {
                         value -> color = value
                         binding.apply {
-                            cardView.setCardBackgroundColor(color)
+                            coloredView.setBackgroundColor(color)
+                            changeInsetsColor(color)
                         }
                         bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
                     }
@@ -96,6 +100,7 @@ class AddNoteFragment : Fragment() {
                         createNote()
                         else updateNote()
                     }
+                    changeInsetsColor(android.graphics.Color.TRANSPARENT)
                     isEnabled = false
                     findNavController().popBackStack()
                 }
@@ -130,5 +135,14 @@ class AddNoteFragment : Fragment() {
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
     }
+
+    private fun changeInsetsColor(color: Int){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity?.window!!.statusBarColor = color
+            activity?.window!!.navigationBarColor = color
+        }
+    }
+
+
 
 }

@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         createNotificationChannel()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window!!.statusBarColor = android.graphics.Color.TRANSPARENT
+            window!!.navigationBarColor = android.graphics.Color.TRANSPARENT
+        }
         setContentView(binding.root)
     }
 
