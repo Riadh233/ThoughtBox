@@ -16,24 +16,24 @@
 
     <!--calor palette-->
 
-    <color name="purple">#D4C4E3</color>
-    <color name="darkPurple">#9387F5</color>
-    <color name="peach">#F5C390</color>
-    <color name="green">#C3F89C</color>
-    <color name="orangeRed" >#F3722C</color>
-    <color name="yellowOrange">#F8961E</color>
-    <color name="MangoTango">#F9844A</color>
-    <color name="maizeCrayola">#F9C74F</color>
-    <color name="card_purple">#869681</color>
-    <color name="card_yellow">#FFCCOG</color>
-    <color name="card_red">#FF3B30</color>
-    <color name="card_violet">#FF9500</color>
-    <color name="card_blue">#5AC8FA</color>
-    <color name="card_green">#34C759</color>
+    <color name="purple">#66D4C4E3</color>
+    <color name="darkPurple">#669387F5</color>
+    <color name="peach">#66F5C390</color>
+    <color name="green">#66C3F89C</color>
+    <color name="orangeRed" >#66F3722C</color>
+    <color name="yellowOrange">#66F8961E</color>
+    <color name="MangoTango">#66F9844A</color>
+    <color name="maizeCrayola">#66F9C74F</color>
+    <color name="card_purple">#66869681</color>
+    <color name="card_yellow">#66FFCCOG</color>
+    <color name="card_red">#66FF3B30</color>
+    <color name="card_violet">#66FF9500</color>
+    <color name="card_blue">#665AC8FA</color>
+    <color name="card_green">#6634C759</color>
 
 
     <array name="color_picker">
-    <item>@color/white</item>
+    <item>00FFFFFF</item>
     <item>@color/card_purple</item>
     <item>@color/card_red</item>
     <item>@color/card_violet</item>
