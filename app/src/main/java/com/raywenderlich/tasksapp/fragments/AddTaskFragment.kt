@@ -3,14 +3,17 @@ package com.raywenderlich.tasksapp.fragments
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -60,12 +63,12 @@ class AddTaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val taskId : Long = IDGenerator.generateID()
         setUpReminderButton()
-        setUpCreateButton(taskId)
-        setUpBackButton()
-        setUpObservers()
         setUpPrioritySpinner()
+
         if(args.currTask != null)
             setUpCurrTask()
+
+        setUpBackButton(taskId)
     }
 
 
@@ -77,39 +80,49 @@ class AddTaskFragment : Fragment() {
         )
     }
 
-    private fun setUpBackButton() {
+    private fun setUpBackButton(taskId : Long) {
         binding.backButton.setOnClickListener {
-            findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
-        }
-    }
-
-    private fun setUpObservers() {
-        sharedViewModel.navigateToTasksScreen.observe(viewLifecycleOwner) {
-            if (it) {
-                if (args.currTask != null) {
-                    binding.createBtn.text = "Update Task"
-                } else
-                    binding.createBtn.text = "Create Task"
-            }
-        }
-    }
-
-    private fun setUpCreateButton(taskId: Long) {
-        binding.createBtn.setOnClickListener {
-            if (binding.etTitle.text!!.isNotEmpty()) {
+            if (inputCheck(
+                    binding.etTitle.text.toString(),
+                    binding.etDescription.text.toString()
+                )
+            ) {
                 if (args.currTask == null) {
                     createTask(taskId)
-                    if (timeScheduled())
+                    if (timeChosen())
                         sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
-                } else {
+                } else{
                     updateTask()
-                    if (timeScheduled())
+                    if (timeChosen() && !timeScheduled())
                         sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
                 }
             }
             findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
         }
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(isEnabled){
+                    if((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString()))){
+                        if(args.currTask == null){
+                            createTask(taskId)
+                            if (timeChosen())
+                                sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
+                        }
+                        else{
+                            updateTask()
+                            if (timeChosen() && !timeScheduled())
+                                sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
+                        }
+                    }
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+
+            }
+        })
     }
+
+
 
     private fun handleLandscapeMode(savedInstanceState: Bundle) {
         val buttonText = savedInstanceState.getString("buttonText")
@@ -117,8 +130,11 @@ class AddTaskFragment : Fragment() {
         calendar.timeInMillis = savedInstanceState.getLong("calendar")
     }
 
-    private fun timeScheduled(): Boolean {
+    private fun timeChosen(): Boolean {
         return binding.reminderButton.text.toString().lowercase(Locale.getDefault()) != "set reminder"
+    }
+    private fun timeScheduled() : Boolean{
+        return args.currTask!!.alarmTime != "set reminder" || args.currTask!!.alarmTime != "Expired"
     }
 
     private fun setUpReminderButton() {
@@ -151,7 +167,7 @@ class AddTaskFragment : Fragment() {
                 calendar.add(Calendar.DATE, 1)
                 binding.reminderButton.text = "Tomorrow $selectedTime"
             }else{
-                binding.reminderButton.text = " Today $selectedTime"
+                binding.reminderButton.text = "Today $selectedTime"
             }
         }
     }
@@ -167,7 +183,7 @@ class AddTaskFragment : Fragment() {
         binding.etDescription.setText(args.currTask?.description)
 
         binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
-        if(args.currTask?.alarmTime == "Rings Set reminder"){
+        if(args.currTask?.alarmTime?.get(args.currTask?.alarmTime!!.length-1) == 'm'){
             binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
         }
         else{
@@ -178,7 +194,7 @@ class AddTaskFragment : Fragment() {
 
     private fun createTask(taskId: Long){
         var text = "Rings${binding.reminderButton.text}"
-        if(!timeScheduled())
+        if(!timeChosen())
             text = "Set reminder"
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
 
@@ -200,11 +216,12 @@ class AddTaskFragment : Fragment() {
     }
 
     private fun updateTask(){
-        var text = "Rings${binding.reminderButton.text}"
-        if(!timeScheduled())
-            text = "Set reminder"
+        var alarmTime = "Rings${binding.reminderButton.text}"
+        if(!timeChosen()){
+            alarmTime = "Set reminder"
+        }
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
-        viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),binding.etDescription.text.toString().trim(),selectedPriority,text)
+        viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),binding.etDescription.text.toString().trim(),selectedPriority,alarmTime)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -213,5 +230,8 @@ class AddTaskFragment : Fragment() {
             outState.putString("buttonText", binding.reminderButton.text.toString())
             outState.putLong("calendar", calendar.timeInMillis)
         }
+    }
+    private fun inputCheck(title : String,description : String) : Boolean{
+        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
     }
 }

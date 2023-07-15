@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -79,7 +80,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
                 unselectNotes()
                 sharedViewModel.hideCAB()
                 sharedViewModel.navigateToNotesScreen()
-                Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
+
                 findNavController()
                     .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
 
@@ -111,8 +112,16 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             it?.let {
                 adapter.submitList(it)
                 if(it.isEmpty()){
-                    binding.imgEmpty.visibility = View.VISIBLE
-                    binding.textEmpty.visibility =View.VISIBLE
+                    binding.imgEmpty.apply {
+                        visibility = View.VISIBLE
+                        alpha = 0f // Initially set the alpha to 0
+                        animate().alpha(1f).setDuration(1000).start()
+                    }
+                    binding.textEmpty.apply {
+                        visibility = View.VISIBLE
+                        alpha = 0f // Initially set the alpha to 0
+                        animate().alpha(1f).setDuration(1000).start()
+                    }
                 }else{
                     binding.imgEmpty.visibility = View.GONE
                     binding.textEmpty.visibility =View.GONE

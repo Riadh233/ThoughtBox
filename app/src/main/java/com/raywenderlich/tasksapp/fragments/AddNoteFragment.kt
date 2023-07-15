@@ -102,7 +102,7 @@ class AddNoteFragment : Fragment() {
                     }
                     changeInsetsColor(android.graphics.Color.TRANSPARENT)
                     isEnabled = false
-                    findNavController().popBackStack()
+                    requireActivity().onBackPressed()
                 }
             }
         })

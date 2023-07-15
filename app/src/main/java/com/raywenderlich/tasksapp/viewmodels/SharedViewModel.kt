@@ -2,6 +2,7 @@ package com.raywenderlich.tasksapp.viewmodels
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -100,6 +101,7 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     }
     fun setAlarm(taskId:Long,timeScheduled:Long){
         alarmUtils.setAlarm(taskId,timeScheduled,getApplication<Application>())
+        Log.d("alarm","alarm is set")
     }
     fun cancelAlarms(tasks : List<Task>){
         alarmUtils.cancelAlarms(tasks,getApplication<Application>())

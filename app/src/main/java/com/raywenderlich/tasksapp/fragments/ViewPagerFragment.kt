@@ -1,7 +1,11 @@
 package com.raywenderlich.tasksapp.fragments
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
@@ -86,6 +90,7 @@ class ViewPagerFragment : Fragment() {
 
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
+
                 R.id.delete_item -> {
                     if(binding.viewPager.currentItem == 0){
                         sharedViewModel.onDeleteNotes()
@@ -105,6 +110,7 @@ class ViewPagerFragment : Fragment() {
         }
 
         override fun onDestroyActionMode(mode: ActionMode?) {
+
             mActionMode = null
             if(binding.viewPager.currentItem == 0)
             sharedViewModel.onCancelNotes()
@@ -118,6 +124,7 @@ class ViewPagerFragment : Fragment() {
             return
         }
         mActionMode = (activity as MainActivity).startActionMode(mActionModeCallback)
+
         isActionModeActive = true
     }
 
@@ -125,6 +132,7 @@ class ViewPagerFragment : Fragment() {
         mActionMode?.finish()
         isActionModeActive = false
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

@@ -1,12 +1,12 @@
 package com.raywenderlich.tasksapp.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,11 +48,25 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
 
     private fun setUpAddButton() {
+        binding.recyclerView.setOnScrollChangeListener{_,scrollX,scrollY,_,oldScrollY ->
+            when{
+                scrollY > oldScrollY -> {
+                    binding.FABText.isVisible = false
+                }
+                else -> {
+                    binding.FABText.isVisible = true
+                }
+            }
+        }
         binding.addTaskButton.setOnClickListener {
+            unselectTasks()
+            sharedViewModel.hideCAB()
             sharedViewModel.navigateToTasksScreen()
             findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddTaskFragment())
         }
         binding.FABLayout.setOnClickListener {
+            unselectTasks()
+            sharedViewModel.hideCAB()
             sharedViewModel.navigateToTasksScreen()
             findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddTaskFragment())
         }
@@ -112,20 +126,21 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
                     binding.textEmpty.visibility =View.GONE
                 }
             }
-//            val currentTime = Calendar.getInstance()
-//            val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-//            for(task in it){
-//                if(alarmIsSet(task.alarmTime)){
-//                    val length = task.alarmTime.length
-//                    val taskTime = timeFormat.parse(task.alarmTime.substring(length-8,length))
-//                    val taskCalendar = Calendar.getInstance()
-//                    taskCalendar.time = taskTime
-//                    if(currentTime.get(Calendar.DAY_OF_YEAR) == taskCalendar.get(Calendar.DAY_OF_YEAR)){
-//
-//                    }
-//
-//                }
-//            }   later work
+            val currentTime = Calendar.getInstance()
+            val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            for(task in it){
+                if(alarmIsSet(task.alarmTime)){
+                    val length = task.alarmTime.length
+                    val taskTime = timeFormat.parse(task.alarmTime.substring(length-8,length))
+                    val taskCalendar = Calendar.getInstance()
+                    taskCalendar.time = taskTime
+                    if(currentTime.get(Calendar.DAY_OF_YEAR) == taskCalendar.get(Calendar.DAY_OF_YEAR)
+                        && taskCalendar.timeInMillis > currentTime.timeInMillis){
+                        val time = "Rings Today $taskTime"
+                        viewModel.updateData(task.id,task.title,task.description,task.priority,time)
+                    }
+                }
+            }
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
             sharedViewModel.setSelectedItemsCount(it)
