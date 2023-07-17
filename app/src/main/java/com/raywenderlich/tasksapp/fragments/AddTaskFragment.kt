@@ -9,11 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -158,8 +156,8 @@ class AddTaskFragment : Fragment() {
             val chosenHour = timePicker.hour
             val chosenMinute = timePicker.minute
             val selectedTime = formatTime(chosenHour, chosenMinute)
-            calendar[Calendar.HOUR_OF_DAY] = timePicker.hour
-            calendar[Calendar.MINUTE] = timePicker.minute
+            calendar[Calendar.HOUR_OF_DAY] = chosenHour
+            calendar[Calendar.MINUTE] = chosenMinute
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
             val currentTime = Calendar.getInstance()
@@ -178,6 +176,8 @@ class AddTaskFragment : Fragment() {
         val format = SimpleDateFormat("h:mm a", Locale.getDefault())
         return format.format(calendar.time)
     }
+
+
     private fun setUpCurrTask(){
         binding.etTitle.setText(args.currTask?.title)
         binding.etDescription.setText(args.currTask?.description)
@@ -193,12 +193,18 @@ class AddTaskFragment : Fragment() {
 
 
     private fun createTask(taskId: Long){
-        var text = "Rings${binding.reminderButton.text}"
+        var text = "Rings ${binding.reminderButton.text}"
         if(!timeChosen())
             text = "Set reminder"
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
 
-        viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim(),binding.etDescription.text.toString().trim(),selectedPriority,text)
+        viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim()
+            ,binding.etDescription.text.toString().trim(),selectedPriority,text,calendarToString(calendar.time)
+        )
+    }
+    fun calendarToString(calendar: Date): String {
+        val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
     private fun getColorForPriority(priority: String): Int {
         return when(priority) {
@@ -221,7 +227,9 @@ class AddTaskFragment : Fragment() {
             alarmTime = "Set reminder"
         }
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
-        viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),binding.etDescription.text.toString().trim(),selectedPriority,alarmTime)
+        viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),
+            binding.etDescription.text.toString().trim(),selectedPriority,alarmTime,
+            args.currTask!!.scheduledDate)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

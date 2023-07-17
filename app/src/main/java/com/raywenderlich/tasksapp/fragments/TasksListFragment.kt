@@ -1,9 +1,12 @@
 package com.raywenderlich.tasksapp.fragments
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,6 +20,7 @@ import com.raywenderlich.tasksapp.databinding.FragmentTasksBinding
 import com.raywenderlich.tasksapp.ui.TasksAdapter
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +43,7 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
@@ -47,6 +52,8 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         setupObservers()
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpAddButton() {
         binding.recyclerView.setOnScrollChangeListener{_,scrollX,scrollY,_,oldScrollY ->
             when{
@@ -125,22 +132,10 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
                     binding.imgEmpty.visibility = View.GONE
                     binding.textEmpty.visibility =View.GONE
                 }
+                checkAlarmTimeState(it)
+
             }
-            val currentTime = Calendar.getInstance()
-            val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-            for(task in it){
-                if(alarmIsSet(task.alarmTime)){
-                    val length = task.alarmTime.length
-                    val taskTime = timeFormat.parse(task.alarmTime.substring(length-8,length))
-                    val taskCalendar = Calendar.getInstance()
-                    taskCalendar.time = taskTime
-                    if(currentTime.get(Calendar.DAY_OF_YEAR) == taskCalendar.get(Calendar.DAY_OF_YEAR)
-                        && taskCalendar.timeInMillis > currentTime.timeInMillis){
-                        val time = "Rings Today $taskTime"
-                        viewModel.updateData(task.id,task.title,task.description,task.priority,time)
-                    }
-                }
-            }
+
         }
         viewModel.getSelectedItemsCount().observe(viewLifecycleOwner){
             sharedViewModel.setSelectedItemsCount(it)
@@ -187,11 +182,24 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         }
     }
 
-    private fun alarmIsSet(alarmTime: String): Boolean {
-        val alarm = alarmTime.toCharArray()
-        return alarm[alarm.size-1] == 'm'
+    private fun checkAlarmTimeState(it: List<Task>) {
+        for (task in it) {
+            if (isSameDay(task.scheduledDate) && task.alarmTime.length > 15 && task.alarmTime.substring(0, 15)
+                    .trim() == "Rings Tomorrow"
+            ) {
+                val alarmTime = "Rings Today ${task.alarmTime.substring(15)}"
+                viewModel.updateData(
+                    task.id,
+                    task.title,
+                    task.description,
+                    task.priority,
+                    alarmTime,
+                    task.scheduledDate
+                )
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
-
     private fun deleteSelectedItems() {
         viewModel.deleteSelectedTasks()
         adapter.notifyDataSetChanged()
@@ -208,5 +216,18 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     private fun unselectTasks() {
         viewModel.unselectTasks()
+    }
+
+    fun isSameDay(savedTimeString: String): Boolean {
+        val savedFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.getDefault())
+        val currentFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val savedDate = savedFormat.parse(savedTimeString)
+        val currentDate = Date()
+
+        val savedDateString = currentFormat.format(savedDate)
+        val currentDateString = currentFormat.format(currentDate)
+
+        return savedDateString == currentDateString
     }
 }

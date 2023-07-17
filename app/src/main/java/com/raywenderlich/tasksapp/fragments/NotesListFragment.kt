@@ -1,5 +1,6 @@
 package com.raywenderlich.tasksapp.fragments
 import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -7,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +41,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         return binding.root
     }
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val searchView = binding.search
@@ -52,6 +55,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.unselectNotes()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpAddButton(binding: FragmentListNotesBinding) {
         binding.recyclerView.setOnScrollChangeListener{_,scrollX,scrollY,_,oldScrollY ->
            when{

@@ -1,7 +1,6 @@
 package com.raywenderlich.tasksapp.repos
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.google.android.material.textfield.TextInputEditText
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.data.Task
 import com.raywenderlich.tasksapp.data.TasksDao
@@ -35,9 +34,13 @@ class TasksRepository(private val dao : TasksDao) {
             dao.clear()
         }
     }
-    suspend fun insertDataToDatabase(id:Long,title: String, description: String, taskPriority: Int, time: String) {
+    suspend fun insertDataToDatabase(
+        id:Long,
+        title: String, description: String, taskPriority: Int, time: String,
+        scheduledDate: String
+    ) {
         withContext(Dispatchers.IO){
-            dao.insert(Task(id,title, description,taskPriority,time))
+            dao.insert(Task(id,title, description,taskPriority,time,scheduledDate))
         }
     }
     fun searchDatabase(query : String) : LiveData<List<Task>>{
@@ -84,13 +87,17 @@ class TasksRepository(private val dao : TasksDao) {
                 dao.uncheckTask(task.id)
                 Log.d("checkbox","uncheck method used")
             }else
-                dao.update(Task(task.id,task.title,task.description, R.color.light_gray,"Expired",task.selected,true))
+                dao.update(Task(task.id,task.title,task.description, R.color.light_gray,"Expired",task.scheduledDate,task.selected,true))
             Log.d("checkbox","check method used")
         }
     }
-    suspend fun updateData(id:Long,title:String, description:String, taskPriority: Int, time: String){
+    suspend fun updateData(
+        id:Long,
+        title:String, description:String, taskPriority: Int, time: String,
+        scheduledDate: String
+    ){
         withContext(Dispatchers.IO){
-            dao.update(Task(id,title,description,taskPriority,time))
+            dao.update(Task(id,title,description,taskPriority,time, scheduledDate))
         }
     }
     suspend fun updateAlarmText(id : Long){

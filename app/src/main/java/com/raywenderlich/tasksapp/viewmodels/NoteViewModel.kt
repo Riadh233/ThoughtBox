@@ -18,8 +18,8 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val noteDB = NoteDatabase.getInstance(application)
     private var allNotes: LiveData<List<Note>>
 
-    private val _navigateToAddFragment = MutableLiveData<Note>()
-    val navigateToAddFragment : LiveData<Note>
+    private val _navigateToAddFragment = MutableLiveData<Note?>()
+    val navigateToAddFragment : LiveData<Note?>
     get() = _navigateToAddFragment
 
 
