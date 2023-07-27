@@ -19,6 +19,7 @@
     <color name="purple">#66D4C4E3</color>
     <color name="darkPurple">#669387F5</color>
     <color name="peach">#66F5C390</color>
+    <color name="blueTransparent">#663e91ff</color>
     <color name="green">#66C3F89C</color>
     <color name="orangeRed" >#66F3722C</color>
     <color name="yellowOrange">#66F8961E</color>
@@ -30,10 +31,12 @@
     <color name="card_violet">#66FF9500</color>
     <color name="card_blue">#665AC8FA</color>
     <color name="card_green">#6634C759</color>
+    <color name="card_white">#00FFFFFF</color>
+
 
 
     <array name="color_picker">
-    <item>00FFFFFF</item>
+    <item>@color/card_white</item>
     <item>@color/card_purple</item>
     <item>@color/card_red</item>
     <item>@color/card_violet</item>
@@ -43,7 +46,7 @@
     <item>@color/green</item>
     <item>@color/purple</item>
     <item>@color/darkPurple</item>
-    <item>@color/blue</item>
+    <item>@color/blueTransparent</item>
     <item>@color/orangeRed</item>
     <item>@color/yellowOrange</item>
     <item>@color/MangoTango</item>
