@@ -22,6 +22,7 @@ import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListNotesBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
+import java.lang.RuntimeException
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
@@ -70,26 +71,23 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         binding.FABLayout.setOnClickListener {
             it?.let {
-                unselectNotes()
-                sharedViewModel.hideCAB()
-                sharedViewModel.navigateToNotesScreen()
-                Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
-                findNavController()
-                            .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
-
+                fabButtonClicked()
             }
         }
         binding.addListButton.setOnClickListener {
             it?.let {
-                unselectNotes()
-                sharedViewModel.hideCAB()
-                sharedViewModel.navigateToNotesScreen()
-
-                findNavController()
-                    .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
-
+               fabButtonClicked()
             }
         }
+    }
+
+    private fun fabButtonClicked() {
+        unselectNotes()
+        sharedViewModel.hideCAB()
+        sharedViewModel.navigateToNotesScreen()
+        Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
+        findNavController()
+            .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
     }
 
     private fun setUpSearchView(searchView: SearchView) {
