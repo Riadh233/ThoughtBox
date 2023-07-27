@@ -1,5 +1,6 @@
 package com.raywenderlich.tasksapp.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +35,7 @@ class AddTaskFragment : Fragment() {
     private val args by navArgs<AddTaskFragmentArgs>()
     private lateinit var timePicker: MaterialTimePicker
     private lateinit var calendar : Calendar
+    private var updatedReminder : Boolean = false
     private val priorities = listOf(
         Priority("High Priority", R.drawable.ic_priority_high),
         Priority("Medium Priority", R.drawable.ic_priority_mid),
@@ -91,8 +94,9 @@ class AddTaskFragment : Fragment() {
                         sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
                 } else{
                     updateTask()
-                    if (timeChosen() && !timeScheduled())
+                    if (timeChosen() && updatedReminder){
                         sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
+                    }
                 }
             }
             findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
@@ -108,8 +112,9 @@ class AddTaskFragment : Fragment() {
                         }
                         else{
                             updateTask()
-                            if (timeChosen() && !timeScheduled())
+                            if (timeChosen() && updatedReminder){
                                 sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
+                            }
                         }
                     }
                     isEnabled = false
@@ -129,7 +134,8 @@ class AddTaskFragment : Fragment() {
     }
 
     private fun timeChosen(): Boolean {
-        return binding.reminderButton.text.toString().lowercase(Locale.getDefault()) != "set reminder"
+        val reminderBtnString : String = binding.reminderButton.text.toString().lowercase(Locale.getDefault())
+        return reminderBtnString != "set reminder" && reminderBtnString != "expired"
     }
     private fun timeScheduled() : Boolean{
         return args.currTask!!.alarmTime != "set reminder" || args.currTask!!.alarmTime != "Expired"
@@ -137,6 +143,7 @@ class AddTaskFragment : Fragment() {
 
     private fun setUpReminderButton() {
         binding.reminderButton.setOnClickListener {
+
             setUpTimePicker()
         }
     }
@@ -153,6 +160,8 @@ class AddTaskFragment : Fragment() {
 
         timePicker.show(requireActivity().supportFragmentManager, "time_picker")
         timePicker.addOnPositiveButtonClickListener {
+            if (args.currTask != null)
+                updatedReminder = true
             val chosenHour = timePicker.hour
             val chosenMinute = timePicker.minute
             val selectedTime = formatTime(chosenHour, chosenMinute)
@@ -178,14 +187,22 @@ class AddTaskFragment : Fragment() {
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     private fun setUpCurrTask(){
         binding.etTitle.setText(args.currTask?.title)
         binding.etDescription.setText(args.currTask?.description)
 
         binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
-        if(args.currTask?.alarmTime?.get(args.currTask?.alarmTime!!.length-1) == 'm'){
+//        if(args.currTask?.alarmTime?.get(args.currTask?.alarmTime!!.length-1) == 'm'){
+//            binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
+//        }
+        if(args.currTask?.alarmTime != "Set reminder"){
+            if (args.currTask?.alarmTime == "Expired")
+                binding.reminderButton.text = "Expired"
+            else
             binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
         }
+
         else{
             binding.reminderButton.text = "Set reminder"
         }
@@ -201,6 +218,7 @@ class AddTaskFragment : Fragment() {
         viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim()
             ,binding.etDescription.text.toString().trim(),selectedPriority,text,calendarToString(calendar.time)
         )
+        Toast.makeText(context, calendarToString(calendar.time), Toast.LENGTH_LONG).show()
     }
     fun calendarToString(calendar: Date): String {
         val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.getDefault())
@@ -222,14 +240,22 @@ class AddTaskFragment : Fragment() {
     }
 
     private fun updateTask(){
-        var alarmTime = "Rings${binding.reminderButton.text}"
+        var alarmTime = "Rings ${binding.reminderButton.text}"
         if(!timeChosen()){
             alarmTime = "Set reminder"
         }
+        if(binding.reminderButton.text.toString().lowercase() == "expired")
+            alarmTime = "Expired"
+
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
+        var scheduledDate = ""
+        if(updatedReminder)
+            scheduledDate = calendarToString(calendar.time)
+        else
+            scheduledDate = args.currTask!!.scheduledDate
         viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),
             binding.etDescription.text.toString().trim(),selectedPriority,alarmTime,
-            args.currTask!!.scheduledDate)
+            scheduledDate)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

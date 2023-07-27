@@ -44,7 +44,7 @@ class AddNoteFragment : Fragment() {
         binding.etDescription.setText(args.currNote?.description)
         args.currNote?.let { binding.coloredView.setBackgroundColor(it.color)
         color = args.currNote!!.color}
-        changeInsetsColor(color)
+        changeInsetsColor(color, false)
 
 
         binding.backButton.setOnClickListener {
@@ -58,10 +58,10 @@ class AddNoteFragment : Fragment() {
                 } else
                     updateNote()
             }
-            changeInsetsColor(android.graphics.Color.TRANSPARENT)
+            changeInsetsColor(resources.getColor(R.color.blue), true)
             findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
-        binding.colorPicker
+
         binding.colorPicker.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(
                 requireContext(),
@@ -80,7 +80,7 @@ class AddNoteFragment : Fragment() {
                         value -> color = value
                         binding.apply {
                             coloredView.setBackgroundColor(color)
-                            changeInsetsColor(color)
+                            changeInsetsColor(color, false)
                         }
                         bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
                     }
@@ -92,6 +92,7 @@ class AddNoteFragment : Fragment() {
             }
 
         }
+
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 if(isEnabled){
@@ -100,7 +101,7 @@ class AddNoteFragment : Fragment() {
                         createNote()
                         else updateNote()
                     }
-                    changeInsetsColor(android.graphics.Color.TRANSPARENT)
+                    changeInsetsColor(resources.getColor(R.color.blue), true)
                     isEnabled = false
                     requireActivity().onBackPressed()
                 }
@@ -136,10 +137,17 @@ class AddNoteFragment : Fragment() {
         inputMethodManager.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    private fun changeInsetsColor(color: Int){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity?.window!!.statusBarColor = color
-            activity?.window!!.navigationBarColor = color
+    private fun changeInsetsColor(color: Int, backPressed : Boolean){
+        if(backPressed) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                activity?.window!!.statusBarColor = resources.getColor(R.color.blue)
+                activity?.window!!.navigationBarColor = resources.getColor(R.color.card_white)
+            }
+        }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                activity?.window!!.statusBarColor = color
+                activity?.window!!.navigationBarColor = color
+            }
         }
     }
 

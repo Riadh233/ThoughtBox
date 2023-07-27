@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.tasksapp.databinding.ActivityMainBinding
@@ -25,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         createNotificationChannel()
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window!!.statusBarColor = android.graphics.Color.TRANSPARENT
-            window!!.navigationBarColor = android.graphics.Color.TRANSPARENT
+            window!!.statusBarColor = resources.getColor(R.color.blue)
+            window!!.navigationBarColor = resources.getColor(R.color.card_white)
         }
         setContentView(binding.root)
     }
