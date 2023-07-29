@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
     id "kotlin-parcelize"
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 
 }
 
@@ -69,5 +71,13 @@ dependencies {
 
 
     implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
 }
