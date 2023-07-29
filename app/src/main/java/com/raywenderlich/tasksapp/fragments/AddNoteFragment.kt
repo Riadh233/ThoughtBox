@@ -75,17 +75,17 @@ class AddNoteFragment : Fragment() {
             val bottomSheetBinding = BottomSheetLayoutBinding.bind(bottomSheetView)
             bottomSheetBinding.apply {
                 colorPicker.apply {
-                    setSelectedColor(color)
+                    //setSelectedColor(color)
                     setOnColorSelectedListener {
                         value -> color = value
                         binding.apply {
                             coloredView.setBackgroundColor(color)
                             changeInsetsColor(color, false)
                         }
-                        bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
+                        //bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
                     }
                 }
-                bottomSheetParent.setCardBackgroundColor(color)
+                //bottomSheetParent.setCardBackgroundColor(resources.getColor(R.color.card_white))
             }
             bottomSheetView.post{
                 bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
