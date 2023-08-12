@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
@@ -42,24 +41,28 @@ class AddNoteFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         binding.etTitle.setText(args.currNote?.title)
         binding.etDescription.setText(args.currNote?.description)
+        binding.coloredView.setBackgroundColor(resources.getColor(R.color.card_white))
         args.currNote?.let { binding.coloredView.setBackgroundColor(it.color)
         color = args.currNote!!.color}
+        if(color == -1)
+            binding.coloredView.setBackgroundColor(resources.getColor(R.color.card_white))
         changeInsetsColor(color, false)
 
 
         binding.backButton.setOnClickListener {
-            if (inputCheck(
-                    binding.etTitle.text.toString(),
-                    binding.etDescription.text.toString()
-                )
-            ) {
-                if (args.currNote == null) {
-                    createNote()
-                } else
-                    updateNote()
-            }
+//            if (inputCheck(
+//                    binding.etTitle.text.toString(),
+//                    binding.etDescription.text.toString()
+//                )
+//            ) {
+//                if (args.currNote == null) {
+//                    createNote()
+//                } else
+//                    updateNote()
+//            }
             changeInsetsColor(resources.getColor(R.color.blue), true)
-            findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+            //findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
 
         binding.colorPicker.setOnClickListener {
@@ -77,7 +80,7 @@ class AddNoteFragment : Fragment() {
                 colorPicker.apply {
                     //setSelectedColor(color)
                     setOnColorSelectedListener {
-                        value -> color = value
+                            value -> color = value
                         binding.apply {
                             coloredView.setBackgroundColor(color)
                             changeInsetsColor(color, false)
@@ -97,13 +100,17 @@ class AddNoteFragment : Fragment() {
             override fun handleOnBackPressed() {
                 if(isEnabled){
                     if((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString()))){
-                        if(args.currNote == null)
-                        createNote()
-                        else updateNote()
+                        if(args.currNote == null) {
+                            createNote()
+                        }
+                        else {
+                            updateNote()
+                        }
                     }
                     changeInsetsColor(resources.getColor(R.color.blue), true)
                     isEnabled = false
-                    requireActivity().onBackPressed()
+                    //findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
         })
