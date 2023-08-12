@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -197,7 +196,6 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
                     alarmTime,
                     task.scheduledDate
                 )
-               // Toast.makeText(context, "cheched set", Toast.LENGTH_LONG).show()
                 adapter.notifyDataSetChanged()
             }
         }
@@ -229,6 +227,7 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         val savedDateString = currentFormat.format(savedDate)
         val currentDateString = currentFormat.format(currentDate)
+
         return savedDateString == currentDateString
     }
 }
