@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -83,23 +82,24 @@ class AddTaskFragment : Fragment() {
 
     private fun setUpBackButton(taskId : Long) {
         binding.backButton.setOnClickListener {
-            if (inputCheck(
-                    binding.etTitle.text.toString(),
-                    binding.etDescription.text.toString()
-                )
-            ) {
-                if (args.currTask == null) {
-                    createTask(taskId)
-                    if (timeChosen())
-                        sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
-                } else{
-                    updateTask()
-                    if (timeChosen() && updatedReminder){
-                        sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
-                    }
-                }
-            }
-            findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
+//            if (inputCheck(
+//                    binding.etTitle.text.toString(),
+//                    binding.etDescription.text.toString()
+//                )
+//            ) {
+//                if (args.currTask == null) {
+//                    createTask(taskId)
+//                    if (timeChosen())
+//                        sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
+//                } else{
+//                    updateTask()
+//                    if (timeChosen() && updatedReminder){
+//                        sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
+//                    }
+//                }
+//            }
+//            findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
@@ -218,7 +218,6 @@ class AddTaskFragment : Fragment() {
         viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim()
             ,binding.etDescription.text.toString().trim(),selectedPriority,text,calendarToString(calendar.time)
         )
-        Toast.makeText(context, calendarToString(calendar.time), Toast.LENGTH_LONG).show()
     }
     fun calendarToString(calendar: Date): String {
         val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.getDefault())
