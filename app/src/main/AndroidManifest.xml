@@ -10,9 +10,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/thoughtbox"
+        android:icon="@mipmap/app_icon_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/thoughtbox"
+        android:roundIcon="@mipmap/app_icon_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TasksApp"
         tools:targetApi="31">

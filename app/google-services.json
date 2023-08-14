@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "918570219044",
+    "project_id": "thought-box-bf386",
+    "storage_bucket": "thought-box-bf386.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918570219044:android:8216cd894a07f272498ab1",
+        "android_client_info": {
+          "package_name": "com.raywenderlich.tasksapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918570219044-tfsskuam5qig26occbdi9fhj122vgv9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5khkVbCvpTJ9Z0uSUbyyvncvjXb6EiXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918570219044-tfsskuam5qig26occbdi9fhj122vgv9o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

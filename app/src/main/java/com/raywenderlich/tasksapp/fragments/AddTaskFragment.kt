@@ -82,23 +82,6 @@ class AddTaskFragment : Fragment() {
 
     private fun setUpBackButton(taskId : Long) {
         binding.backButton.setOnClickListener {
-//            if (inputCheck(
-//                    binding.etTitle.text.toString(),
-//                    binding.etDescription.text.toString()
-//                )
-//            ) {
-//                if (args.currTask == null) {
-//                    createTask(taskId)
-//                    if (timeChosen())
-//                        sharedViewModel.setAlarm(taskId, calendar.timeInMillis)
-//                } else{
-//                    updateTask()
-//                    if (timeChosen() && updatedReminder){
-//                        sharedViewModel.setAlarm(args.currTask!!.id, calendar.timeInMillis)
-//                    }
-//                }
-//            }
-//            findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){

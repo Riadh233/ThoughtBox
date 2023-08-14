@@ -50,19 +50,8 @@ class AddNoteFragment : Fragment() {
 
 
         binding.backButton.setOnClickListener {
-//            if (inputCheck(
-//                    binding.etTitle.text.toString(),
-//                    binding.etDescription.text.toString()
-//                )
-//            ) {
-//                if (args.currNote == null) {
-//                    createNote()
-//                } else
-//                    updateNote()
-//            }
             changeInsetsColor(resources.getColor(R.color.blue), true)
             requireActivity().onBackPressedDispatcher.onBackPressed()
-            //findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
         }
 
         binding.colorPicker.setOnClickListener {
@@ -78,17 +67,14 @@ class AddNoteFragment : Fragment() {
             val bottomSheetBinding = BottomSheetLayoutBinding.bind(bottomSheetView)
             bottomSheetBinding.apply {
                 colorPicker.apply {
-                    //setSelectedColor(color)
                     setOnColorSelectedListener {
                             value -> color = value
                         binding.apply {
                             coloredView.setBackgroundColor(color)
                             changeInsetsColor(color, false)
                         }
-                        //bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
                     }
                 }
-                //bottomSheetParent.setCardBackgroundColor(resources.getColor(R.color.card_white))
             }
             bottomSheetView.post{
                 bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -148,7 +134,7 @@ class AddNoteFragment : Fragment() {
         if(backPressed) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 activity?.window!!.statusBarColor = resources.getColor(R.color.blue)
-                activity?.window!!.navigationBarColor = resources.getColor(R.color.card_white)
+                activity?.window!!.navigationBarColor = resources.getColor(R.color.white)
             }
         }else{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -157,7 +143,4 @@ class AddNoteFragment : Fragment() {
             }
         }
     }
-
-
-
 }

@@ -94,6 +94,7 @@
                 android:clipToPadding="false"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
                 android:foreground="@drawable/inner_shadow"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
