@@ -36,7 +36,8 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             }
             if(item.checkState){
                 checkedMode()
-            }
+            }else title.paintFlags = title.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+
             binding.executePendingBindings()
             val unwrappedDrawable = AppCompatResources.getDrawable(binding.root.context, com.raywenderlich.tasksapp.R.drawable.rounded_shape)
             val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)

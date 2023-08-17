@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,8 @@ class AddNoteFragment : Fragment() {
     private lateinit var viewModel: NoteViewModel
     private var color = -1
     private val args by navArgs<AddNoteFragmentArgs>()
+    private var onBackPressedCallback: OnBackPressedCallback? = null
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -82,7 +85,7 @@ class AddNoteFragment : Fragment() {
 
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
+        onBackPressedCallback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 if(isEnabled){
                     if((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString()))){
@@ -95,11 +98,13 @@ class AddNoteFragment : Fragment() {
                     }
                     changeInsetsColor(resources.getColor(R.color.blue), true)
                     isEnabled = false
-                    //findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
-        })
+        }
+        onBackPressedCallback?.let {
+            requireActivity().onBackPressedDispatcher.addCallback(this, it)
+        }
 
         return binding.root
     }
@@ -142,5 +147,14 @@ class AddNoteFragment : Fragment() {
                 activity?.window!!.navigationBarColor = color
             }
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        onBackPressedCallback?.isEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        onBackPressedCallback?.isEnabled = false
     }
 }

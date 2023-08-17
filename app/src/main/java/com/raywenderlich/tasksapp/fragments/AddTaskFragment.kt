@@ -35,6 +35,7 @@ class AddTaskFragment : Fragment() {
     private lateinit var timePicker: MaterialTimePicker
     private lateinit var calendar : Calendar
     private var updatedReminder : Boolean = false
+    private var onBackPressedCallback: OnBackPressedCallback? = null
     private val priorities = listOf(
         Priority("High Priority", R.drawable.ic_priority_high),
         Priority("Medium Priority", R.drawable.ic_priority_mid),
@@ -84,7 +85,7 @@ class AddTaskFragment : Fragment() {
         binding.backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
+       onBackPressedCallback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 if(isEnabled){
                     if((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString()))){
@@ -105,7 +106,10 @@ class AddTaskFragment : Fragment() {
                 }
 
             }
-        })
+        }
+        onBackPressedCallback?.let {
+            requireActivity().onBackPressedDispatcher.addCallback(this, it)
+        }
     }
 
 
@@ -176,9 +180,7 @@ class AddTaskFragment : Fragment() {
         binding.etDescription.setText(args.currTask?.description)
 
         binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
-//        if(args.currTask?.alarmTime?.get(args.currTask?.alarmTime!!.length-1) == 'm'){
-//            binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
-//        }
+
         if(args.currTask?.alarmTime != "Set reminder"){
             if (args.currTask?.alarmTime == "Expired")
                 binding.reminderButton.text = "Expired"
@@ -250,4 +252,14 @@ class AddTaskFragment : Fragment() {
     private fun inputCheck(title : String,description : String) : Boolean{
         return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
     }
+    override fun onResume() {
+        super.onResume()
+        onBackPressedCallback?.isEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        onBackPressedCallback?.isEnabled = false
+    }
+
 }
