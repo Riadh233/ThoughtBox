@@ -2,7 +2,6 @@ package com.raywenderlich.tasksapp.fragments
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,12 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         setUpAddButton()
         setUpSearchView(binding.search)
         setupObservers()
+
     }
+
+
+
+
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -116,7 +120,10 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
             it.let {
-                adapter.submitList(it)
+                if(!query.isEmpty())
+                    adapter.submitList(it)
+                else
+                    setupObservers()
             }
         }
     }

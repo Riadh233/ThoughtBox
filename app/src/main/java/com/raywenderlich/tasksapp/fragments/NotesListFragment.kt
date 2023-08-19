@@ -185,7 +185,10 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
             it.let {
-                adapter.submitList(it)
+                if(!query.isEmpty())
+                    adapter.submitList(it)
+                else
+                    setupObservers()
             }
         }
     }
