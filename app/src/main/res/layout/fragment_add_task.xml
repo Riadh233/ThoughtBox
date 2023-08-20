@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,30 +65,29 @@
                     android:hint="Set description, subtasks..." />
             </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/reminder_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/blue"
-                    android:drawableStart="@drawable/ic_alarm"
-                    android:drawableTint="@color/white"
-                    android:paddingStart="5dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="5dp"
-                    android:paddingBottom="0dp"
-                    android:elevation="7dp"
-                    android:background="@drawable/rounded_shape"
-                    android:text="set reminder"
-                    android:stateListAnimator="@null"
-                    android:layout_marginEnd="32dp"
-                    app:layout_constraintBottom_toTopOf="@+id/task_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                     />
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reminder_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/rounded_shape"
+                android:backgroundTint="@color/blue"
+                android:drawableStart="@drawable/ic_alarm"
+                android:drawableTint="@color/white"
+                android:elevation="7dp"
+                android:paddingStart="5dp"
+                android:paddingTop="0dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="0dp"
+                android:stateListAnimator="@null"
+                android:text="set reminder"
+                android:clickable="true"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/task_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <ImageView
