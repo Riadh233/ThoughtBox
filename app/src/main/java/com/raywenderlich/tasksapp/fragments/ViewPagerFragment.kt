@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R
@@ -17,6 +19,7 @@ import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 class ViewPagerFragment : Fragment() {
     private var mActionMode: ActionMode? = null
     private var isActionModeActive = false
+    private var onBackPressedCallback: OnBackPressedCallback? = null
 
     private lateinit var binding: FragmentViewPagerBinding
     private val sharedViewModel: SharedViewModel by lazy {
@@ -37,6 +40,15 @@ class ViewPagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupObservers()
+
+        onBackPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+               requireActivity().finish()
+            }
+        }
+        onBackPressedCallback?.let {
+            requireActivity().onBackPressedDispatcher.addCallback(this, it)
+        }
     }
 
 
@@ -140,4 +152,5 @@ class ViewPagerFragment : Fragment() {
             outState.putBoolean("isActionModeActive",isActionModeActive)
         }
     }
+
 }

@@ -102,7 +102,7 @@ class AddTaskFragment : Fragment() {
                         }
                     }
                     isEnabled = false
-                    requireActivity().onBackPressed()
+                    findNavController().navigate(AddTaskFragmentDirections.actionAddTaskFragmentToViewPagerFragment2())
                 }
 
             }

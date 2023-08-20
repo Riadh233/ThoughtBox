@@ -74,6 +74,7 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             true
         }
         for (task in currentList){
+            Log.d("TASK_TAG123","${task.title}")
             if(task.selected){
                 isEnable = true
                 break
@@ -87,7 +88,6 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             else
                 selectedItem.onSelect(item)
         }
-        Log.d("selectionItemState","${item.selected}")
         holder.bind(item)
         holder.binding.checkbox.setOnClickListener {
             checkListener.onCheckStateChanged(item)

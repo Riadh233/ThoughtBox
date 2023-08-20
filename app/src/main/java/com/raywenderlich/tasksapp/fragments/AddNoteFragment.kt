@@ -42,36 +42,37 @@ class AddNoteFragment : Fragment() {
     ): View {
         binding = FragmentAddNoteBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
-        binding.etTitle.setText(args.currNote?.title)
-        binding.etDescription.setText(args.currNote?.description)
-        binding.coloredView.setBackgroundColor(resources.getColor(R.color.card_white))
-        args.currNote?.let { binding.coloredView.setBackgroundColor(it.color)
-        color = args.currNote!!.color}
-        if(color == -1)
-            binding.coloredView.setBackgroundColor(resources.getColor(R.color.card_white))
+        handleCurrVisitedNote()
+
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val etDesc = binding.etDescription
+        etDesc.requestFocus()
+        showKeyboard(etDesc)
         changeInsetsColor(color, false)
+        handleColorPicker()
+        handleBackButton()
+    }
 
 
-        binding.backButton.setOnClickListener {
-            changeInsetsColor(resources.getColor(R.color.blue), true)
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
+    private fun handleColorPicker() {
         binding.colorPicker.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(
                 requireContext(),
                 R.style.BottomSheetDialogTheme
             )
-            val bottomSheetView : View = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
-            with(bottomSheetDialog){
+            val bottomSheetView: View = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
+            with(bottomSheetDialog) {
                 setContentView(bottomSheetView)
                 show()
             }
             val bottomSheetBinding = BottomSheetLayoutBinding.bind(bottomSheetView)
             bottomSheetBinding.apply {
                 colorPicker.apply {
-                    setOnColorSelectedListener {
-                            value -> color = value
+                    setOnColorSelectedListener { value ->
+                        color = value
                         binding.apply {
                             coloredView.setBackgroundColor(color)
                             changeInsetsColor(color, false)
@@ -79,41 +80,55 @@ class AddNoteFragment : Fragment() {
                     }
                 }
             }
-            bottomSheetView.post{
+            bottomSheetView.post {
                 bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
 
         }
+    }
 
-        onBackPressedCallback = object : OnBackPressedCallback(true){
+    private fun handleCurrVisitedNote() {
+        binding.etTitle.setText(args.currNote?.title)
+        binding.etDescription.setText(args.currNote?.description)
+        binding.coloredView.setBackgroundColor(resources.getColor(R.color.card_white))
+        args.currNote?.let {
+            binding.coloredView.setBackgroundColor(it.color)
+            color = args.currNote!!.color
+        }
+        if (color == -1)
+            binding.coloredView.setBackgroundColor(resources.getColor(R.color.card_white))
+    }
+
+    private fun handleBackButton() {
+        binding.backButton.setOnClickListener {
+            changeInsetsColor(resources.getColor(R.color.blue), true)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun handleOnBackPressed() {
-                if(isEnabled){
-                    if((inputCheck(binding.etTitle.text.toString(),binding.etDescription.text.toString()))){
-                        if(args.currNote == null) {
+                if (isEnabled) {
+                    if ((inputCheck(
+                            binding.etTitle.text.toString(),
+                            binding.etDescription.text.toString()
+                        ))
+                    ) {
+                        if (args.currNote == null) {
                             createNote()
-                        }
-                        else {
+                        } else {
                             updateNote()
                         }
                     }
                     changeInsetsColor(resources.getColor(R.color.blue), true)
                     isEnabled = false
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    findNavController().navigate(AddNoteFragmentDirections.actionAddFragmentToViewPagerFragment2())
                 }
             }
         }
         onBackPressedCallback?.let {
             requireActivity().onBackPressedDispatcher.addCallback(this, it)
         }
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val etDesc = binding.etDescription
-        etDesc.requestFocus()
-        showKeyboard(etDesc)
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNote(){
