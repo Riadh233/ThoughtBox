@@ -5,10 +5,7 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.tasksapp.databinding.ActivityMainBinding
@@ -23,16 +20,13 @@ class MainActivity : AppCompatActivity() {
     private val notesViewModel : NoteViewModel by lazy {
         ViewModelProvider(this)[NoteViewModel::class.java]
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         createNotificationChannel()
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window!!.statusBarColor = resources.getColor(R.color.blue)
-            window!!.navigationBarColor = resources.getColor(R.color.white)
-        }
+        window!!.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+        window!!.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(binding.root)
     }
 
@@ -51,7 +45,6 @@ class MainActivity : AppCompatActivity() {
             val channel = NotificationChannel("channel_id", name, importance).apply {
                 description = descriptionText
             }
-
             val notificationManager: NotificationManager =
                 getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

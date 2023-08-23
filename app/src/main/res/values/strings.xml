@@ -15,6 +15,11 @@
     <string name="notification_channel_id">channel_id</string>
     <string name="notification_title">Task has Expired</string>
     <string name="expired">Expired</string>
+    <string name="high_priority">High Priority</string>
+    <string name="medium_priority">Medium Priority</string>
+    <string name="low_priority">Low Priority</string>
+    <string name="set_reminder">set reminder</string>
+    <string name="Set_reminder">Set reminder</string>
 
 
 </resources>

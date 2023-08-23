@@ -1,14 +1,7 @@
 package com.raywenderlich.tasksapp.fragments
-import android.opengl.Visibility
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.view.animation.AnimationUtils
-import android.view.animation.LayoutAnimationController
 import androidx.fragment.app.Fragment
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -17,12 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raywenderlich.tasksapp.MainActivity
-import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.viewmodels.NoteViewModel
 import com.raywenderlich.tasksapp.ui.NotesAdapter
 import com.raywenderlich.tasksapp.databinding.FragmentListNotesBinding
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
-import java.lang.RuntimeException
 
 class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
@@ -42,7 +33,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         return binding.root
     }
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val searchView = binding.search
@@ -56,9 +46,8 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.unselectNotes()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpAddButton(binding: FragmentListNotesBinding) {
-        binding.recyclerView.setOnScrollChangeListener{_,scrollX,scrollY,_,oldScrollY ->
+        binding.recyclerView.setOnScrollChangeListener{_,_,scrollY,_,oldScrollY ->
            when{
                scrollY > oldScrollY -> {
                    binding.FABText.isVisible = false
@@ -85,7 +74,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
         unselectNotes()
         sharedViewModel.hideCAB()
         sharedViewModel.navigateToNotesScreen()
-        Toast.makeText(requireContext(), "frag paused", Toast.LENGTH_SHORT)
         findNavController()
             .navigate(ViewPagerFragmentDirections.actionViewPagerFragment2ToAddFragment())
     }
@@ -153,7 +141,6 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
                     }.show()
                 sharedViewModel.consumeNotesDeletionEvent()
             }
-            Log.d("shouldConsumeEvent","$shouldConsumeEvent")
         }
         sharedViewModel.onCancelNotesEvent.observe(viewLifecycleOwner){ shouldConsumeEvent ->
             if(shouldConsumeEvent){
@@ -185,7 +172,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
             it.let {
-                if(!query.isEmpty())
+                if(query.isNotEmpty())
                     adapter.submitList(it)
                 else
                     setupObservers()
@@ -194,7 +181,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     private fun deleteSelectedItems() {
         viewModel.deleteSelectedNotes()
-        adapter.notifyDataSetChanged()
+        adapter.itemsDeletionFinished()
     }
 
     private fun selectAllItems(){

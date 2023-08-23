@@ -16,15 +16,25 @@ class AlarmUtils {
         alarmManager = application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(application, AlarmReceiver::class.java)
         intent.putExtra("taskId",taskId)
-        val pendingIntent = PendingIntent.getBroadcast(application, taskId.toInt(), intent, 0)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeScheduled, pendingIntent)
+        val pendingIntent = PendingIntent.getBroadcast(
+            application,
+            taskId.toInt(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeScheduled, pendingIntent)
         alarmPendingIntents[taskId] = pendingIntent
     }
     fun cancelAlarms(tasks: List<Task>, application: Context) {
         for(task in tasks){
             alarmManager = application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(application, AlarmReceiver::class.java)
-            val pendingIntent : PendingIntent? = PendingIntent.getBroadcast(application, task.id.toInt(), intent, FLAG_NO_CREATE)
+            val pendingIntent : PendingIntent? = PendingIntent.getBroadcast(
+                application,
+                task.id.toInt(),
+                intent,
+                FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
             if(pendingIntent != null){
                 alarmManager.cancel(pendingIntent)
             }
@@ -34,7 +44,12 @@ class AlarmUtils {
         alarmManager = application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(application, AlarmReceiver::class.java)
         val pendingIntent: PendingIntent? =
-            PendingIntent.getBroadcast(application, task.id.toInt(), intent, FLAG_NO_CREATE)
+            PendingIntent.getBroadcast(
+                application,
+                task.id.toInt(),
+                intent,
+                FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
         if (pendingIntent != null) {
             alarmManager.cancel(pendingIntent)
         }

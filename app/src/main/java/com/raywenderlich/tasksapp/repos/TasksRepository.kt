@@ -1,5 +1,4 @@
 package com.raywenderlich.tasksapp.repos
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.raywenderlich.tasksapp.R
 import com.raywenderlich.tasksapp.data.Task
@@ -9,31 +8,12 @@ import kotlinx.coroutines.withContext
 
 class TasksRepository(private val dao : TasksDao) {
 
-
-    suspend fun insert(task: Task) {
-        withContext(Dispatchers.IO) {
-            dao.insert(task)
-        }
-    }
-
-    suspend fun update(task: Task) {
-        withContext(Dispatchers.IO) {
-            dao.update(task)
-        }
-    }
-
     suspend fun delete(task: Task) {
         withContext(Dispatchers.IO) {
             dao.delete(task)
         }
     }
 
-
-    suspend fun deleteAllTasks() {
-        withContext(Dispatchers.IO) {
-            dao.clear()
-        }
-    }
     suspend fun insertDataToDatabase(
         id:Long,
         title: String, description: String, taskPriority: Int, time: String,
@@ -52,7 +32,6 @@ class TasksRepository(private val dao : TasksDao) {
     fun getSelectedItemsCount() :LiveData<Int> = dao.getAllSelectedTasks()
 
     suspend fun getTaskById(id : Long) : Task?{
-        Log.d("getTaskById","used")
        return  withContext(Dispatchers.IO){
             dao.getTaskById(id)
         }
@@ -71,7 +50,6 @@ class TasksRepository(private val dao : TasksDao) {
         withContext(Dispatchers.IO){
             dao.deleteSelectedTasks()
         }
-        Log.d("deletionEvent","clicked")
     }
     suspend fun selectionItemState(task: Task){
         withContext(Dispatchers.IO){
@@ -85,10 +63,8 @@ class TasksRepository(private val dao : TasksDao) {
         withContext(Dispatchers.IO){
             if(task.checkState){
                 dao.uncheckTask(task.id)
-                Log.d("checkbox","uncheck method used")
             }else
                 dao.update(Task(task.id,task.title,task.description, R.color.light_gray,"Expired",task.scheduledDate,task.selected,true))
-            Log.d("checkbox","check method used")
         }
     }
     suspend fun updateData(
@@ -104,7 +80,6 @@ class TasksRepository(private val dao : TasksDao) {
         withContext(Dispatchers.IO){
             dao.updateAlarmText(id,"Expired")
         }
-        Log.d("update text","done")
     }
 
 }

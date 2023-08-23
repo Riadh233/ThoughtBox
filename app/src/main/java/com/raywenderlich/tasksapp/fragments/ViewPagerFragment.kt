@@ -1,14 +1,9 @@
 package com.raywenderlich.tasksapp.fragments
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raywenderlich.tasksapp.MainActivity
 import com.raywenderlich.tasksapp.R

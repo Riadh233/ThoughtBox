@@ -5,7 +5,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -112,8 +111,6 @@ class AddTaskFragment : Fragment() {
         }
     }
 
-
-
     private fun handleLandscapeMode(savedInstanceState: Bundle) {
         val buttonText = savedInstanceState.getString("buttonText")
         binding.reminderButton.text = buttonText
@@ -122,10 +119,7 @@ class AddTaskFragment : Fragment() {
 
     private fun timeChosen(): Boolean {
         val reminderBtnString : String = binding.reminderButton.text.toString().lowercase(Locale.getDefault())
-        return reminderBtnString != "set reminder" && reminderBtnString != "expired"
-    }
-    private fun timeScheduled() : Boolean{
-        return args.currTask!!.alarmTime != "set reminder" || args.currTask!!.alarmTime != "Expired"
+        return reminderBtnString != getString(R.string.set_reminder) && reminderBtnString != getString(R.string.expired).lowercase()
     }
 
     private fun setUpReminderButton() {
@@ -181,23 +175,23 @@ class AddTaskFragment : Fragment() {
 
         binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
 
-        if(args.currTask?.alarmTime != "Set reminder"){
-            if (args.currTask?.alarmTime == "Expired")
-                binding.reminderButton.text = "Expired"
+        if(args.currTask?.alarmTime != getString(R.string.Set_reminder)){
+            if (args.currTask?.alarmTime == getString(R.string.expired))
+                binding.reminderButton.text = getString(R.string.expired)
             else
             binding.reminderButton.text = args.currTask?.alarmTime?.substring(5)
         }
 
         else{
-            binding.reminderButton.text = "Set reminder"
+            binding.reminderButton.text = getString(R.string.set_reminder)
         }
     }
 
 
     private fun createTask(taskId: Long){
-        var text = "Rings ${binding.reminderButton.text}"
+        var text = "Rings ${binding.reminderButton.text.trim()}"
         if(!timeChosen())
-            text = "Set reminder"
+            text = getString(R.string.Set_reminder)
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
 
         viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim()
@@ -210,33 +204,32 @@ class AddTaskFragment : Fragment() {
     }
     private fun getColorForPriority(priority: String): Int {
         return when(priority) {
-            "High Priority" ->R.color.red
-            "Medium Priority" -> R.color.orange
+            getString(R.string.high_priority) ->R.color.red
+            getString(R.string.medium_priority) -> R.color.orange
             else -> R.color.light_blue
         }
     }
     private fun getPriorityForColor(color: Int): String {
         return when(color) {
-            R.color.red -> "High Priority"
-            R.color.orange -> "Medium Priority"
-            else -> "Low Priority"
+            R.color.red -> getString(R.string.high_priority)
+            R.color.orange -> getString(R.string.medium_priority)
+            else -> getString(R.string.low_priority)
         }
     }
 
     private fun updateTask(){
-        var alarmTime = "Rings ${binding.reminderButton.text}"
+        var alarmTime = "Rings ${binding.reminderButton.text.trim()}"
         if(!timeChosen()){
-            alarmTime = "Set reminder"
+            alarmTime = getString(R.string.Set_reminder)
         }
-        if(binding.reminderButton.text.toString().lowercase() == "expired")
-            alarmTime = "Expired"
+        if(binding.reminderButton.text.toString().lowercase() == getString(R.string.expired).lowercase())
+            alarmTime = getString(R.string.high_priority)
 
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
-        var scheduledDate = ""
-        if(updatedReminder)
-            scheduledDate = calendarToString(calendar.time)
+        val scheduledDate: String = if(updatedReminder)
+            calendarToString(calendar.time)
         else
-            scheduledDate = args.currTask!!.scheduledDate
+            args.currTask!!.scheduledDate
         viewModel.updateData(args.currTask!!.id,binding.etTitle.text.toString().trim(),
             binding.etDescription.text.toString().trim(),selectedPriority,alarmTime,
             scheduledDate)
@@ -261,5 +254,4 @@ class AddTaskFragment : Fragment() {
         super.onPause()
         onBackPressedCallback?.isEnabled = false
     }
-
 }

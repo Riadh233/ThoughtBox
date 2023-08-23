@@ -1,11 +1,9 @@
 package com.raywenderlich.tasksapp.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,7 +17,6 @@ import com.raywenderlich.tasksapp.databinding.FragmentTasksBinding
 import com.raywenderlich.tasksapp.ui.TasksAdapter
 import com.raywenderlich.tasksapp.viewmodels.SharedViewModel
 import com.raywenderlich.tasksapp.viewmodels.TasksViewModel
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,7 +39,6 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
@@ -52,14 +48,8 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
 
     }
 
-
-
-
-
-
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpAddButton() {
-        binding.recyclerView.setOnScrollChangeListener{_,scrollX,scrollY,_,oldScrollY ->
+        binding.recyclerView.setOnScrollChangeListener{_,_,scrollY,_,oldScrollY ->
             when{
                 scrollY > oldScrollY -> {
                     binding.FABText.isVisible = false
@@ -120,7 +110,7 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
 
         viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
             it.let {
-                if(!query.isEmpty())
+                if(query.isNotEmpty())
                     adapter.submitList(it)
                 else
                     setupObservers()
@@ -133,8 +123,17 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
             it?.let {
                 adapter.submitList(it)
                 if(it.isEmpty()){
-                    binding.imgEmpty.visibility = View.VISIBLE
-                    binding.textEmpty.visibility =View.VISIBLE
+                    binding.imgEmpty.apply {
+                        visibility = View.VISIBLE
+                        visibility = View.VISIBLE
+                        alpha = 0f // Initially set the alpha to 0
+                        animate().alpha(1f).setDuration(1000).start()
+                    }
+                    binding.textEmpty.apply {
+                        visibility = View.VISIBLE
+                        alpha = 0f // Initially set the alpha to 0
+                        animate().alpha(1f).setDuration(1000).start()
+                    }
                 }else{
                     binding.imgEmpty.visibility = View.GONE
                     binding.textEmpty.visibility =View.GONE
@@ -209,12 +208,11 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
     }
     private fun deleteSelectedItems() {
         viewModel.deleteSelectedTasks()
-        adapter.notifyDataSetChanged()
+        adapter.itemsDeletionFinished()
     }
 
     private fun selectAllItems(){
         viewModel.selectAllTasks()
-        adapter.notifyDataSetChanged()
     }
 
     override fun onPause() {
@@ -225,7 +223,7 @@ class TasksListFragment : Fragment(),SearchView.OnQueryTextListener {
         viewModel.unselectTasks()
     }
 
-    fun isSameDay(savedTimeString: String): Boolean {
+    private fun isSameDay(savedTimeString: String): Boolean {
         val savedFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.getDefault())
         val currentFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 

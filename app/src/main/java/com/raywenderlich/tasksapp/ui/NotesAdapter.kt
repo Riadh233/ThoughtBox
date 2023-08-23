@@ -102,4 +102,7 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
     class OnSelectItem(val onItemSelect: (note: Note) -> Unit) {
         fun onSelect(note: Note) = onItemSelect(note)
     }
+    fun itemsDeletionFinished(){
+        isEnable = false
+    }
 }

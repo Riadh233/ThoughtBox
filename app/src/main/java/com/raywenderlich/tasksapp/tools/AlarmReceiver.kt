@@ -25,21 +25,26 @@ class AlarmReceiver : BroadcastReceiver() {
                  tasksRep.updateAlarmText(taskId)
             }
         }
-        var taskTitle = ""
         CoroutineScope(Dispatchers.IO).launch {
-            taskTitle = tasksRep.getTaskById(taskId)?.title.toString()
+            val task = tasksRep.getTaskById(taskId)
+            if (task != null) {
+                val taskTitle = task.title
+                showNotification(context, taskTitle)
+            }
         }
-        val i =  Intent(context, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
-        val builder =  NotificationCompat.Builder(context,"channel_id")
+    }
+
+    private fun showNotification(context: Context?, taskTitle: String) {
+        val i = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_IMMUTABLE)
+        val builder = NotificationCompat.Builder(context!!, "channel_id")
             .setContentText("Tap to check out your task !")
-            .setSmallIcon(R.drawable.ic_alarm).setContentTitle(taskTitle)
+            .setSmallIcon(R.drawable.splash_logo).setContentTitle(taskTitle)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(PRIORITY_HIGH).setContentIntent(pendingIntent)
 
         val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(12,builder.build())
+        notificationManager.notify(12, builder.build())
     }
 }

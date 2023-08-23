@@ -39,7 +39,7 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             }else title.paintFlags = title.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 
             binding.executePendingBindings()
-            val unwrappedDrawable = AppCompatResources.getDrawable(binding.root.context, com.raywenderlich.tasksapp.R.drawable.rounded_shape)
+            val unwrappedDrawable = AppCompatResources.getDrawable(binding.root.context, R.drawable.rounded_shape)
             val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
             DrawableCompat.setTint(wrappedDrawable, Color.GREEN)
         }
@@ -74,7 +74,6 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             true
         }
         for (task in currentList){
-            Log.d("TASK_TAG123","${task.title}")
             if(task.selected){
                 isEnable = true
                 break
@@ -85,13 +84,16 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
         holder.itemView.setOnClickListener {
             if(!isEnable)
                 clickListener.onClick(item)
-            else
+            else {
                 selectedItem.onSelect(item)
+            }
         }
         holder.bind(item)
         holder.binding.checkbox.setOnClickListener {
             checkListener.onCheckStateChanged(item)
         }
+        Log.d("RECYCLER_VIEW_TAG","onBindViewHOlder called :${item.title}")
+        Log.d("RECYCLER_VIEW_TAG","isEnabled :$isEnable")
     }
 
     class TasksClickListener(val clickListener: (task: Task) -> Unit) {
@@ -114,5 +116,8 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
         override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
             return oldItem.id == newItem.id
         }
+    }
+    fun itemsDeletionFinished(){
+        isEnable = false
     }
 }

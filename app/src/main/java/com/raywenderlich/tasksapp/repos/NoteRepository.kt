@@ -18,12 +18,6 @@ class NoteRepository(private val dao: NoteDao) {
             dao.delete(note)
         }
     }
-
-    suspend fun deleteAllNotes() {
-        withContext(IO) {
-            dao.clear()
-        }
-    }
     suspend fun selectionItemState(note: Note){
         withContext(IO){
             if(note.selected)
@@ -35,10 +29,12 @@ class NoteRepository(private val dao: NoteDao) {
     fun searchDatabase(query : String) : LiveData<List<Note>>{
         return dao.searchDatabase(query)
     }
+    @SuppressLint("SuspiciousIndentation")
     suspend fun insertDataToDatabase(etTitle : EditText, etDescription :
                                      EditText, date : String, color : Int) {
         val title = etTitle.text.toString()
         val description = etDescription.text.toString()
+
             withContext(IO){
             dao.insert(Note(IDGenerator.generateID(),title,description,date,false, color))
             }
