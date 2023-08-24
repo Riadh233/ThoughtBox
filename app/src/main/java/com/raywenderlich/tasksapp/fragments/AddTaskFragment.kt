@@ -223,7 +223,7 @@ class AddTaskFragment : Fragment() {
             alarmTime = getString(R.string.Set_reminder)
         }
         if(binding.reminderButton.text.toString().lowercase() == getString(R.string.expired).lowercase())
-            alarmTime = getString(R.string.high_priority)
+            alarmTime = getString(R.string.expired)
 
         val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
         val scheduledDate: String = if(updatedReminder)
