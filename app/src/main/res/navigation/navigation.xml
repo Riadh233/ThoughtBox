@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.raywenderlich.tasksapp.fragments.AddNoteFragment"
+        android:name="com.notesapp.thoughtbox.fragments.AddNoteFragment"
         android:label="Add"
         tools:layout="@layout/fragment_add_note" >
         <action
@@ -19,14 +19,14 @@
             app:popExitAnim="@anim/to_right" />
         <argument
             android:name="currNote"
-            app:argType="com.raywenderlich.tasksapp.data.Note"
+            app:argType="com.notesapp.thoughtbox.data.Note"
             app:nullable="true"
             android:defaultValue="@null" />
 
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment2"
-        android:name="com.raywenderlich.tasksapp.fragments.ViewPagerFragment"
+        android:name="com.notesapp.thoughtbox.fragments.ViewPagerFragment"
         android:label="Notes" >
         <action
             android:id="@+id/action_viewPagerFragment2_to_addFragment"
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/addTaskFragment"
-        android:name="com.raywenderlich.tasksapp.fragments.AddTaskFragment"
+        android:name="com.notesapp.thoughtbox.fragments.AddTaskFragment"
         android:label="fragment_add_task"
         tools:layout="@layout/fragment_add_task" >
         <action
@@ -50,7 +50,7 @@
             app:enterAnim="@anim/from_left"/>
         <argument
             android:name="currTask"
-            app:argType="com.raywenderlich.tasksapp.data.Task"
+            app:argType="com.notesapp.thoughtbox.data.Task"
             app:nullable="true"
             android:defaultValue="@null" />
 

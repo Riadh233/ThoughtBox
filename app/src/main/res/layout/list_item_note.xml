@@ -6,10 +6,10 @@
     <data>
         <variable
             name="clickListener"
-            type="com.raywenderlich.tasksapp.ui.NotesAdapter.ClickListener" />
+            type="com.notesapp.thoughtbox.ui.NotesAdapter.ClickListener" />
         <variable
             name="note"
-            type="com.raywenderlich.tasksapp.data.Note" />
+            type="com.notesapp.thoughtbox.data.Note" />
 
     </data>
 
