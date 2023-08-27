@@ -3,6 +3,7 @@ package com.notesapp.thoughtbox.data
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.notesapp.thoughtbox.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

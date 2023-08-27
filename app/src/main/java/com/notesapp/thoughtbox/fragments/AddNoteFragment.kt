@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -135,6 +136,10 @@ class AddNoteFragment : Fragment() {
         }else{
             SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().time)
         }
+
+        if(color == -1)
+            color = 16777215
+
         viewModel.insertDataToDatabase(binding.etTitle,binding.etDescription,
             formattedTime, color)
     }
