@@ -9,11 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#3e91ff</color>
     <color name="light_gray">#d3d3d3</color>
+    <color name="dark_grey">#121212</color>
     <color name="red">#FF0000 </color>
     <color name="orange">#FFA500  </color>
     <color name="light_blue">#c4def6  </color>
     <color name="shadow">#E0E2E3</color>
     <color name="transparent_white">#F0EFEF</color>
+    <color name="default_card_color">#F0EFEF</color>
 
 
     <!--color palette-->
