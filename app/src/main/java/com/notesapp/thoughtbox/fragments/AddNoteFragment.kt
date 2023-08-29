@@ -164,7 +164,7 @@ class AddNoteFragment : Fragment() {
     private fun changeInsetsColor(color: Int, backPressed : Boolean){
         if(backPressed) {
             activity?.window!!.statusBarColor = ContextCompat.getColor(requireContext(), R.color.blue)
-            activity?.window!!.navigationBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+            activity?.window!!.navigationBarColor = ContextCompat.getColor(requireContext(), R.color.card_white)
         }else{
             activity?.window!!.statusBarColor = color
             activity?.window!!.navigationBarColor = color
