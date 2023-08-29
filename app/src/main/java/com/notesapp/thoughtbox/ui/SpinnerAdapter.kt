@@ -20,7 +20,6 @@ class SpinnerAdapter(context: Context, private val priorities: List<Priority>) :
         val priority = priorities[position]
         val textView = view.findViewById<TextView>(android.R.id.text1)
         textView.text = priority.label
-        textView.setTextColor(Color.BLACK)
         textView.setTypeface(null, Typeface.BOLD)
         textView.compoundDrawablePadding = 10 // set the margin between icon and text
         textView.setCompoundDrawablesRelativeWithIntrinsicBounds(priority.icon, 0, 0, 0)

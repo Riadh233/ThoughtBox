@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="default_card_color">#F0EFEF</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="custom_color">#333333</color>
+    <color name="mtrl_textinput_default_box_stroke_color">#3e91ff</color>
+
+
 </resources>

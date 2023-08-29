@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
-            app:cardElevation="5dp">
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:text="To Do"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/ic_selected"

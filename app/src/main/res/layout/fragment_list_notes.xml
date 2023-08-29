@@ -74,7 +74,7 @@
                         app:layout_collapseMode="pin"
                         android:background="@drawable/edit_text_style"
                         app:iconifiedByDefault="false"
-                        android:elevation="8dp"
+                        android:elevation="10dp"
                         app:queryHint="search"
                         app:queryBackground="@null"
                         android:paddingStart="8dp"
@@ -82,8 +82,7 @@
                         android:inputType="text"
                         android:layout_marginBottom="6dp"
                         android:layout_marginTop="5dp"
-                        android:backgroundTint="?attr/colorSurface"
-                        />
+                        android:backgroundTint="@color/custom_color"/>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
