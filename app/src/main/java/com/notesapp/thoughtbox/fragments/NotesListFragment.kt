@@ -1,4 +1,5 @@
 package com.notesapp.thoughtbox.fragments
+import android.R
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -90,7 +91,7 @@ class NotesListFragment : Fragment(),SearchView.OnQueryTextListener {
             sharedViewModel.showCAB()
         }, NotesAdapter.OnSelectItem{
             viewModel.selectItem(it)
-        })
+        }, context!!)
 
         val manager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding.recyclerView.layoutManager = manager

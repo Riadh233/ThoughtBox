@@ -1,16 +1,23 @@
 package com.notesapp.thoughtbox.ui
 
+import android.R.bool
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.notesapp.thoughtbox.R
 import com.notesapp.thoughtbox.data.Note
 import com.notesapp.thoughtbox.databinding.ListItemNoteBinding
 
-class NotesAdapter(private val clickListener : ClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem) : ListAdapter<Note, NotesAdapter.ViewHolder>(DiffCallback) {
+
+class NotesAdapter(private val clickListener : ClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem,private val context: Context) : ListAdapter<Note, NotesAdapter.ViewHolder>(DiffCallback) {
     private var isEnable = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -39,14 +46,16 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
             else
                 selectedItem.onSelect(item)
         }
-        holder.bind(item)
+
+        holder.bind(item, context)
+
     }
 
     class ViewHolder(private var binding: ListItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
         private val selectIcon = binding.icSelected
         private val cardView = binding.view
         private var color :Int = -1
-        fun bind(item : Note){
+        fun bind(item : Note, context: Context){
             color = item.color
             binding.title.text = item.title
             binding.description.text = item.description
@@ -54,15 +63,27 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
             binding.background.setBackgroundColor(item.color)
 
             if (item.selected){
-                selectItem()
+                selectItem(context)
             }else{
                 unselectItem()
             }
             binding.executePendingBindings()
         }
-        private fun selectItem() {
+        @SuppressLint("ResourceAsColor")
+        private fun selectItem(context: Context) {
             selectIcon.isVisible = true
-            binding.background.setBackgroundColor(manipulateColor(color, 0.8f))
+
+            if(color == 16777215) {
+                if(context.resources.getString(R.string.mode) == "dark")
+                binding.background.setBackgroundColor(Color.GRAY)
+                else binding.background.setBackgroundColor(Color.LTGRAY)
+            }
+            else {
+                if(context.resources.getString(R.string.mode) == "dark"){
+                    binding.background.setBackgroundColor(manipulateColor(color, 1.8f))}
+                else
+                    binding.background.setBackgroundColor(manipulateColor(color, 0.8f))
+            }
             cardView.elevation = 0F
         }
         private fun unselectItem(){
