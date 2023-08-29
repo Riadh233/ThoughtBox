@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         createNotificationChannel()
         window!!.statusBarColor = ContextCompat.getColor(this, R.color.blue)
-        window!!.navigationBarColor = ContextCompat.getColor(this, R.color.white)
+        window!!.navigationBarColor = ContextCompat.getColor(this, R.color.bar_color)
         setContentView(binding.root)
     }
 

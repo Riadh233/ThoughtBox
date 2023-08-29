@@ -16,6 +16,10 @@
     <color name="shadow">#E0E2E3</color>
     <color name="transparent_white">#F0EFEF</color>
     <color name="custom_color">@color/white</color>
+    <color name="bar_color">@color/white</color>
+    <color name="card_default_color">@color/white</color>
+    <color name="item_selection_color">@color/light_gray</color>
+    <color name="spinner_text_color">@color/black</color>
     <color name="mtrl_textinput_default_box_stroke_color">#3e91ff</color>
 
     <!--color palette-->

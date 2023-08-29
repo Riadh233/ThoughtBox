@@ -1,4 +1,5 @@
 package com.notesapp.thoughtbox.ui
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Paint
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.notesapp.thoughtbox.R
 import com.notesapp.thoughtbox.data.Task
 import com.notesapp.thoughtbox.databinding.ListItemTaskBinding
+import org.w3c.dom.Attr
 
 class TasksAdapter(private val clickListener : TasksClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem, private val checkListener : OnCheckChangeListener) : ListAdapter<Task, TasksAdapter.ViewHolder>(DiffCallback) {
     private var isEnable = false
@@ -50,12 +52,12 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
 
         private fun selectItem() {
             selectIcon.isVisible = true
-            cardView.setCardBackgroundColor(Color.parseColor("#d3d3d3"))
+            cardView.setCardBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.item_selection_color))
             cardView.elevation = 0F
             frameLayout.elevation = 0F
         }
         private fun unselectItem(){
-            cardView.setCardBackgroundColor(Color.parseColor("#ffffff"))
+            cardView.setCardBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.card_default_color))
             frameLayout.elevation = 8F
             cardView.elevation = 5F
             selectIcon.isVisible = false
