@@ -31,7 +31,7 @@ import java.util.Calendar
 class AddNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddNoteBinding
     private lateinit var viewModel: NoteViewModel
-    private var color = -1
+    private var color = 16777215
     private val args by navArgs<AddNoteFragmentArgs>()
     private var onBackPressedCallback: OnBackPressedCallback? = null
 
@@ -95,7 +95,7 @@ class AddNoteFragment : Fragment() {
             binding.coloredView.setBackgroundColor(it.color)
             color = args.currNote!!.color
         }
-        if (color == -1)
+        if (color == 16777215)
             binding.coloredView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.card_white))
     }
 
@@ -136,9 +136,6 @@ class AddNoteFragment : Fragment() {
         }else{
             SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().time)
         }
-
-        if(color == -1)
-            color = 16777215
 
         viewModel.insertDataToDatabase(binding.etTitle,binding.etDescription,
             formattedTime, color)
