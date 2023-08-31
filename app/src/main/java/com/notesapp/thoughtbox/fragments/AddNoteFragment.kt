@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -27,11 +26,13 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import com.notesapp.thoughtbox.tools.CARD_DEFAULT_COLOR
+
 
 class AddNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddNoteBinding
     private lateinit var viewModel: NoteViewModel
-    private var color = 16777215
+    private var color = CARD_DEFAULT_COLOR
     private val args by navArgs<AddNoteFragmentArgs>()
     private var onBackPressedCallback: OnBackPressedCallback? = null
 
@@ -43,7 +44,6 @@ class AddNoteFragment : Fragment() {
         binding = FragmentAddNoteBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         handleCurrVisitedNote()
-
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ class AddNoteFragment : Fragment() {
             binding.coloredView.setBackgroundColor(it.color)
             color = args.currNote!!.color
         }
-        if (color == 16777215)
+        if (color == CARD_DEFAULT_COLOR)
             binding.coloredView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.card_white))
     }
 

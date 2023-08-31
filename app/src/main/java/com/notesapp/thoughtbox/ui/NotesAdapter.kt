@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.notesapp.thoughtbox.R
 import com.notesapp.thoughtbox.data.Note
 import com.notesapp.thoughtbox.databinding.ListItemNoteBinding
+import com.notesapp.thoughtbox.tools.CARD_DEFAULT_COLOR
 
 
 class NotesAdapter(private val clickListener : ClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem,private val context: Context) : ListAdapter<Note, NotesAdapter.ViewHolder>(DiffCallback) {
@@ -73,7 +74,7 @@ class NotesAdapter(private val clickListener : ClickListener, private val longCl
         private fun selectItem(context: Context) {
             selectIcon.isVisible = true
 
-            if(color == 16777215) {
+            if(color == CARD_DEFAULT_COLOR) {
                 if(context.resources.getString(R.string.mode) == "dark")
                 binding.background.setBackgroundColor(Color.GRAY)
                 else binding.background.setBackgroundColor(Color.LTGRAY)
