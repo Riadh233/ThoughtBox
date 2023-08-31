@@ -19,7 +19,10 @@ import com.google.android.material.timepicker.TimeFormat
 import com.notesapp.thoughtbox.MainActivity
 import com.notesapp.thoughtbox.R
 import com.notesapp.thoughtbox.databinding.FragmentAddTaskBinding
+import com.notesapp.thoughtbox.tools.HIGH_PRIORITY
 import com.notesapp.thoughtbox.tools.IDGenerator
+import com.notesapp.thoughtbox.tools.LOW_PRIORITY
+import com.notesapp.thoughtbox.tools.MID_PRIORITY
 import com.notesapp.thoughtbox.tools.Priority
 import com.notesapp.thoughtbox.ui.SpinnerAdapter
 import com.notesapp.thoughtbox.viewmodels.SharedViewModel
@@ -192,23 +195,26 @@ class AddTaskFragment : Fragment() {
         var text = "Rings ${binding.reminderButton.text.trim()}"
         if(!timeChosen())
             text = getString(R.string.Set_reminder)
-        val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
+        val selectedPriority = getPriority(priorities[binding.spinner.selectedItemPosition].label)
 
         viewModel.insertDataToDatabase(taskId,binding.etTitle.text.toString().trim()
             ,binding.etDescription.text.toString().trim(),selectedPriority,text,calendarToString(calendar.time)
         )
     }
-    fun calendarToString(calendar: Date): String {
+
+    private fun getPriority(label: String): Int {
+        return when(label){
+            getString(R.string.low_priority) -> LOW_PRIORITY
+            getString(R.string.medium_priority) -> MID_PRIORITY
+            else -> HIGH_PRIORITY
+        }
+    }
+
+    private fun calendarToString(calendar: Date): String {
         val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
-    private fun getColorForPriority(priority: String): Int {
-        return when(priority) {
-            getString(R.string.high_priority) ->R.color.red
-            getString(R.string.medium_priority) -> R.color.orange
-            else -> R.color.light_blue
-        }
-    }
+
     private fun getPriorityForColor(color: Int): String {
         return when(color) {
             R.color.red -> getString(R.string.high_priority)
@@ -225,7 +231,7 @@ class AddTaskFragment : Fragment() {
         if(binding.reminderButton.text.toString().lowercase() == getString(R.string.expired).lowercase())
             alarmTime = getString(R.string.expired)
 
-        val selectedPriority = getColorForPriority(priorities[binding.spinner.selectedItemPosition].label)
+        val selectedPriority = getPriority(priorities[binding.spinner.selectedItemPosition].label)
         val scheduledDate: String = if(updatedReminder)
             calendarToString(calendar.time)
         else

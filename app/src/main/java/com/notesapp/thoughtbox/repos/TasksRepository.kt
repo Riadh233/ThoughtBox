@@ -64,7 +64,7 @@ class TasksRepository(private val dao : TasksDao) {
             if(task.checkState){
                 dao.uncheckTask(task.id)
             }else
-                dao.update(Task(task.id,task.title,task.description, R.color.light_gray,"Expired",task.scheduledDate,task.selected,true))
+                dao.update(Task(task.id,task.title,task.description, -1,"Expired",task.scheduledDate,task.selected,true))
         }
     }
     suspend fun updateData(

@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.notesapp.thoughtbox.R
 import com.notesapp.thoughtbox.data.Task
 import com.notesapp.thoughtbox.databinding.ListItemTaskBinding
+import com.notesapp.thoughtbox.tools.HIGH_PRIORITY
+import com.notesapp.thoughtbox.tools.LOW_PRIORITY
+import com.notesapp.thoughtbox.tools.MID_PRIORITY
 import org.w3c.dom.Attr
 
 class TasksAdapter(private val clickListener : TasksClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem, private val checkListener : OnCheckChangeListener) : ListAdapter<Task, TasksAdapter.ViewHolder>(DiffCallback) {
@@ -30,7 +33,7 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             binding.description.text = item.description
             binding.alarm.text = item.alarmTime
             binding.checkbox.isChecked = item.checkState
-            frameLayout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, item.priority))
+            frameLayout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, getColorForPriority(item.priority)))
             if (item.selected){
                 selectItem()
             }else{
@@ -45,8 +48,18 @@ class TasksAdapter(private val clickListener : TasksClickListener, private val l
             val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
             DrawableCompat.setTint(wrappedDrawable, Color.GREEN)
         }
+
+        private fun getColorForPriority(priority: Int): Int {
+            return when(priority){
+                LOW_PRIORITY -> R.color.light_blue
+                MID_PRIORITY -> R.color.orange
+                HIGH_PRIORITY -> R.color.red
+                else -> R.color.light_gray
+            }
+        }
+
         private fun checkedMode() {
-            title.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+            title.setTextColor(ContextCompat.getColor(binding.root.context, R.color.spinner_text_color))
             title.paintFlags = title.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         }
 
