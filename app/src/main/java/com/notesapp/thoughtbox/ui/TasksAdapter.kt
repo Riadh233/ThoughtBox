@@ -1,5 +1,4 @@
 package com.notesapp.thoughtbox.ui
-import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Paint
@@ -19,7 +18,6 @@ import com.notesapp.thoughtbox.databinding.ListItemTaskBinding
 import com.notesapp.thoughtbox.tools.HIGH_PRIORITY
 import com.notesapp.thoughtbox.tools.LOW_PRIORITY
 import com.notesapp.thoughtbox.tools.MID_PRIORITY
-import org.w3c.dom.Attr
 
 class TasksAdapter(private val clickListener : TasksClickListener, private val longClickListener: LongClickListener, private val selectedItem: OnSelectItem, private val checkListener : OnCheckChangeListener) : ListAdapter<Task, TasksAdapter.ViewHolder>(DiffCallback) {
     private var isEnable = false

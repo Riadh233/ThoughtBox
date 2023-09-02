@@ -1,8 +1,11 @@
 package com.notesapp.thoughtbox.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -10,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -24,6 +28,7 @@ import com.notesapp.thoughtbox.tools.IDGenerator
 import com.notesapp.thoughtbox.tools.LOW_PRIORITY
 import com.notesapp.thoughtbox.tools.MID_PRIORITY
 import com.notesapp.thoughtbox.tools.Priority
+import com.notesapp.thoughtbox.tools.REQUEST_CODE_NOTIFICATION_PERMISSION
 import com.notesapp.thoughtbox.ui.SpinnerAdapter
 import com.notesapp.thoughtbox.viewmodels.SharedViewModel
 import com.notesapp.thoughtbox.viewmodels.TasksViewModel
@@ -127,7 +132,9 @@ class AddTaskFragment : Fragment() {
 
     private fun setUpReminderButton() {
         binding.reminderButton.setOnClickListener {
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestNotificationPermission()
+            }
             setUpTimePicker()
         }
     }
@@ -250,6 +257,16 @@ class AddTaskFragment : Fragment() {
     }
     private fun inputCheck(title : String,description : String) : Boolean{
         return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(description))
+    }
+    fun requestNotificationPermission() {
+        // Check if the permission is already granted
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request it
+                ActivityCompat.requestPermissions(requireActivity(),
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    REQUEST_CODE_NOTIFICATION_PERMISSION)
+        }
     }
     override fun onResume() {
         super.onResume()
