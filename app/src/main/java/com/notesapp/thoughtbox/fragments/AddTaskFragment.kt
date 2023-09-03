@@ -183,7 +183,7 @@ class AddTaskFragment : Fragment() {
         binding.etTitle.setText(args.currTask?.title)
         binding.etDescription.setText(args.currTask?.description)
 
-        binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityForColor(args.currTask?.priority!!) })
+        binding.spinner.setSelection(priorities.indexOfFirst { it.label == getPriorityText(args.currTask?.priority!!) })
 
         if(args.currTask?.alarmTime != getString(R.string.Set_reminder)){
             if (args.currTask?.alarmTime == getString(R.string.expired))
@@ -222,10 +222,10 @@ class AddTaskFragment : Fragment() {
         return dateFormat.format(calendar.time)
     }
 
-    private fun getPriorityForColor(color: Int): String {
+    private fun getPriorityText(color: Int): String {
         return when(color) {
-            R.color.red -> getString(R.string.high_priority)
-            R.color.orange -> getString(R.string.medium_priority)
+            HIGH_PRIORITY -> getString(R.string.high_priority)
+            MID_PRIORITY -> getString(R.string.medium_priority)
             else -> getString(R.string.low_priority)
         }
     }

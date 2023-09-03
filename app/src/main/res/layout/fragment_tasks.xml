@@ -79,6 +79,7 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:inputType="text"
+                        android:theme="@style/cursorColor"
                         android:layout_marginBottom="6dp"
                         android:layout_marginTop="5dp"
                         android:backgroundTint="@color/custom_color"
