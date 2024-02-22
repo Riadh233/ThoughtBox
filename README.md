@@ -22,8 +22,8 @@
    * Data storage
    
    ## Architecture 
-   * The architecture used to create this app is Model-View-Viewmodel, it seperated the app into Data 
+   * The architecture used to create this app is Clean Architecture with Model-View-Viewmodel design pattern, it seperated the app into Data 
     layer/Domain/Ui Layer resulting in a readable,robust code. It also leverages the power of some android jetpack 
-    libraries (Navigation, Coroutines, AlarmManager, Hilt, Lifecycle, Room).
+    libraries (Navigation, Coroutines, AlarmManager, Lifecycle, Room).
 
   
